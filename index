@@ -1,0 +1,114 @@
+let d = new Date();
+let hour, minute, second;
+let centre_x, centre_y;
+let second_pie;
+let previous_second_pie = 0;
+let final_second_pie;
+let interpolater = 0;
+let exp = 0;
+
+function setup() {
+  createCanvas(windowHeight * 4 / 3, windowHeight);
+  background(40); // тёмно-серый фон
+  textSize(50);
+  fill(255, 255, 255, 255);
+  noStroke();
+  centre_x = width / 2;
+  centre_y = height / 2;
+}
+
+function draw() {
+  background(40); // тёмно-серый фон
+  d = new Date();
+
+  // Получаем UTC-время
+  let utcHour = d.getUTCHours();
+  let utcMinute = d.getUTCMinutes();
+  let utcSecond = d.getUTCSeconds();
+
+  hour = addZero(utcHour);
+  minute = addZero(utcMinute);
+  second = addZero(utcSecond);
+
+  let hour_size = 620;
+  let hour_inner = hour_size - 100;
+  let minute_size = 500;
+  let minute_inner = minute_size - 80;
+  let second_size = 400;
+  let second_inner = second_size - 60;
+
+  noStroke();
+
+  // ЧАСЫ — ЧЁРНЫЙ (как ты просил)
+  fill(0); // чёрный
+  arc(centre_x, centre_y, hour_size, hour_size, -PI / 2, (utcHour / 12 * TWO_PI) - (PI / 2), PIE);
+  fill(40);
+  ellipse(centre_x, centre_y, hour_inner, hour_inner);
+
+  // МИНУТЫ — ЖЁЛТЫЙ (BNB-цвет)
+  fill(255, 220, 0); // BNB желтый
+  arc(centre_x, centre_y, minute_size, minute_size, -PI / 2, (utcMinute / 60 * TWO_PI) - (PI / 2), PIE);
+  fill(40);
+  ellipse(centre_x, centre_y, minute_inner, minute_inner);
+
+  // СЕКУНДЫ — БЕЛЫЙ (как ты просил)
+  if (previous_second_pie != second_pie) interpolater = 0;
+  if (interpolater > 55) interpolater = 0;
+  else interpolater++;
+
+  second_pie = (utcSecond / 60 * TWO_PI) - (PI / 2);
+  if (second_pie === 0) previous_second_pie = 0;
+
+  final_second_pie = lerp(previous_second_pie, second_pie, pow(interpolater / 55.0, 1.2));
+
+  fill(255); // белый для секунд
+  arc(centre_x, centre_y, second_size, second_size, -PI / 2, final_second_pie, PIE);
+  fill(40);
+  ellipse(centre_x, centre_y, second_inner, second_inner);
+
+  // Центральный текст "BNB" — ЖЁЛТЫЙ (BNB-цвет)
+  textSize(100);
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+  fill(255, 220, 0); // жёлтый BNB
+  text("BNB", centre_x, centre_y);
+
+  hourMarkers();
+  previous_second_pie = second_pie;
+}
+
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+function hourMarkers() {
+  push();
+  translate(centre_x, centre_y);
+  fill(255); // белые маркеры
+
+  for (let i = 0; i < 60; i++) {
+    if (i % 5 === 0) {
+      exp = 10;
+    } else {
+      exp = 0;
+    }
+    ellipse(0, 330, 10 + exp, 10 + exp);
+    rotate(TWO_PI / 60);
+  }
+
+  pop();
+}
+
+function mouseClicked() {
+  let now = new Date();
+  let h = addZero(now.getUTCHours());
+  let m = addZero(now.getUTCMinutes());
+  let s = addZero(now.getUTCSeconds());
+  let mo = addZero(now.getUTCMonth() + 1);
+  let d = addZero(now.getUTCDate());
+
+  save(`img_${mo}-${d}_${h}-${m}-${s}.jpg`);
+}
