@@ -209,10 +209,12 @@
       });
     }
 
+    // АДАПТИВНОСТЬ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА
     function resizeCanvasForMobile() {
       let w = window.innerWidth;
       let h = window.innerHeight;
-      
+
+      // Ограничиваем соотношение сторон (4:3)
       if (w / h > 4 / 3) {
         w = h * 4 / 3;
       } else {
@@ -224,14 +226,21 @@
       centre_y = height / 2;
     }
 
+    // Пересоздаём холст при изменении размера окна
     function windowResized() {
       resizeCanvasForMobile();
       centre_x = width / 2;
       centre_y = height / 2;
     }
 
+    // Перезапускаем при полной загрузке и при изменении высоты
     window.addEventListener('load', function() {
       resizeCanvasForMobile();
+    });
+
+    // Для мобильных: пересоздаём холст при изменении видимой высоты
+    window.addEventListener('resize', function() {
+      setTimeout(resizeCanvasForMobile, 100); // задержка для стабильности
     });
   </script>
 </head>
