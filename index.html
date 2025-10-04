@@ -15,7 +15,7 @@
       background-color: #282828;
       overflow: hidden;
       font-family: Arial, sans-serif;
-      touch-action: none; /* улучшает отзывчивость */
+      touch-action: none;
     }
     canvas {
       display: block;
@@ -46,14 +46,11 @@
     let copyMessageTimer = 0;
     const contractAddress = "0xdac17f958d2ee523a2206206994597c13d834444";
 
-    // Глобальные координаты области адреса
+    let scale = 1;
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
     function setup() {
-      // Адаптивный размер холста
-      let w = Math.min(windowWidth, windowHeight * 4 / 3);
-      let h = Math.min(windowHeight, windowWidth * 3 / 4);
-      createCanvas(w, h);
+      resizeCanvasForMobile();
       background(40);
       noStroke();
       centre_x = width / 2;
@@ -72,8 +69,8 @@
       minute = addZero(utcMinute);
       second = addZero(utcSecond);
 
-      // Адаптивные размеры
-      let scale = Math.min(width, height) / 800;
+      scale = Math.min(width, height) / 800;
+
       let hour_size = 620 * scale;
       let hour_inner = hour_size - 100 * scale;
       let minute_size = 500 * scale;
@@ -125,7 +122,7 @@
       text("0xdac17f958d2ee523a220", centre_x, centre_y + 100 * scale);
       text("6206994597c13d834444", centre_x, centre_y + 120 * scale);
 
-      // Сохраняем координаты области адреса для копирования
+      // Сохраняем координаты области адреса
       let textW = textWidth("0xdac17f958d2ee523a220") * scale;
       contractArea = {
         x1: centre_x - textW / 2,
@@ -152,11 +149,14 @@
       push();
       translate(centre_x, centre_y);
       fill(255);
+
       for (let i = 0; i < 60; i++) {
-        let exp = i % 5 === 0 ? 10 * scale : 0;
-        ellipse(0, 330 * scale, (10 + exp), (10 + exp));
+        let dotSize = 6 * scale; // базовый размер точки
+        let exp = i % 5 === 0 ? 4 * scale : 0; // большие точки — чуть больше
+        ellipse(0, 330 * scale, dotSize + exp, dotSize + exp);
         rotate(TWO_PI / 60);
       }
+
       pop();
     }
 
@@ -164,7 +164,6 @@
       return i < 10 ? "0" + i : i;
     }
 
-    // Универсальная функция проверки попадания в область адреса
     function isOverContract(x, y) {
       return (
         x >= contractArea.x1 &&
@@ -191,12 +190,13 @@
 
     // МОБИЛЬНЫЕ УСТРОЙСТВА: касание
     function touchStarted() {
-      // Предотвращаем стандартное поведение (например, зум)
-      let touchX = touches[0].x;
-      let touchY = touches[0].y;
-      if (isOverContract(touchX, touchY)) {
-        copyContract();
-        return false; // отменить зум/прокрутку
+      if (touches.length > 0) {
+        let touchX = touches[0].x;
+        let touchY = touches[0].y;
+        if (isOverContract(touchX, touchY)) {
+          copyContract();
+          return false; // предотвращаем зум/прокрутку
+        }
       }
     }
 
@@ -209,14 +209,30 @@
       });
     }
 
-    // При изменении размера окна — пересоздаём холст
-    function windowResized() {
-      let w = Math.min(windowWidth, windowHeight * 4 / 3);
-      let h = Math.min(windowHeight, windowWidth * 3 / 4);
-      resizeCanvas(w, h);
+    function resizeCanvasForMobile() {
+      let w = window.innerWidth;
+      let h = window.innerHeight;
+      
+      if (w / h > 4 / 3) {
+        w = h * 4 / 3;
+      } else {
+        h = w * 3 / 4;
+      }
+
+      createCanvas(w, h);
       centre_x = width / 2;
       centre_y = height / 2;
     }
+
+    function windowResized() {
+      resizeCanvasForMobile();
+      centre_x = width / 2;
+      centre_y = height / 2;
+    }
+
+    window.addEventListener('load', function() {
+      resizeCanvasForMobile();
+    });
   </script>
 </head>
 <body>
