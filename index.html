@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
   <title>TIMEBNB</title>
 
-  <!-- FAVICON — жёлтый квадрат -->
+  <!-- FAVICON -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
 
   <style>
@@ -15,15 +15,20 @@
       background-color: #282828;
       overflow: hidden;
       font-family: Arial, sans-serif;
+      touch-action: none; /* улучшает отзывчивость */
     }
     canvas {
       display: block;
       margin: 0 auto;
+      max-width: 100vw;
+      max-height: 100vh;
     }
 
-    /* Кастомный курсор для адреса контракта */
-    .bnb-cursor {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
+    /* Кастомный курсор ТОЛЬКО на десктопе */
+    @media (hover: hover) and (pointer: fine) {
+      .bnb-cursor {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -41,11 +46,15 @@
     let copyMessageTimer = 0;
     const contractAddress = "0xdac17f958d2ee523a2206206994597c13d834444";
 
+    // Глобальные координаты области адреса
+    let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
+
     function setup() {
-      createCanvas(windowHeight * 4 / 3, windowHeight);
+      // Адаптивный размер холста
+      let w = Math.min(windowWidth, windowHeight * 4 / 3);
+      let h = Math.min(windowHeight, windowWidth * 3 / 4);
+      createCanvas(w, h);
       background(40);
-      textSize(50);
-      fill(255, 255, 255, 255);
       noStroke();
       centre_x = width / 2;
       centre_y = height / 2;
@@ -63,12 +72,14 @@
       minute = addZero(utcMinute);
       second = addZero(utcSecond);
 
-      let hour_size = 620;
-      let hour_inner = hour_size - 100;
-      let minute_size = 500;
-      let minute_inner = minute_size - 80;
-      let second_size = 400;
-      let second_inner = second_size - 60;
+      // Адаптивные размеры
+      let scale = Math.min(width, height) / 800;
+      let hour_size = 620 * scale;
+      let hour_inner = hour_size - 100 * scale;
+      let minute_size = 500 * scale;
+      let minute_inner = minute_size - 80 * scale;
+      let second_size = 400 * scale;
+      let second_inner = second_size - 60 * scale;
 
       noStroke();
 
@@ -78,7 +89,7 @@
       fill(40);
       ellipse(centre_x, centre_y, hour_inner, hour_inner);
 
-      // МИНУТЫ — ЖЁЛТЫЙ (BNB)
+      // МИНУТЫ — ЖЁЛТЫЙ
       fill(255, 220, 0);
       arc(centre_x, centre_y, minute_size, minute_size, -PI / 2, (utcMinute / 60 * TWO_PI) - (PI / 2), PIE);
       fill(40);
@@ -99,74 +110,73 @@
       fill(40);
       ellipse(centre_x, centre_y, second_inner, second_inner);
 
-      // ЦЕНТРАЛЬНЫЙ ТЕКСТ — TIME BNB
-      textSize(80);
+      // ТЕКСТ "TIME BNB"
+      textSize(80 * scale);
       textAlign(CENTER, CENTER);
       textStyle(BOLD);
       fill(255, 220, 0);
-      text("TIME", centre_x, centre_y - 40);
-      text("BNB", centre_x, centre_y + 40);
+      text("TIME", centre_x, centre_y - 40 * scale);
+      text("BNB", centre_x, centre_y + 40 * scale);
 
-      // АДРЕС КОНТРАКТА — МОНОХРОМНЫЙ (БЕЛЫЙ)
-      textSize(16);
+      // АДРЕС КОНТРАКТА — МОНОХРОМНЫЙ
+      textSize(16 * scale);
       fill(255);
       textAlign(CENTER, CENTER);
-      text("0xdac17f958d2ee523a220", centre_x, centre_y + 100);
-      text("6206994597c13d834444", centre_x, centre_y + 120);
+      text("0xdac17f958d2ee523a220", centre_x, centre_y + 100 * scale);
+      text("6206994597c13d834444", centre_x, centre_y + 120 * scale);
 
-      // НАДПИСЬ "COPY" ПОСЛЕ КОПИРОВАНИЯ
+      // Сохраняем координаты области адреса для копирования
+      let textW = textWidth("0xdac17f958d2ee523a220") * scale;
+      contractArea = {
+        x1: centre_x - textW / 2,
+        y1: centre_y + 100 * scale - 10 * scale,
+        x2: centre_x + textW / 2,
+        y2: centre_y + 120 * scale + 10 * scale
+      };
+
+      // НАДПИСЬ "COPY"
       if (showCopyMessage) {
         fill(255, 220, 0);
-        textSize(24);
-        text("COPY", centre_x, centre_y + 160);
+        textSize(24 * scale);
+        text("COPY", centre_x, centre_y + 160 * scale);
         if (millis() - copyMessageTimer > 2000) {
           showCopyMessage = false;
         }
       }
 
-      hourMarkers();
+      hourMarkers(scale);
       previous_second_pie = second_pie;
+    }
+
+    function hourMarkers(scale) {
+      push();
+      translate(centre_x, centre_y);
+      fill(255);
+      for (let i = 0; i < 60; i++) {
+        let exp = i % 5 === 0 ? 10 * scale : 0;
+        ellipse(0, 330 * scale, (10 + exp), (10 + exp));
+        rotate(TWO_PI / 60);
+      }
+      pop();
     }
 
     function addZero(i) {
       return i < 10 ? "0" + i : i;
     }
 
-    function hourMarkers() {
-      push();
-      translate(centre_x, centre_y);
-      fill(255);
-      for (let i = 0; i < 60; i++) {
-        let exp = i % 5 === 0 ? 10 : 0;
-        ellipse(0, 330, 10 + exp, 10 + exp);
-        rotate(TWO_PI / 60);
-      }
-      pop();
+    // Универсальная функция проверки попадания в область адреса
+    function isOverContract(x, y) {
+      return (
+        x >= contractArea.x1 &&
+        x <= contractArea.x2 &&
+        y >= contractArea.y1 &&
+        y <= contractArea.y2
+      );
     }
 
-    function mouseClicked() {
-      let now = new Date();
-      let h = addZero(now.getUTCHours());
-      let m = addZero(now.getUTCMinutes());
-      let s = addZero(now.getUTCSeconds());
-      let mo = addZero(now.getUTCMonth() + 1);
-      let d = addZero(now.getUTCDate());
-      save(`TIMEBNB_${mo}-${d}_${h}-${m}-${s}.jpg`);
-    }
-
+    // ДЕСКТОП: наведение и клик
     function mouseMoved() {
-      let y1 = centre_y + 100;
-      let y2 = centre_y + 120;
-      let x = centre_x;
-      let w = textWidth("0xdac17f958d2ee523a220");
-      let h = 20;
-
-      if (
-        mouseX > x - w / 2 &&
-        mouseX < x + w / 2 &&
-        mouseY > y1 - h / 2 &&
-        mouseY < y2 + h / 2
-      ) {
+      if (isOverContract(mouseX, mouseY)) {
         document.body.classList.add('bnb-cursor');
       } else {
         document.body.classList.remove('bnb-cursor');
@@ -174,23 +184,38 @@
     }
 
     function mousePressed() {
-      let y1 = centre_y + 100;
-      let y2 = centre_y + 120;
-      let x = centre_x;
-      let w = textWidth("0xdac17f958d2ee523a220");
-      let h = 20;
-
-      if (
-        mouseX > x - w / 2 &&
-        mouseX < x + w / 2 &&
-        mouseY > y1 - h / 2 &&
-        mouseY < y2 + h / 2
-      ) {
-        navigator.clipboard.writeText(contractAddress).then(() => {
-          showCopyMessage = true;
-          copyMessageTimer = millis();
-        });
+      if (isOverContract(mouseX, mouseY)) {
+        copyContract();
       }
+    }
+
+    // МОБИЛЬНЫЕ УСТРОЙСТВА: касание
+    function touchStarted() {
+      // Предотвращаем стандартное поведение (например, зум)
+      let touchX = touches[0].x;
+      let touchY = touches[0].y;
+      if (isOverContract(touchX, touchY)) {
+        copyContract();
+        return false; // отменить зум/прокрутку
+      }
+    }
+
+    function copyContract() {
+      navigator.clipboard.writeText(contractAddress).then(() => {
+        showCopyMessage = true;
+        copyMessageTimer = millis();
+      }).catch(err => {
+        console.error('Не удалось скопировать:', err);
+      });
+    }
+
+    // При изменении размера окна — пересоздаём холст
+    function windowResized() {
+      let w = Math.min(windowWidth, windowHeight * 4 / 3);
+      let h = Math.min(windowHeight, windowWidth * 3 / 4);
+      resizeCanvas(w, h);
+      centre_x = width / 2;
+      centre_y = height / 2;
     }
   </script>
 </head>
