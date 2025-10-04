@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TIMEBNB</title>
 
-  <!-- РАБОЧИЙ FAVICON — ЖЁЛТЫЙ КВАДРАТ -->
+  <!-- FAVICON — жёлтый квадрат -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
 
   <style>
@@ -32,7 +32,6 @@
     let interpolater = 0;
     let exp = 0;
 
-    // Для копирования адреса
     let showCopyMessage = false;
     let copyMessageTimer = 0;
     const contractAddress = "0xdac17f958d2ee523a2206206994597c13d834444";
@@ -95,22 +94,22 @@
       fill(40);
       ellipse(centre_x, centre_y, second_inner, second_inner);
 
-      // ЦЕНТРАЛЬНЫЙ ТЕКСТ — TIME BNB
+      // ЦЕНТРАЛЬНЫЙ ТЕКСТ — TIME BNB (жёлтый)
       textSize(80);
       textAlign(CENTER, CENTER);
       textStyle(BOLD);
-      fill(255, 220, 0); // жёлтый
+      fill(255, 220, 0);
       text("TIME", centre_x, centre_y - 40);
       text("BNB", centre_x, centre_y + 40);
 
-      // АДРЕС КОНТРАКТА — БЕЛЫЙ
+      // АДРЕС КОНТРАКТА — МОНОХРОМНЫЙ (БЕЛЫЙ)
       textSize(16);
-      fill(255);
+      fill(255); // ← монохромный белый
       textAlign(CENTER, CENTER);
       text("0xdac17f958d2ee523a220", centre_x, centre_y + 100);
       text("6206994597c13d834444", centre_x, centre_y + 120);
 
-      // ПОКАЗАТЬ "COPY" ПОСЛЕ КОПИРОВАНИЯ
+      // НАДПИСЬ "COPY" ПОСЛЕ КОПИРОВАНИЯ
       if (showCopyMessage) {
         fill(255, 220, 0);
         textSize(24);
@@ -150,46 +149,41 @@
       save(`TIMEBNB_${mo}-${d}_${h}-${m}-${s}.jpg`);
     }
 
-    // ОБРАБОТКА НАВЕДЕНИЯ И КОПИРОВАНИЯ АДРЕСА
     function mouseMoved() {
-      let contractY1 = centre_y + 100;
-      let contractY2 = centre_y + 120;
-      let contractX = centre_x;
-      let textWidth = textWidth("0xdac17f958d2ee523a220");
-      let textHeight = 20;
+      let y1 = centre_y + 100;
+      let y2 = centre_y + 120;
+      let x = centre_x;
+      let w = textWidth("0xdac17f958d2ee523a220");
+      let h = 20;
 
-      // Проверяем, находится ли курсор над текстом адреса
       if (
-        mouseX > contractX - textWidth / 2 &&
-        mouseX < contractX + textWidth / 2 &&
-        mouseY > contractY1 - textHeight / 2 &&
-        mouseY < contractY2 + textHeight / 2
+        mouseX > x - w / 2 &&
+        mouseX < x + w / 2 &&
+        mouseY > y1 - h / 2 &&
+        mouseY < y2 + h / 2
       ) {
-        cursor(HAND); // меняем курсор на руку
+        cursor(HAND);
       } else {
-        cursor(ARROW); // обычный курсор
+        cursor(ARROW);
       }
     }
 
     function mousePressed() {
-      let contractY1 = centre_y + 100;
-      let contractY2 = centre_y + 120;
-      let contractX = centre_x;
-      let textWidth = textWidth("0xdac17f958d2ee523a220");
-      let textHeight = 20;
+      let y1 = centre_y + 100;
+      let y2 = centre_y + 120;
+      let x = centre_x;
+      let w = textWidth("0xdac17f958d2ee523a220");
+      let h = 20;
 
-      // Если кликнули по адресу — копируем
       if (
-        mouseX > contractX - textWidth / 2 &&
-        mouseX < contractX + textWidth / 2 &&
-        mouseY > contractY1 - textHeight / 2 &&
-        mouseY < contractY2 + textHeight / 2
+        mouseX > x - w / 2 &&
+        mouseX < x + w / 2 &&
+        mouseY > y1 - h / 2 &&
+        mouseY < y2 + h / 2
       ) {
         navigator.clipboard.writeText(contractAddress).then(() => {
           showCopyMessage = true;
           copyMessageTimer = millis();
-        }).catch(err => {
-          console.error('Не удалось скопировать адрес: ', err);
         });
       }
     }
