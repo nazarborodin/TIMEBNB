@@ -33,9 +33,9 @@
     let exp = 0;
 
     // Для копирования адреса
-    let copyText = "";
     let showCopyMessage = false;
     let copyMessageTimer = 0;
+    const contractAddress = "0xdac17f958d2ee523a2206206994597c13d834444";
 
     function setup() {
       createCanvas(windowHeight * 4 / 3, windowHeight);
@@ -166,17 +166,31 @@
         mouseY < contractY2 + textHeight / 2
       ) {
         cursor(HAND); // меняем курсор на руку
-
-        // При клике — копируем
-        if (mouseIsPressed) {
-          let contractAddress = "0xdac17f958d2ee523a2206206994597c13d834444";
-          navigator.clipboard.writeText(contractAddress).then(() => {
-            showCopyMessage = true;
-            copyMessageTimer = millis();
-          });
-        }
       } else {
         cursor(ARROW); // обычный курсор
+      }
+    }
+
+    function mousePressed() {
+      let contractY1 = centre_y + 100;
+      let contractY2 = centre_y + 120;
+      let contractX = centre_x;
+      let textWidth = textWidth("0xdac17f958d2ee523a220");
+      let textHeight = 20;
+
+      // Если кликнули по адресу — копируем
+      if (
+        mouseX > contractX - textWidth / 2 &&
+        mouseX < contractX + textWidth / 2 &&
+        mouseY > contractY1 - textHeight / 2 &&
+        mouseY < contractY2 + textHeight / 2
+      ) {
+        navigator.clipboard.writeText(contractAddress).then(() => {
+          showCopyMessage = true;
+          copyMessageTimer = millis();
+        }).catch(err => {
+          console.error('Не удалось скопировать адрес: ', err);
+        });
       }
     }
   </script>
