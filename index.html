@@ -49,12 +49,32 @@
     let scale = 1;
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
+    // Параметры для кругов с цифрами
+    let circleSize = 60; // базовый диаметр круга
+    let circleGap = 80;  // вертикальное расстояние между центрами
+    let circles = [];
+
     function setup() {
       resizeCanvasForMobile();
       background(40);
       noStroke();
       centre_x = width / 2;
       centre_y = height / 2;
+
+      // Инициализация кругов 1–28
+      circles = [];
+      for (let i = 0; i < 28; i++) {
+        let colX = i < 14 
+          ? centre_x - 300 * scale 
+          : centre_x + 300 * scale;
+        let rowY = centre_y - 130 * scale + (i % 14) * circleGap * scale;
+        circles.push({
+          x: colX,
+          y: rowY,
+          num: i + 1,
+          hovered: false
+        });
+      }
     }
 
     function draw() {
@@ -70,6 +90,16 @@
       second = addZero(utcSecond);
 
       scale = Math.min(width, height) / 800;
+
+      // Обновляем позиции кругов при изменении масштаба
+      for (let i = 0; i < 28; i++) {
+        let colX = i < 14 
+          ? centre_x - 300 * scale 
+          : centre_x + 300 * scale;
+        let rowY = centre_y - 130 * scale + (i % 14) * circleGap * scale;
+        circles[i].x = colX;
+        circles[i].y = rowY;
+      }
 
       let hour_size = 620 * scale;
       let hour_inner = hour_size - 100 * scale;
@@ -123,13 +153,29 @@
       text("UTC-15:00.......4444", centre_x, centre_y + 120 * scale);
 
       // Сохраняем координаты области адреса
-      let textW = textWidth("0x..........11.10.2025") * scale;
+      let textW = textWidth("0x..........12.10.2025") * scale;
       contractArea = {
         x1: centre_x - textW / 2,
         y1: centre_y + 100 * scale - 10 * scale,
         x2: centre_x + textW / 2,
         y2: centre_y + 120 * scale + 10 * scale
       };
+
+      // Отрисовка жёлтых кругов с цифрами 1–28
+      for (let i = 0; i < circles.length; i++) {
+        let c = circles[i];
+        if (c.hovered) {
+          fill(255, 255, 0); // светло-жёлтый при наведении
+        } else {
+          fill(255, 220, 0); // стандартный жёлтый
+        }
+        ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
+
+        fill(0); // чёрный текст
+        textSize(24 * scale);
+        textAlign(CENTER, CENTER);
+        text(c.num, c.x, c.y);
+      }
 
       // НАДПИСЬ "COPY"
       if (showCopyMessage) {
@@ -151,8 +197,8 @@
       fill(255);
 
       for (let i = 0; i < 60; i++) {
-        let dotSize = 6 * scale; // базовый размер точки
-        let exp = i % 5 === 0 ? 4 * scale : 0; // большие точки — чуть больше
+        let dotSize = 6 * scale;
+        let exp = i % 5 === 0 ? 4 * scale : 0;
         ellipse(0, 330 * scale, dotSize + exp, dotSize + exp);
         rotate(TWO_PI / 60);
       }
@@ -175,6 +221,14 @@
 
     // ДЕСКТОП: наведение и клик
     function mouseMoved() {
+      // Проверка наведения на круги
+      for (let i = 0; i < circles.length; i++) {
+        let c = circles[i];
+        let d = dist(mouseX, mouseY, c.x, c.y);
+        c.hovered = d < (circleSize * scale) / 2;
+      }
+
+      // Курсор над адресом
       if (isOverContract(mouseX, mouseY)) {
         document.body.classList.add('bnb-cursor');
       } else {
@@ -193,9 +247,20 @@
       if (touches.length > 0) {
         let touchX = touches[0].x;
         let touchY = touches[0].y;
+
+        // Можно добавить реакцию на касание кругов (например, лог)
+        for (let i = 0; i < circles.length; i++) {
+          let c = circles[i];
+          let d = dist(touchX, touchY, c.x, c.y);
+          if (d < (circleSize * scale) / 2) {
+            // Например: console.log("Нажат круг", c.num);
+            break;
+          }
+        }
+
         if (isOverContract(touchX, touchY)) {
           copyContract();
-          return false; // предотвращаем зум/прокрутку
+          return false;
         }
       }
     }
@@ -214,7 +279,6 @@
       let w = window.innerWidth;
       let h = window.innerHeight;
 
-      // Ограничиваем соотношение сторон (4:3)
       if (w / h > 4 / 3) {
         w = h * 4 / 3;
       } else {
@@ -226,21 +290,18 @@
       centre_y = height / 2;
     }
 
-    // Пересоздаём холст при изменении размера окна
     function windowResized() {
       resizeCanvasForMobile();
       centre_x = width / 2;
       centre_y = height / 2;
     }
 
-    // Перезапускаем при полной загрузке и при изменении высоты
     window.addEventListener('load', function() {
       resizeCanvasForMobile();
     });
 
-    // Для мобильных: пересоздаём холст при изменении видимой высоты
     window.addEventListener('resize', function() {
-      setTimeout(resizeCanvasForMobile, 100); // задержка для стабильности
+      setTimeout(resizeCanvasForMobile, 100);
     });
   </script>
 </head>
