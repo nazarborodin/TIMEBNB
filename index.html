@@ -50,8 +50,7 @@
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
     // Параметры для кругов с цифрами
-    let circleSize = 60; // базовый диаметр круга
-    let circleGap = 80;  // вертикальное расстояние между центрами
+    let circleSize = 40; // диаметр круга
     let circles = [];
 
     function setup() {
@@ -61,16 +60,23 @@
       centre_x = width / 2;
       centre_y = height / 2;
 
-      // Инициализация кругов 1–28
+      // Генерируем 30 кругов равномерно по полному кругу
+      generateCircles();
+    }
+
+    function generateCircles() {
       circles = [];
-      for (let i = 0; i < 28; i++) {
-        let colX = i < 14 
-          ? centre_x - 300 * scale 
-          : centre_x + 300 * scale;
-        let rowY = centre_y - 130 * scale + (i % 14) * circleGap * scale;
+      let totalAngle = TWO_PI; // 360 градусов
+      let radius = 350 * scale; // расстояние от центра — не перекрывает часы
+
+      for (let i = 0; i < 30; i++) {
+        let angle = -PI / 2 + (i / 30) * totalAngle; // начинаем сверху (12 часов)
+        let x = centre_x + cos(angle) * radius;
+        let y = centre_y + sin(angle) * radius;
+
         circles.push({
-          x: colX,
-          y: rowY,
+          x: x,
+          y: y,
           num: i + 1,
           hovered: false
         });
@@ -92,14 +98,7 @@
       scale = Math.min(width, height) / 800;
 
       // Обновляем позиции кругов при изменении масштаба
-      for (let i = 0; i < 28; i++) {
-        let colX = i < 14 
-          ? centre_x - 300 * scale 
-          : centre_x + 300 * scale;
-        let rowY = centre_y - 130 * scale + (i % 14) * circleGap * scale;
-        circles[i].x = colX;
-        circles[i].y = rowY;
-      }
+      generateCircles();
 
       let hour_size = 620 * scale;
       let hour_inner = hour_size - 100 * scale;
@@ -161,7 +160,7 @@
         y2: centre_y + 120 * scale + 10 * scale
       };
 
-      // Отрисовка жёлтых кругов с цифрами 1–28
+      // Отрисовка жёлтых кругов с цифрами 1–30 по полному кругу
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (c.hovered) {
@@ -172,7 +171,7 @@
         ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
 
         fill(0); // чёрный текст
-        textSize(24 * scale);
+        textSize(16 * scale);
         textAlign(CENTER, CENTER);
         text(c.num, c.x, c.y);
       }
@@ -187,23 +186,8 @@
         }
       }
 
-      hourMarkers(scale);
-      previous_second_pie = second_pie;
-    }
-
-    function hourMarkers(scale) {
-      push();
-      translate(centre_x, centre_y);
-      fill(255);
-
-      for (let i = 0; i < 60; i++) {
-        let dotSize = 6 * scale;
-        let exp = i % 5 === 0 ? 4 * scale : 0;
-        ellipse(0, 330 * scale, dotSize + exp, dotSize + exp);
-        rotate(TWO_PI / 60);
-      }
-
-      pop();
+      // УБРАНЫ БЕЛЫЕ ТОЧКИ — функция hourMarkers() удалена
+      // Если нужно добавить маркеры — можно вернуть, но по заданию убираем.
     }
 
     function addZero(i) {
@@ -248,12 +232,11 @@
         let touchX = touches[0].x;
         let touchY = touches[0].y;
 
-        // Можно добавить реакцию на касание кругов (например, лог)
+        // Реакция на касание кругов
         for (let i = 0; i < circles.length; i++) {
           let c = circles[i];
           let d = dist(touchX, touchY, c.x, c.y);
           if (d < (circleSize * scale) / 2) {
-            // Например: console.log("Нажат круг", c.num);
             break;
           }
         }
