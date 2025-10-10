@@ -40,7 +40,6 @@
     let previous_second_pie = 0;
     let final_second_pie;
     let interpolater = 0;
-    let exp = 0;
 
     let showCopyMessage = false;
     let copyMessageTimer = 0;
@@ -50,8 +49,14 @@
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
     // Параметры для кругов с цифрами
-    let circleSize = 40; // диаметр круга
+    let circleSize = 40;
     let circles = [];
+    let czImage;
+
+    function preload() {
+      // 🖼️ Загружаем изображение с вашего GitHub
+      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
+    }
 
     function setup() {
       resizeCanvasForMobile();
@@ -59,18 +64,16 @@
       noStroke();
       centre_x = width / 2;
       centre_y = height / 2;
-
-      // Генерируем 30 кругов равномерно по полному кругу
       generateCircles();
     }
 
     function generateCircles() {
       circles = [];
-      let totalAngle = TWO_PI; // 360 градусов
-      let radius = 350 * scale; // расстояние от центра — не перекрывает часы
+      let totalAngle = TWO_PI;
+      let radius = 350 * scale;
 
       for (let i = 0; i < 30; i++) {
-        let angle = -PI / 2 + (i / 30) * totalAngle; // начинаем сверху (12 часов)
+        let angle = -PI / 2 + (i / 30) * totalAngle;
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
 
@@ -78,7 +81,8 @@
           x: x,
           y: y,
           num: i + 1,
-          hovered: false
+          hovered: false,
+          isCZ: i === 15 // круг №16
         });
       }
     }
@@ -96,8 +100,6 @@
       second = addZero(utcSecond);
 
       scale = Math.min(width, height) / 800;
-
-      // Обновляем позиции кругов при изменении масштаба
       generateCircles();
 
       let hour_size = 620 * scale;
@@ -122,13 +124,13 @@
       ellipse(centre_x, centre_y, minute_inner, minute_inner);
 
       // СЕКУНДЫ — БЕЛЫЙ
-      if (previous_second_pie !== second_pie) interpolater = 0;
-      if (interpolater > 55) interpolater = 0;
-      else interpolater++;
-
-      second_pie = (utcSecond / 60 * TWO_PI) - (PI / 2);
-      if (second_pie === 0) previous_second_pie = 0;
-
+      let currentSecondAngle = (utcSecond / 60 * TWO_PI) - (PI / 2);
+      if (currentSecondAngle !== second_pie) {
+        previous_second_pie = second_pie;
+        second_pie = currentSecondAngle;
+        interpolater = 0;
+      }
+      if (interpolater < 55) interpolater++;
       final_second_pie = lerp(previous_second_pie, second_pie, Math.pow(interpolater / 55.0, 1.2));
 
       fill(255);
@@ -144,14 +146,13 @@
       text("TIME", centre_x, centre_y - 40 * scale);
       text("BNB", centre_x, centre_y + 40 * scale);
 
-      // АДРЕС КОНТРАКТА — МОНОХРОМНЫЙ
+      // АДРЕС КОНТРАКТА
       textSize(16 * scale);
       fill(255);
       textAlign(CENTER, CENTER);
       text("0x..........12.10.2025", centre_x, centre_y + 100 * scale);
       text("UTC-15:00.......4444", centre_x, centre_y + 120 * scale);
 
-      // Сохраняем координаты области адреса
       let textW = textWidth("0x..........12.10.2025") * scale;
       contractArea = {
         x1: centre_x - textW / 2,
@@ -160,20 +161,25 @@
         y2: centre_y + 120 * scale + 10 * scale
       };
 
-      // Отрисовка жёлтых кругов с цифрами 1–30 по полному кругу
+      // Отрисовка кругов
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        if (c.hovered) {
-          fill(255, 255, 0); // светло-жёлтый при наведении
-        } else {
-          fill(255, 220, 0); // стандартный жёлтый
-        }
-        ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
 
-        fill(0); // чёрный текст
-        textSize(16 * scale);
-        textAlign(CENTER, CENTER);
-        text(c.num, c.x, c.y);
+        if (c.isCZ && czImage && czImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(czImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else {
+          if (c.hovered) fill(255, 255, 0);
+          else fill(255, 220, 0);
+          ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
+          fill(0);
+          textSize(16 * scale);
+          textAlign(CENTER, CENTER);
+          text(c.num, c.x, c.y);
+        }
       }
 
       // НАДПИСЬ "COPY"
@@ -181,38 +187,22 @@
         fill(255, 220, 0);
         textSize(24 * scale);
         text("COPY", centre_x, centre_y + 160 * scale);
-        if (millis() - copyMessageTimer > 2000) {
-          showCopyMessage = false;
-        }
+        if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
       }
-
-      // УБРАНЫ БЕЛЫЕ ТОЧКИ — функция hourMarkers() удалена
-      // Если нужно добавить маркеры — можно вернуть, но по заданию убираем.
     }
 
-    function addZero(i) {
-      return i < 10 ? "0" + i : i;
-    }
+    function addZero(i) { return i < 10 ? "0" + i : i; }
 
     function isOverContract(x, y) {
-      return (
-        x >= contractArea.x1 &&
-        x <= contractArea.x2 &&
-        y >= contractArea.y1 &&
-        y <= contractArea.y2
-      );
+      return x >= contractArea.x1 && x <= contractArea.x2 &&
+             y >= contractArea.y1 && y <= contractArea.y2;
     }
 
-    // ДЕСКТОП: наведение и клик
     function mouseMoved() {
-      // Проверка наведения на круги
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        let d = dist(mouseX, mouseY, c.x, c.y);
-        c.hovered = d < (circleSize * scale) / 2;
+        c.hovered = dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2;
       }
-
-      // Курсор над адресом
       if (isOverContract(mouseX, mouseY)) {
         document.body.classList.add('bnb-cursor');
       } else {
@@ -221,26 +211,27 @@
     }
 
     function mousePressed() {
-      if (isOverContract(mouseX, mouseY)) {
-        copyContract();
+      for (let i = 0; i < circles.length; i++) {
+        let c = circles[i];
+        if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2 && c.isCZ) {
+          window.open("https://x.com/cz_binance", "_blank");
+          return;
+        }
       }
+      if (isOverContract(mouseX, mouseY)) copyContract();
     }
 
-    // МОБИЛЬНЫЕ УСТРОЙСТВА: касание
     function touchStarted() {
       if (touches.length > 0) {
         let touchX = touches[0].x;
         let touchY = touches[0].y;
-
-        // Реакция на касание кругов
         for (let i = 0; i < circles.length; i++) {
           let c = circles[i];
-          let d = dist(touchX, touchY, c.x, c.y);
-          if (d < (circleSize * scale) / 2) {
-            break;
+          if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2 && c.isCZ) {
+            window.open("https://x.com/cz_binance", "_blank");
+            return false;
           }
         }
-
         if (isOverContract(touchX, touchY)) {
           copyContract();
           return false;
@@ -252,22 +243,14 @@
       navigator.clipboard.writeText(contractAddress).then(() => {
         showCopyMessage = true;
         copyMessageTimer = millis();
-      }).catch(err => {
-        console.error('Не удалось скопировать:', err);
-      });
+      }).catch(err => console.error('Не удалось скопировать:', err));
     }
 
-    // АДАПТИВНОСТЬ ПОД МОБИЛЬНЫЕ УСТРОЙСТВА
     function resizeCanvasForMobile() {
       let w = window.innerWidth;
       let h = window.innerHeight;
-
-      if (w / h > 4 / 3) {
-        w = h * 4 / 3;
-      } else {
-        h = w * 3 / 4;
-      }
-
+      if (w / h > 4 / 3) w = h * 4 / 3;
+      else h = w * 3 / 4;
       createCanvas(w, h);
       centre_x = width / 2;
       centre_y = height / 2;
@@ -279,13 +262,8 @@
       centre_y = height / 2;
     }
 
-    window.addEventListener('load', function() {
-      resizeCanvasForMobile();
-    });
-
-    window.addEventListener('resize', function() {
-      setTimeout(resizeCanvasForMobile, 100);
-    });
+    window.addEventListener('load', () => resizeCanvasForMobile());
+    window.addEventListener('resize', () => setTimeout(resizeCanvasForMobile, 100));
   </script>
 </head>
 <body>
