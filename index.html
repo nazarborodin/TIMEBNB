@@ -36,10 +36,6 @@
     let d = new Date();
     let hour, minute, second;
     let centre_x, centre_y;
-    let second_pie;
-    let previous_second_pie = 0;
-    let final_second_pie;
-    let interpolater = 0;
 
     let showCopyMessage = false;
     let copyMessageTimer = 0;
@@ -51,11 +47,12 @@
     // Параметры для кругов с цифрами
     let circleSize = 40;
     let circles = [];
-    let czImage;
+    let czImage;   // для круга 16
+    let binanceImage; // для круга 1
 
     function preload() {
-      // 🖼️ Загружаем изображение с вашего GitHub
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
+      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
     }
 
     function setup() {
@@ -82,7 +79,8 @@
           y: y,
           num: i + 1,
           hovered: false,
-          isCZ: i === 15 // круг №16
+          isCZ: i === 15,     // круг №16
+          isBinance: i === 0  // круг №1
         });
       }
     }
@@ -123,18 +121,12 @@
       fill(40);
       ellipse(centre_x, centre_y, minute_inner, minute_inner);
 
-      // СЕКУНДЫ — БЕЛЫЙ
-      let currentSecondAngle = (utcSecond / 60 * TWO_PI) - (PI / 2);
-      if (currentSecondAngle !== second_pie) {
-        previous_second_pie = second_pie;
-        second_pie = currentSecondAngle;
-        interpolater = 0;
+      // СЕКУНДЫ — БЕЛЫЙ (дискретное движение)
+      if (utcSecond > 0) {
+        let secondAngle = (utcSecond / 60 * TWO_PI) - (PI / 2);
+        fill(255);
+        arc(centre_x, centre_y, second_size, second_size, -PI / 2, secondAngle, PIE);
       }
-      if (interpolater < 55) interpolater++;
-      final_second_pie = lerp(previous_second_pie, second_pie, Math.pow(interpolater / 55.0, 1.2));
-
-      fill(255);
-      arc(centre_x, centre_y, second_size, second_size, -PI / 2, final_second_pie, PIE);
       fill(40);
       ellipse(centre_x, centre_y, second_inner, second_inner);
 
@@ -165,7 +157,13 @@
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
 
-        if (c.isCZ && czImage && czImage.width > 0) {
+        if (c.isBinance && binanceImage && binanceImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(binanceImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isCZ && czImage && czImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
@@ -213,9 +211,14 @@
     function mousePressed() {
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2 && c.isCZ) {
-          window.open("https://x.com/cz_binance", "_blank");
-          return;
+        if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
+          if (c.isBinance) {
+            window.open("https://x.com/binance", "_blank");
+            return;
+          } else if (c.isCZ) {
+            window.open("https://x.com/cz_binance", "_blank");
+            return;
+          }
         }
       }
       if (isOverContract(mouseX, mouseY)) copyContract();
@@ -227,9 +230,14 @@
         let touchY = touches[0].y;
         for (let i = 0; i < circles.length; i++) {
           let c = circles[i];
-          if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2 && c.isCZ) {
-            window.open("https://x.com/cz_binance", "_blank");
-            return false;
+          if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
+            if (c.isBinance) {
+              window.open("https://x.com/binance", "_blank");
+              return false;
+            } else if (c.isCZ) {
+              window.open("https://x.com/cz_binance", "_blank");
+              return false;
+            }
           }
         }
         if (isOverContract(touchX, touchY)) {
