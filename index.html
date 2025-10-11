@@ -60,6 +60,10 @@
     let aryaImage;     // для круга 5
     let moonDogImage;  // для круга 6
 
+    // Цена BNB
+    let bnbPrice = "—";
+    let lastUpdate = 0;
+
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
       binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
@@ -82,6 +86,25 @@
       centre_x = width / 2;
       centre_y = height / 2;
       generateCircles();
+
+      // Загружаем цену BNB при запуске
+      updateBNBPrice();
+      // Обновляем каждую минуту
+      setInterval(updateBNBPrice, 60000);
+    }
+
+    function updateBNBPrice() {
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd')
+        .then(response => response.json())
+        .then(data => {
+          if (data.binancecoin && data.binancecoin.usd) {
+            bnbPrice = data.binancecoin.usd.toFixed(0); // без десятичных
+          }
+        })
+        .catch(err => {
+          console.error('Не удалось получить цену BNB:', err);
+          bnbPrice = "—";
+        });
     }
 
     function generateCircles() {
@@ -160,6 +183,13 @@
       fill(40);
       ellipse(centre_x, centre_y, second_inner, second_inner);
 
+      // АДРЕС КОНТРАКТА — В ДВЕ СТРОКИ, НАД "TIME BNB", но не перекрывает "TIME"
+      textSize(14 * scale);
+      textAlign(CENTER, CENTER);
+      fill(255);
+      text("0x..........12.10.2025", centre_x, centre_y - 120 * scale);
+      text("UTC-15:00.......4444", centre_x, centre_y - 100 * scale);
+
       // ТЕКСТ "TIME BNB"
       textSize(80 * scale);
       textAlign(CENTER, CENTER);
@@ -168,20 +198,10 @@
       text("TIME", centre_x, centre_y - 40 * scale);
       text("BNB", centre_x, centre_y + 40 * scale);
 
-      // АДРЕС КОНТРАКТА
-      textSize(16 * scale);
+      // ЦЕНА BNB — ПОД "BNB"
+      textSize(40 * scale);
       fill(255);
-      textAlign(CENTER, CENTER);
-      text("0x..........12.10.2025", centre_x, centre_y + 100 * scale);
-      text("UTC-15:00.......4444", centre_x, centre_y + 120 * scale);
-
-      let textW = textWidth("0x..........12.10.2025") * scale;
-      contractArea = {
-        x1: centre_x - textW / 2,
-        y1: centre_y + 100 * scale - 10 * scale,
-        x2: centre_x + textW / 2,
-        y2: centre_y + 120 * scale + 10 * scale
-      };
+      text(bnbPrice + " $", centre_x, centre_y + 90 * scale);
 
       // Отрисовка кругов
       for (let i = 0; i < circles.length; i++) {
@@ -270,7 +290,7 @@
         }
       }
 
-      // НАДПИСЬ "COPY"
+      // НАДПИСЬ "COPY" — под ценой
       if (showCopyMessage) {
         fill(255, 220, 0);
         textSize(24 * scale);
@@ -281,17 +301,25 @@
 
     function addZero(i) { return i < 10 ? "0" + i : i; }
 
-    function isOverContract(x, y) {
-      return x >= contractArea.x1 && x <= contractArea.x2 &&
-             y >= contractArea.y1 && y <= contractArea.y2;
-    }
-
     function mouseMoved() {
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         c.hovered = dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2;
       }
-      if (isOverContract(mouseX, mouseY)) {
+
+      // Курсор над адресом (две строки)
+      let textW1 = textWidth("0x..........12.10.2025") * scale;
+      let textW2 = textWidth("UTC-15:00.......4444") * scale;
+      let maxWidth = Math.max(textW1, textW2);
+      let x1 = centre_x - maxWidth / 2;
+      let y1 = centre_y - 120 * scale - 10 * scale;
+      let x2 = centre_x + maxWidth / 2;
+      let y2 = centre_y - 100 * scale + 10 * scale;
+
+      if (
+        mouseX >= x1 && mouseX <= x2 &&
+        mouseY >= y1 && mouseY <= y2
+      ) {
         document.body.classList.add('bnb-cursor');
       } else {
         document.body.classList.remove('bnb-cursor');
@@ -299,6 +327,24 @@
     }
 
     function mousePressed() {
+      // Проверка клика по адресу (две строки)
+      let textW1 = textWidth("0x..........12.10.2025") * scale;
+      let textW2 = textWidth("UTC-15:00.......4444") * scale;
+      let maxWidth = Math.max(textW1, textW2);
+      let x1 = centre_x - maxWidth / 2;
+      let y1 = centre_y - 120 * scale - 10 * scale;
+      let x2 = centre_x + maxWidth / 2;
+      let y2 = centre_y - 100 * scale + 10 * scale;
+
+      if (
+        mouseX >= x1 && mouseX <= x2 &&
+        mouseY >= y1 && mouseY <= y2
+      ) {
+        copyContract();
+        return;
+      }
+
+      // Клик по кругам
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
@@ -341,13 +387,31 @@
           }
         }
       }
-      if (isOverContract(mouseX, mouseY)) copyContract();
     }
 
     function touchStarted() {
       if (touches.length > 0) {
         let touchX = touches[0].x;
         let touchY = touches[0].y;
+
+        // Касание адреса (две строки)
+        let textW1 = textWidth("0x..........12.10.2025") * scale;
+        let textW2 = textWidth("UTC-15:00.......4444") * scale;
+        let maxWidth = Math.max(textW1, textW2);
+        let x1 = centre_x - maxWidth / 2;
+        let y1 = centre_y - 120 * scale - 10 * scale;
+        let x2 = centre_x + maxWidth / 2;
+        let y2 = centre_y - 100 * scale + 10 * scale;
+
+        if (
+          touchX >= x1 && touchX <= x2 &&
+          touchY >= y1 && touchY <= y2
+        ) {
+          copyContract();
+          return false;
+        }
+
+        // Касание кругов
         for (let i = 0; i < circles.length; i++) {
           let c = circles[i];
           if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
@@ -389,10 +453,6 @@
               return false;
             }
           }
-        }
-        if (isOverContract(touchX, touchY)) {
-          copyContract();
-          return false;
         }
       }
     }
