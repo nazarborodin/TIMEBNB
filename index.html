@@ -55,6 +55,10 @@
     let heyiImage;     // для круга 17
     let wmafiaImage;   // для круга 7
     let orangeImage;   // для круга 8
+    let linBtcImage;   // для круга 3
+    let btcDayuImage;  // для круга 4
+    let aryaImage;     // для круга 5
+    let moonDogImage;  // для круга 6
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
@@ -65,6 +69,10 @@
       heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
       wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
       orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
+      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
+      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
+      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
+      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
     }
 
     function setup() {
@@ -95,10 +103,14 @@
           isBinance: i === 0,   // круг №1
           isBroccoli: i === 29, // круг №30
           isFourMeme: i === 1,  // круг №2
+          isLinBtc: i === 2,    // круг №3
+          isBTCdayu: i === 3,   // круг №4
+          isArya: i === 4,      // круг №5
+          isMoonDog: i === 5,   // круг №6
           isCain: i === 14,     // круг №15
           isHeyi: i === 16,     // круг №17
           isWmafia: i === 6,    // круг №7
-          isOrange: i === 7      // круг №8
+          isOrange: i === 7     // круг №8
         });
       }
     }
@@ -187,6 +199,30 @@
           imageMode(CENTER);
           image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isLinBtc && linBtcImage && linBtcImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(linBtcImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(btcDayuImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isArya && aryaImage && aryaImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(aryaImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isMoonDog && moonDogImage && moonDogImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(moonDogImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
         } else if (c.isCZ && czImage && czImage.width > 0) {
           push();
           translate(c.x, c.y);
@@ -272,6 +308,18 @@
           } else if (c.isFourMeme) {
             window.open("https://x.com/four_meme_", "_blank");
             return;
+          } else if (c.isLinBtc) {
+            window.open("https://x.com/lin_btc", "_blank");
+            return;
+          } else if (c.isBTCdayu) {
+            window.open("https://x.com/BTCdayu", "_blank");
+            return;
+          } else if (c.isArya) {
+            window.open("https://x.com/Arya_web3", "_blank");
+            return;
+          } else if (c.isMoonDog) {
+            window.open("https://x.com/3ethtomoon", "_blank");
+            return;
           } else if (c.isCZ) {
             window.open("https://x.com/cz_binance", "_blank");
             return;
@@ -308,6 +356,18 @@
               return false;
             } else if (c.isFourMeme) {
               window.open("https://x.com/four_meme_", "_blank");
+              return false;
+            } else if (c.isLinBtc) {
+              window.open("https://x.com/lin_btc", "_blank");
+              return false;
+            } else if (c.isBTCdayu) {
+              window.open("https://x.com/BTCdayu", "_blank");
+              return false;
+            } else if (c.isArya) {
+              window.open("https://x.com/Arya_web3", "_blank");
+              return false;
+            } else if (c.isMoonDog) {
+              window.open("https://x.com/3ethtomoon", "_blank");
               return false;
             } else if (c.isCZ) {
               window.open("https://x.com/cz_binance", "_blank");
