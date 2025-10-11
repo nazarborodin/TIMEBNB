@@ -47,12 +47,16 @@
     // Параметры для кругов с цифрами
     let circleSize = 40;
     let circles = [];
-    let czImage;   // для круга 16
-    let binanceImage; // для круга 1
+    let czImage;       // для круга 16
+    let binanceImage;  // для круга 1
+    let broccoliImage; // для круга 30
+    let fourMemeImage; // для круга 2
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
       binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
+      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
+      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
     }
 
     function setup() {
@@ -79,8 +83,10 @@
           y: y,
           num: i + 1,
           hovered: false,
-          isCZ: i === 15,     // круг №16
-          isBinance: i === 0  // круг №1
+          isCZ: i === 15,      // круг №16
+          isBinance: i === 0,   // круг №1
+          isBroccoli: i === 29, // круг №30
+          isFourMeme: i === 1   // круг №2
         });
       }
     }
@@ -163,11 +169,23 @@
           imageMode(CENTER);
           image(binanceImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isFourMeme && fourMemeImage && fourMemeImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
         } else if (c.isCZ && czImage && czImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(czImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
         } else {
           if (c.hovered) fill(255, 255, 0);
@@ -215,8 +233,14 @@
           if (c.isBinance) {
             window.open("https://x.com/binance", "_blank");
             return;
+          } else if (c.isFourMeme) {
+            window.open("https://x.com/four_meme_", "_blank");
+            return;
           } else if (c.isCZ) {
             window.open("https://x.com/cz_binance", "_blank");
+            return;
+          } else if (c.isBroccoli) {
+            window.open("https://x.com/Broccoli__czdog", "_blank");
             return;
           }
         }
@@ -234,8 +258,14 @@
             if (c.isBinance) {
               window.open("https://x.com/binance", "_blank");
               return false;
+            } else if (c.isFourMeme) {
+              window.open("https://x.com/four_meme_", "_blank");
+              return false;
             } else if (c.isCZ) {
               window.open("https://x.com/cz_binance", "_blank");
+              return false;
+            } else if (c.isBroccoli) {
+              window.open("https://x.com/Broccoli__czdog", "_blank");
               return false;
             }
           }
