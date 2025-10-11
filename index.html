@@ -26,7 +26,8 @@
   let aryaImage;     // для круга 5
   let moonDogImage;  // для круга 6
   let zkgoudanImage; // для круга 9
-  let aaScienceImage; // для круга 10 ← НОВОЕ
+  let aaScienceImage; // для круга 10
+  let htrZacImage;   // для круга 11 ← НОВОЕ
 
   // Цена BNB
   let bnbPrice = "—";
@@ -47,6 +48,7 @@
     moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
     zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png"); // ← КРУГ 9
     aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png"); // ← КРУГ 10
+    htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png"); // ← КРУГ 11
   }
 
   function setup() {
@@ -105,7 +107,8 @@
         isWmafia: i === 6,    // круг №7
         isOrange: i === 7,    // круг №8
         isZkgoudan: i === 8,  // круг №9
-        isAAScience: i === 9  // круг №10 ← НОВОЕ
+        isAAScience: i === 9, // круг №10
+        isHtrZac: i === 10    // круг №11 ← НОВОЕ
       });
     }
   }
@@ -263,6 +266,12 @@
         imageMode(CENTER);
         image(aaScienceImage, 0, 0, circleSize * scale, circleSize * scale);
         pop();
+      } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0) {
+        push();
+        translate(c.x, c.y);
+        imageMode(CENTER);
+        image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
+        pop();
       } else {
         if (c.hovered) fill(255, 255, 0);
         else fill(255, 220, 0);
@@ -374,6 +383,9 @@
         } else if (c.isAAScience) {
           window.open("https://x.com/0xAA_Science", "_blank");
           return;
+        } else if (c.isHtrZac) {
+          window.open("https://x.com/HtrZac", "_blank");
+          return;
         }
       }
     }
@@ -446,6 +458,9 @@
             return false;
           } else if (c.isAAScience) {
             window.open("https://x.com/0xAA_Science", "_blank");
+            return false;
+          } else if (c.isHtrZac) {
+            window.open("https://x.com/HtrZac", "_blank");
             return false;
           }
         }
