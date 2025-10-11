@@ -51,12 +51,16 @@
     let binanceImage;  // для круга 1
     let broccoliImage; // для круга 30
     let fourMemeImage; // для круга 2
+    let cainImage;     // для круга 15
+    let heyiImage;     // для круга 17
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
       binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
       broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
       fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
+      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
+      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
     }
 
     function setup() {
@@ -86,7 +90,9 @@
           isCZ: i === 15,      // круг №16
           isBinance: i === 0,   // круг №1
           isBroccoli: i === 29, // круг №30
-          isFourMeme: i === 1   // круг №2
+          isFourMeme: i === 1,  // круг №2
+          isCain: i === 14,     // круг №15
+          isHeyi: i === 16      // круг №17
         });
       }
     }
@@ -187,6 +193,18 @@
           imageMode(CENTER);
           image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isCain && cainImage && cainImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
         } else {
           if (c.hovered) fill(255, 255, 0);
           else fill(255, 220, 0);
@@ -242,6 +260,12 @@
           } else if (c.isBroccoli) {
             window.open("https://x.com/Broccoli__czdog", "_blank");
             return;
+          } else if (c.isCain) {
+            window.open("https://x.com/cain_bnb", "_blank");
+            return;
+          } else if (c.isHeyi) {
+            window.open("https://x.com/heyibinance", "_blank");
+            return;
           }
         }
       }
@@ -266,6 +290,12 @@
               return false;
             } else if (c.isBroccoli) {
               window.open("https://x.com/Broccoli__czdog", "_blank");
+              return false;
+            } else if (c.isCain) {
+              window.open("https://x.com/cain_bnb", "_blank");
+              return false;
+            } else if (c.isHeyi) {
+              window.open("https://x.com/heyibinance", "_blank");
               return false;
             }
           }
