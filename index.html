@@ -53,6 +53,8 @@
     let fourMemeImage; // для круга 2
     let cainImage;     // для круга 15
     let heyiImage;     // для круга 17
+    let wmafiaImage;   // для круга 7
+    let orangeImage;   // для круга 8
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
@@ -61,6 +63,8 @@
       fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
       cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
       heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
+      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
+      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
     }
 
     function setup() {
@@ -92,7 +96,9 @@
           isBroccoli: i === 29, // круг №30
           isFourMeme: i === 1,  // круг №2
           isCain: i === 14,     // круг №15
-          isHeyi: i === 16      // круг №17
+          isHeyi: i === 16,     // круг №17
+          isWmafia: i === 6,    // круг №7
+          isOrange: i === 7      // круг №8
         });
       }
     }
@@ -205,6 +211,18 @@
           imageMode(CENTER);
           image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(wmafiaImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isOrange && orangeImage && orangeImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
         } else {
           if (c.hovered) fill(255, 255, 0);
           else fill(255, 220, 0);
@@ -266,6 +284,12 @@
           } else if (c.isHeyi) {
             window.open("https://x.com/heyibinance", "_blank");
             return;
+          } else if (c.isWmafia) {
+            window.open("https://x.com/Wmafia6", "_blank");
+            return;
+          } else if (c.isOrange) {
+            window.open("https://x.com/cryp_orange", "_blank");
+            return;
           }
         }
       }
@@ -296,6 +320,12 @@
               return false;
             } else if (c.isHeyi) {
               window.open("https://x.com/heyibinance", "_blank");
+              return false;
+            } else if (c.isWmafia) {
+              window.open("https://x.com/Wmafia6", "_blank");
+              return false;
+            } else if (c.isOrange) {
+              window.open("https://x.com/cryp_orange", "_blank");
               return false;
             }
           }
