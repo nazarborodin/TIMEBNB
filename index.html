@@ -1,402 +1,340 @@
-<script>
-  let d = new Date();
-  let hour, minute, second;
-  let centre_x, centre_y;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>TIMEBNB</title>
 
-  let showCopyMessage = false;
-  let copyMessageTimer = 0;
-  const contractAddress = "0x..........12.10.2025UTC-15:00.......4444";
+  <!-- FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
 
-  let scale = 1;
-  let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
-
-  // Параметры для кругов с цифрами
-  let circleSize = 40;
-  let circles = [];
-  let czImage;       // для круга 16
-  let binanceImage;  // для круга 1
-  let broccoliImage; // для круга 30
-  let fourMemeImage; // для круга 2
-  let cainImage;     // для круга 15
-  let heyiImage;     // для круга 17
-  let wmafiaImage;   // для круга 7
-  let orangeImage;   // для круга 8
-  let linBtcImage;   // для круга 3
-  let btcDayuImage;  // для круга 4
-  let aryaImage;     // для круга 5
-  let moonDogImage;  // для круга 6
-  let zkgoudanImage; // для круга 9
-  let aaScienceImage; // для круга 10
-  let htrZacImage;   // для круга 11 ← НОВОЕ
-
-  // Цена BNB
-  let bnbPrice = "—";
-  let lastUpdate = 0;
-
-  function preload() {
-    czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
-    binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
-    broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
-    fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
-    cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
-    heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
-    wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
-    orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
-    linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
-    btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
-    aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
-    moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-    zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png"); // ← КРУГ 9
-    aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png"); // ← КРУГ 10
-    htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png"); // ← КРУГ 11
-  }
-
-  function setup() {
-    resizeCanvasForMobile();
-    background(40);
-    noStroke();
-    centre_x = width / 2;
-    centre_y = height / 2;
-    generateCircles();
-
-    // Загружаем цену BNB при запуске
-    updateBNBPrice();
-    // Обновляем каждую минуту
-    setInterval(updateBNBPrice, 60000);
-  }
-
-  function updateBNBPrice() {
-    fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd')
-      .then(response => response.json())
-      .then(data => {
-        if (data.binancecoin && data.binancecoin.usd) {
-          bnbPrice = data.binancecoin.usd.toFixed(0); // без десятичных
-        }
-      })
-      .catch(err => {
-        console.error('Не удалось получить цену BNB:', err);
-        bnbPrice = "—";
-      });
-  }
-
-  function generateCircles() {
-    circles = [];
-    let totalAngle = TWO_PI;
-    let radius = 350 * scale;
-
-    for (let i = 0; i < 30; i++) {
-      let angle = -PI / 2 + (i / 30) * totalAngle;
-      let x = centre_x + cos(angle) * radius;
-      let y = centre_y + sin(angle) * radius;
-
-      circles.push({
-        x: x,
-        y: y,
-        num: i + 1,
-        hovered: false,
-        isCZ: i === 15,      // круг №16
-        isBinance: i === 0,   // круг №1
-        isBroccoli: i === 29, // круг №30
-        isFourMeme: i === 1,  // круг №2
-        isLinBtc: i === 2,    // круг №3
-        isBTCdayu: i === 3,   // круг №4
-        isArya: i === 4,      // круг №5
-        isMoonDog: i === 5,   // круг №6
-        isCain: i === 14,     // круг №15
-        isHeyi: i === 16,     // круг №17
-        isWmafia: i === 6,    // круг №7
-        isOrange: i === 7,    // круг №8
-        isZkgoudan: i === 8,  // круг №9
-        isAAScience: i === 9, // круг №10
-        isHtrZac: i === 10    // круг №11 ← НОВОЕ
-      });
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #282828;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      touch-action: none;
     }
-  }
-
-  function draw() {
-    background(40);
-    d = new Date();
-
-    let utcHour = d.getUTCHours();
-    let utcMinute = d.getUTCMinutes();
-    let utcSecond = d.getUTCSeconds();
-
-    hour = addZero(utcHour);
-    minute = addZero(utcMinute);
-    second = addZero(utcSecond);
-
-    scale = Math.min(width, height) / 800;
-    generateCircles();
-
-    let hour_size = 620 * scale;
-    let hour_inner = hour_size - 100 * scale;
-    let minute_size = 500 * scale;
-    let minute_inner = minute_size - 80 * scale;
-    let second_size = 400 * scale;
-    let second_inner = second_size - 60 * scale;
-
-    noStroke();
-
-    // ЧАСЫ — ЧЁРНЫЙ
-    fill(0);
-    arc(centre_x, centre_y, hour_size, hour_size, -PI / 2, (utcHour / 12 * TWO_PI) - (PI / 2), PIE);
-    fill(40);
-    ellipse(centre_x, centre_y, hour_inner, hour_inner);
-
-    // МИНУТЫ — ЖЁЛТЫЙ
-    fill(255, 220, 0);
-    arc(centre_x, centre_y, minute_size, minute_size, -PI / 2, (utcMinute / 60 * TWO_PI) - (PI / 2), PIE);
-    fill(40);
-    ellipse(centre_x, centre_y, minute_inner, minute_inner);
-
-    // СЕКУНДЫ — БЕЛЫЙ (дискретное движение)
-    if (utcSecond > 0) {
-      let secondAngle = (utcSecond / 60 * TWO_PI) - (PI / 2);
-      fill(255);
-      arc(centre_x, centre_y, second_size, second_size, -PI / 2, secondAngle, PIE);
+    canvas {
+      display: block;
+      margin: 0 auto;
+      max-width: 100vw;
+      max-height: 100vh;
     }
-    fill(40);
-    ellipse(centre_x, centre_y, second_inner, second_inner);
 
-    // АДРЕС КОНТРАКТА — В ДВЕ СТРОКИ, НАД "TIME BNB", но не перекрывает "TIME"
-    textSize(14 * scale);
-    textAlign(CENTER, CENTER);
-    fill(255);
-    text("0x..........12.10.2025", centre_x, centre_y - 120 * scale);
-    text("UTC-15:00.......4444", centre_x, centre_y - 100 * scale);
+    /* Кастомный курсор ТОЛЬКО на десктопе */
+    @media (hover: hover) and (pointer: fine) {
+      .bnb-cursor {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
+      }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+  <script>
+    let d = new Date();
+    let hour, minute, second;
+    let centre_x, centre_y;
 
-    // ТЕКСТ "TIME BNB"
-    textSize(80 * scale);
-    textAlign(CENTER, CENTER);
-    textStyle(BOLD);
-    fill(255, 220, 0);
-    text("TIME", centre_x, centre_y - 40 * scale);
-    text("BNB", centre_x, centre_y + 40 * scale);
+    let showCopyMessage = false;
+    let copyMessageTimer = 0;
+    const contractAddress = "0x..........12.10.2025UTC-15:00.......4444";
 
-    // ЦЕНА BNB — ПОД "BNB"
-    textSize(40 * scale);
-    fill(255);
-    text(bnbPrice + " $", centre_x, centre_y + 110 * scale);
+    let scale = 1;
+    let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
-    // Отрисовка кругов
-    for (let i = 0; i < circles.length; i++) {
-      let c = circles[i];
+    // Параметры для кругов с цифрами
+    let circleSize = 40;
+    let circles = [];
+    let czImage;       // для круга 16
+    let binanceImage;  // для круга 1
+    let broccoliImage; // для круга 30
+    let fourMemeImage; // для круга 2
+    let cainImage;     // для круга 15
+    let heyiImage;     // для круга 17
+    let wmafiaImage;   // для круга 7
+    let orangeImage;   // для круга 8
+    let linBtcImage;   // для круга 3
+    let btcDayuImage;  // для круга 4
+    let aryaImage;     // для круга 5
+    let moonDogImage;  // для круга 6
+    let zkgoudanImage; // для круга 9
+    let aaScienceImage; // для круга 10
+    let htrZacImage;   // для круга 11
 
-      if (c.isBinance && binanceImage && binanceImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(binanceImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isFourMeme && fourMemeImage && fourMemeImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isLinBtc && linBtcImage && linBtcImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(linBtcImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(btcDayuImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isArya && aryaImage && aryaImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(aryaImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isMoonDog && moonDogImage && moonDogImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(moonDogImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isCZ && czImage && czImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(czImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isCain && cainImage && cainImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(wmafiaImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isOrange && orangeImage && orangeImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isZkgoudan && zkgoudanImage && zkgoudanImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(zkgoudanImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isAAScience && aaScienceImage && aaScienceImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(aaScienceImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0) {
-        push();
-        translate(c.x, c.y);
-        imageMode(CENTER);
-        image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
-        pop();
-      } else {
-        if (c.hovered) fill(255, 255, 0);
-        else fill(255, 220, 0);
-        ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
-        fill(0);
-        textSize(16 * scale);
-        textAlign(CENTER, CENTER);
-        text(c.num, c.x, c.y);
+    // Цена BNB
+    let bnbPrice = "—";
+    let lastUpdate = 0;
+
+    function preload() {
+      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
+      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
+      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
+      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
+      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
+      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
+      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
+      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
+      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
+      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
+      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
+      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
+      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");     // ← КРУГ 9
+      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");   // ← КРУГ 10
+      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");       // ← КРУГ 11
+    }
+
+    function setup() {
+      resizeCanvasForMobile();
+      background(40);
+      noStroke();
+      centre_x = width / 2;
+      centre_y = height / 2;
+      generateCircles();
+
+      // Загружаем цену BNB при запуске
+      updateBNBPrice();
+      // Обновляем каждую минуту
+      setInterval(updateBNBPrice, 60000);
+    }
+
+    function updateBNBPrice() {
+      fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd')
+        .then(response => response.json())
+        .then(data => {
+          if (data.binancecoin && data.binancecoin.usd) {
+            bnbPrice = data.binancecoin.usd.toFixed(0); // без десятичных
+          }
+        })
+        .catch(err => {
+          console.error('Не удалось получить цену BNB:', err);
+          bnbPrice = "—";
+        });
+    }
+
+    function generateCircles() {
+      circles = [];
+      let totalAngle = TWO_PI;
+      let radius = 350 * scale;
+
+      for (let i = 0; i < 30; i++) {
+        let angle = -PI / 2 + (i / 30) * totalAngle;
+        let x = centre_x + cos(angle) * radius;
+        let y = centre_y + sin(angle) * radius;
+
+        circles.push({
+          x: x,
+          y: y,
+          num: i + 1,
+          hovered: false,
+          isCZ: i === 15,      // круг №16
+          isBinance: i === 0,   // круг №1
+          isBroccoli: i === 29, // круг №30
+          isFourMeme: i === 1,  // круг №2
+          isLinBtc: i === 2,    // круг №3
+          isBTCdayu: i === 3,   // круг №4
+          isArya: i === 4,      // круг №5
+          isMoonDog: i === 5,   // круг №6
+          isCain: i === 14,     // круг №15
+          isHeyi: i === 16,     // круг №17
+          isWmafia: i === 6,    // круг №7
+          isOrange: i === 7,    // круг №8
+          isZkgoudan: i === 8,  // круг №9
+          isAAScience: i === 9, // круг №10
+          isHtrZac: i === 10    // круг №11
+        });
       }
     }
 
-    // НАДПИСЬ "COPY" — под ценой
-    if (showCopyMessage) {
+    function draw() {
+      background(40);
+      d = new Date();
+
+      let utcHour = d.getUTCHours();
+      let utcMinute = d.getUTCMinutes();
+      let utcSecond = d.getUTCSeconds();
+
+      hour = addZero(utcHour);
+      minute = addZero(utcMinute);
+      second = addZero(utcSecond);
+
+      scale = Math.min(width, height) / 800;
+      generateCircles();
+
+      let hour_size = 620 * scale;
+      let hour_inner = hour_size - 100 * scale;
+      let minute_size = 500 * scale;
+      let minute_inner = minute_size - 80 * scale;
+      let second_size = 400 * scale;
+      let second_inner = second_size - 60 * scale;
+
+      noStroke();
+
+      // ЧАСЫ — ЧЁРНЫЙ
+      fill(0);
+      arc(centre_x, centre_y, hour_size, hour_size, -PI / 2, (utcHour / 12 * TWO_PI) - (PI / 2), PIE);
+      fill(40);
+      ellipse(centre_x, centre_y, hour_inner, hour_inner);
+
+      // МИНУТЫ — ЖЁЛТЫЙ
       fill(255, 220, 0);
-      textSize(24 * scale);
-      text("COPY", centre_x, centre_y + 160 * scale);
-      if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
-    }
-  }
+      arc(centre_x, centre_y, minute_size, minute_size, -PI / 2, (utcMinute / 60 * TWO_PI) - (PI / 2), PIE);
+      fill(40);
+      ellipse(centre_x, centre_y, minute_inner, minute_inner);
 
-  function addZero(i) { return i < 10 ? "0" + i : i; }
+      // СЕКУНДЫ — БЕЛЫЙ (дискретное движение)
+      if (utcSecond > 0) {
+        let secondAngle = (utcSecond / 60 * TWO_PI) - (PI / 2);
+        fill(255);
+        arc(centre_x, centre_y, second_size, second_size, -PI / 2, secondAngle, PIE);
+      }
+      fill(40);
+      ellipse(centre_x, centre_y, second_inner, second_inner);
 
-  function mouseMoved() {
-    for (let i = 0; i < circles.length; i++) {
-      let c = circles[i];
-      c.hovered = dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2;
-    }
+      // АДРЕС КОНТРАКТА — В ДВЕ СТРОКИ, НАД "TIME BNB", но не перекрывает "TIME"
+      textSize(14 * scale);
+      textAlign(CENTER, CENTER);
+      fill(255);
+      text("0x..........12.10.2025", centre_x, centre_y - 120 * scale);
+      text("UTC-15:00.......4444", centre_x, centre_y - 100 * scale);
 
-    // Курсор над адресом (две строки)
-    let textW1 = textWidth("0x..........12.10.2025") * scale;
-    let textW2 = textWidth("UTC-15:00.......4444") * scale;
-    let maxWidth = Math.max(textW1, textW2);
-    let x1 = centre_x - maxWidth / 2;
-    let y1 = centre_y - 120 * scale - 10 * scale;
-    let x2 = centre_x + maxWidth / 2;
-    let y2 = centre_y - 100 * scale + 10 * scale;
+      // ТЕКСТ "TIME BNB"
+      textSize(80 * scale);
+      textAlign(CENTER, CENTER);
+      textStyle(BOLD);
+      fill(255, 220, 0);
+      text("TIME", centre_x, centre_y - 40 * scale);
+      text("BNB", centre_x, centre_y + 40 * scale);
 
-    if (
-      mouseX >= x1 && mouseX <= x2 &&
-      mouseY >= y1 && mouseY <= y2
-    ) {
-      document.body.classList.add('bnb-cursor');
-    } else {
-      document.body.classList.remove('bnb-cursor');
-    }
-  }
+      // ЦЕНА BNB — ПОД "BNB"
+      textSize(40 * scale);
+      fill(255);
+      text(bnbPrice + " $", centre_x, centre_y + 110 * scale);
 
-  function mousePressed() {
-    // Проверка клика по адресу (две строки)
-    let textW1 = textWidth("0x..........12.10.2025") * scale;
-    let textW2 = textWidth("UTC-15:00.......4444") * scale;
-    let maxWidth = Math.max(textW1, textW2);
-    let x1 = centre_x - maxWidth / 2;
-    let y1 = centre_y - 120 * scale - 10 * scale;
-    let x2 = centre_x + maxWidth / 2;
-    let y2 = centre_y - 100 * scale + 10 * scale;
+      // Отрисовка кругов
+      for (let i = 0; i < circles.length; i++) {
+        let c = circles[i];
 
-    if (
-      mouseX >= x1 && mouseX <= x2 &&
-      mouseY >= y1 && mouseY <= y2
-    ) {
-      copyContract();
-      return;
-    }
-
-    // Клик по кругам
-    for (let i = 0; i < circles.length; i++) {
-      let c = circles[i];
-      if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
-        if (c.isBinance) {
-          window.open("https://x.com/binance", "_blank");
-          return;
-        } else if (c.isFourMeme) {
-          window.open("https://x.com/four_meme_", "_blank");
-          return;
-        } else if (c.isLinBtc) {
-          window.open("https://x.com/lin_btc", "_blank");
-          return;
-        } else if (c.isBTCdayu) {
-          window.open("https://x.com/BTCdayu", "_blank");
-          return;
-        } else if (c.isArya) {
-          window.open("https://x.com/Arya_web3", "_blank");
-          return;
-        } else if (c.isMoonDog) {
-          window.open("https://x.com/3ethtomoon", "_blank");
-          return;
-        } else if (c.isCZ) {
-          window.open("https://x.com/cz_binance", "_blank");
-          return;
-        } else if (c.isBroccoli) {
-          window.open("https://x.com/Broccoli__czdog", "_blank");
-          return;
-        } else if (c.isCain) {
-          window.open("https://x.com/cain_bnb", "_blank");
-          return;
-        } else if (c.isHeyi) {
-          window.open("https://x.com/heyibinance", "_blank");
-          return;
-        } else if (c.isWmafia) {
-          window.open("https://x.com/Wmafia6", "_blank");
-          return;
-        } else if (c.isOrange) {
-          window.open("https://x.com/cryp_orange", "_blank");
-          return;
-        } else if (c.isZkgoudan) {
-          window.open("https://x.com/zkgoudan", "_blank");
-          return;
-        } else if (c.isAAScience) {
-          window.open("https://x.com/0xAA_Science", "_blank");
-          return;
-        } else if (c.isHtrZac) {
-          window.open("https://x.com/HtrZac", "_blank");
-          return;
+        if (c.isBinance && binanceImage && binanceImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(binanceImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isFourMeme && fourMemeImage && fourMemeImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isLinBtc && linBtcImage && linBtcImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(linBtcImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(btcDayuImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isArya && aryaImage && aryaImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(aryaImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isMoonDog && moonDogImage && moonDogImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(moonDogImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isCZ && czImage && czImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(czImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isCain && cainImage && cainImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(wmafiaImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isOrange && orangeImage && orangeImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isZkgoudan && zkgoudanImage && zkgoudanImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(zkgoudanImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isAAScience && aaScienceImage && aaScienceImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(aaScienceImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else {
+          if (c.hovered) fill(255, 255, 0);
+          else fill(255, 220, 0);
+          ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
+          fill(0);
+          textSize(16 * scale);
+          textAlign(CENTER, CENTER);
+          text(c.num, c.x, c.y);
         }
       }
+
+      // НАДПИСЬ "COPY" — под ценой
+      if (showCopyMessage) {
+        fill(255, 220, 0);
+        textSize(24 * scale);
+        text("COPY", centre_x, centre_y + 160 * scale);
+        if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
+      }
     }
-  }
 
-  function touchStarted() {
-    if (touches.length > 0) {
-      let touchX = touches[0].x;
-      let touchY = touches[0].y;
+    function addZero(i) { return i < 10 ? "0" + i : i; }
 
-      // Касание адреса (две строки)
+    function mouseMoved() {
+      for (let i = 0; i < circles.length; i++) {
+        let c = circles[i];
+        c.hovered = dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2;
+      }
+
+      // Курсор над адресом (две строки)
       let textW1 = textWidth("0x..........12.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -406,91 +344,191 @@
       let y2 = centre_y - 100 * scale + 10 * scale;
 
       if (
-        touchX >= x1 && touchX <= x2 &&
-        touchY >= y1 && touchY <= y2
+        mouseX >= x1 && mouseX <= x2 &&
+        mouseY >= y1 && mouseY <= y2
+      ) {
+        document.body.classList.add('bnb-cursor');
+      } else {
+        document.body.classList.remove('bnb-cursor');
+      }
+    }
+
+    function mousePressed() {
+      // Проверка клика по адресу (две строки)
+      let textW1 = textWidth("0x..........12.10.2025") * scale;
+      let textW2 = textWidth("UTC-15:00.......4444") * scale;
+      let maxWidth = Math.max(textW1, textW2);
+      let x1 = centre_x - maxWidth / 2;
+      let y1 = centre_y - 120 * scale - 10 * scale;
+      let x2 = centre_x + maxWidth / 2;
+      let y2 = centre_y - 100 * scale + 10 * scale;
+
+      if (
+        mouseX >= x1 && mouseX <= x2 &&
+        mouseY >= y1 && mouseY <= y2
       ) {
         copyContract();
-        return false;
+        return;
       }
 
-      // Касание кругов
+      // Клик по кругам
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
+        if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
           if (c.isBinance) {
             window.open("https://x.com/binance", "_blank");
-            return false;
+            return;
           } else if (c.isFourMeme) {
             window.open("https://x.com/four_meme_", "_blank");
-            return false;
+            return;
           } else if (c.isLinBtc) {
             window.open("https://x.com/lin_btc", "_blank");
-            return false;
+            return;
           } else if (c.isBTCdayu) {
             window.open("https://x.com/BTCdayu", "_blank");
-            return false;
+            return;
           } else if (c.isArya) {
             window.open("https://x.com/Arya_web3", "_blank");
-            return false;
+            return;
           } else if (c.isMoonDog) {
             window.open("https://x.com/3ethtomoon", "_blank");
-            return false;
+            return;
           } else if (c.isCZ) {
             window.open("https://x.com/cz_binance", "_blank");
-            return false;
+            return;
           } else if (c.isBroccoli) {
             window.open("https://x.com/Broccoli__czdog", "_blank");
-            return false;
+            return;
           } else if (c.isCain) {
             window.open("https://x.com/cain_bnb", "_blank");
-            return false;
+            return;
           } else if (c.isHeyi) {
             window.open("https://x.com/heyibinance", "_blank");
-            return false;
+            return;
           } else if (c.isWmafia) {
             window.open("https://x.com/Wmafia6", "_blank");
-            return false;
+            return;
           } else if (c.isOrange) {
             window.open("https://x.com/cryp_orange", "_blank");
-            return false;
+            return;
           } else if (c.isZkgoudan) {
             window.open("https://x.com/zkgoudan", "_blank");
-            return false;
+            return;
           } else if (c.isAAScience) {
             window.open("https://x.com/0xAA_Science", "_blank");
-            return false;
+            return;
           } else if (c.isHtrZac) {
             window.open("https://x.com/HtrZac", "_blank");
-            return false;
+            return;
           }
         }
       }
     }
-  }
 
-  function copyContract() {
-    navigator.clipboard.writeText(contractAddress).then(() => {
-      showCopyMessage = true;
-      copyMessageTimer = millis();
-    }).catch(err => console.error('Не удалось скопировать:', err));
-  }
+    function touchStarted() {
+      if (touches.length > 0) {
+        let touchX = touches[0].x;
+        let touchY = touches[0].y;
 
-  function resizeCanvasForMobile() {
-    let w = window.innerWidth;
-    let h = window.innerHeight;
-    if (w / h > 4 / 3) w = h * 4 / 3;
-    else h = w * 3 / 4;
-    createCanvas(w, h);
-    centre_x = width / 2;
-    centre_y = height / 2;
-  }
+        // Касание адреса (две строки)
+        let textW1 = textWidth("0x..........12.10.2025") * scale;
+        let textW2 = textWidth("UTC-15:00.......4444") * scale;
+        let maxWidth = Math.max(textW1, textW2);
+        let x1 = centre_x - maxWidth / 2;
+        let y1 = centre_y - 120 * scale - 10 * scale;
+        let x2 = centre_x + maxWidth / 2;
+        let y2 = centre_y - 100 * scale + 10 * scale;
 
-  function windowResized() {
-    resizeCanvasForMobile();
-    centre_x = width / 2;
-    centre_y = height / 2;
-  }
+        if (
+          touchX >= x1 && touchX <= x2 &&
+          touchY >= y1 && touchY <= y2
+        ) {
+          copyContract();
+          return false;
+        }
 
-  window.addEventListener('load', () => resizeCanvasForMobile());
-  window.addEventListener('resize', () => setTimeout(resizeCanvasForMobile, 100));
-</script>
+        // Касание кругов
+        for (let i = 0; i < circles.length; i++) {
+          let c = circles[i];
+          if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
+            if (c.isBinance) {
+              window.open("https://x.com/binance", "_blank");
+              return false;
+            } else if (c.isFourMeme) {
+              window.open("https://x.com/four_meme_", "_blank");
+              return false;
+            } else if (c.isLinBtc) {
+              window.open("https://x.com/lin_btc", "_blank");
+              return false;
+            } else if (c.isBTCdayu) {
+              window.open("https://x.com/BTCdayu", "_blank");
+              return false;
+            } else if (c.isArya) {
+              window.open("https://x.com/Arya_web3", "_blank");
+              return false;
+            } else if (c.isMoonDog) {
+              window.open("https://x.com/3ethtomoon", "_blank");
+              return false;
+            } else if (c.isCZ) {
+              window.open("https://x.com/cz_binance", "_blank");
+              return false;
+            } else if (c.isBroccoli) {
+              window.open("https://x.com/Broccoli__czdog", "_blank");
+              return false;
+            } else if (c.isCain) {
+              window.open("https://x.com/cain_bnb", "_blank");
+              return false;
+            } else if (c.isHeyi) {
+              window.open("https://x.com/heyibinance", "_blank");
+              return false;
+            } else if (c.isWmafia) {
+              window.open("https://x.com/Wmafia6", "_blank");
+              return false;
+            } else if (c.isOrange) {
+              window.open("https://x.com/cryp_orange", "_blank");
+              return false;
+            } else if (c.isZkgoudan) {
+              window.open("https://x.com/zkgoudan", "_blank");
+              return false;
+            } else if (c.isAAScience) {
+              window.open("https://x.com/0xAA_Science", "_blank");
+              return false;
+            } else if (c.isHtrZac) {
+              window.open("https://x.com/HtrZac", "_blank");
+              return false;
+            }
+          }
+        }
+      }
+    }
+
+    function copyContract() {
+      navigator.clipboard.writeText(contractAddress).then(() => {
+        showCopyMessage = true;
+        copyMessageTimer = millis();
+      }).catch(err => console.error('Не удалось скопировать:', err));
+    }
+
+    function resizeCanvasForMobile() {
+      let w = window.innerWidth;
+      let h = window.innerHeight;
+      if (w / h > 4 / 3) w = h * 4 / 3;
+      else h = w * 3 / 4;
+      createCanvas(w, h);
+      centre_x = width / 2;
+      centre_y = height / 2;
+    }
+
+    function windowResized() {
+      resizeCanvasForMobile();
+      centre_x = width / 2;
+      centre_y = height / 2;
+    }
+
+    window.addEventListener('load', () => resizeCanvasForMobile());
+    window.addEventListener('resize', () => setTimeout(resizeCanvasForMobile, 100));
+  </script>
+</head>
+<body>
+</body>
+</html>
