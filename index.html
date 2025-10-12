@@ -72,7 +72,11 @@
     // Для кастомного X
     let showCustomX = false;
     let xCursorX, xCursorY;
-    let clickTimer = 0; // ← НОВОЕ: таймер для скрытия X после клика
+    let clickTimer = 0;
+
+    // Для отслеживания позиции мыши при возврате
+    let lastMouseX = 0;
+    let lastMouseY = 0;
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
@@ -385,10 +389,11 @@
 
     function addZero(i) { return i < 10 ? "0" + i : i; }
 
-    function mouseMoved() {
+    // Проверка наведения вручную
+    function checkHover(x, y) {
       showCustomX = false;
 
-      // Проверка наведения на контракт
+      // Проверка на контракт
       let textW1 = textWidth("0x..........12.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -397,16 +402,13 @@
       let x2 = centre_x + maxWidth / 2;
       let y2 = centre_y - 100 * scale + 10 * scale;
 
-      if (
-        mouseX >= x1 && mouseX <= x2 &&
-        mouseY >= y1 && mouseY <= y2
-      ) {
+      if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
         document.body.classList.add('contract-area');
       } else {
         document.body.classList.remove('contract-area');
       }
 
-      // Проверка наведения на круги с изображениями
+      // Проверка на круги с изображениями
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (
@@ -416,14 +418,20 @@
           c.isZkgoudan || c.isAAScience || c.isHtrZac ||
           c.isHuaHua || c.isMirro || c.isHuang || c.isBroLeon
         ) {
-          if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
+          if (dist(x, y, c.x, c.y) < (circleSize * scale) / 2) {
             showCustomX = true;
-            xCursorX = mouseX;
-            xCursorY = mouseY;
+            xCursorX = x;
+            xCursorY = y;
             break;
           }
         }
       }
+    }
+
+    function mouseMoved() {
+      lastMouseX = mouseX;
+      lastMouseY = mouseY;
+      checkHover(mouseX, mouseY);
     }
 
     function mousePressed() {
@@ -698,8 +706,20 @@
       centre_y = height / 2;
     }
 
-    window.addEventListener('load', () => resizeCanvasForMobile());
-    window.addEventListener('resize', () => setTimeout(resizeCanvasForMobile, 100));
+    window.addEventListener('load', () => {
+      resizeCanvasForMobile();
+    });
+
+    window.addEventListener('resize', () => {
+      setTimeout(resizeCanvasForMobile, 100);
+    });
+
+    // При возврате на вкладку — проверяем позицию курсора
+    window.addEventListener('focus', () => {
+      setTimeout(() => {
+        checkHover(lastMouseX, lastMouseY);
+      }, 50);
+    });
   </script>
 </head>
 <body>
