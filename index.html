@@ -58,14 +58,19 @@
     let aryaImage;     // 5
     let moonDogImage;  // 6 ← не используется
     let zkgoudanImage; // 9 ← не используется
-    let aaScienceImage; // 10 ← заменено на 903.png
+    let aaScienceImage; // 10
     let htrZacImage;   // 11
     let huaHuaImage;   // 12
     let mirroImage;    // 13
     let huangImage;    // 14
     let broLeonImage;  // 24 ← не используется
 
-    // НОВЫЕ ИЗОБРАЖЕНИЯ
+    // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
+    let img3Image; // 3
+    let img6Image; // 6
+    let img9Image; // 9
+
+    // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
     let img901Image; // 28
     let img902Image; // 19
     let img903Image; // 10
@@ -100,7 +105,12 @@
       huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");
       broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png");
 
-      // НОВЫЕ ИЗОБРАЖЕНИЯ
+      // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
+      img3Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
+      img6Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
+      img9Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");
+
+      // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
       img901Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png");
       img902Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png");
       img903Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png");
@@ -142,17 +152,8 @@
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
 
-        // Специальные позиции для 3, 6, 9 — как на скриншоте
-        if (i === 2) { // номер 3 — справа
-          x = centre_x + radius;
-          y = centre_y;
-        } else if (i === 5) { // номер 6 — внизу
-          x = centre_x;
-          y = centre_y + radius;
-        } else if (i === 8) { // номер 9 — слева
-          x = centre_x - radius;
-          y = centre_y;
-        }
+        // ❌ УБРАЛИ СПЕЦИАЛЬНЫЕ ПОЗИЦИИ — 3, 6, 9 теперь по кругу
+        // if (i === 2) { ... } — убрано
 
         circles.push({
           x: x,
@@ -161,14 +162,14 @@
           hovered: false,
           isBinance: i === 0,     // 1
           isFourMeme: i === 1,    // 2
-          // isLinBtc: i === 2,   // ❌ УБРАЛИ — 3 — просто цифра
+          isImg3: i === 2,        // 3 → 3.png
           isBTCdayu: i === 3,     // 4
           isArya: i === 4,        // 5
-          // isMoonDog: i === 5,  // ❌ УБРАЛИ — 6 — просто цифра
+          isImg6: i === 5,        // 6 → 6.png
           isWmafia: i === 6,      // 7
           isOrange: i === 7,      // 8
-          // isZkgoudan: i === 8, // ❌ УБРАЛИ — 9 — просто цифра
-          isAAScience: i === 9,   // 10 → заменяем на img903Image
+          isImg9: i === 8,        // 9 → 9.png
+          isImg903: i === 9,      // 10 → 903.png
           isHtrZac: i === 10,     // 11
           isHuaHua: i === 11,     // 12
           isMirro: i === 12,      // 13
@@ -177,12 +178,9 @@
           isCZ: i === 15,         // 16
           isHeyi: i === 16,       // 17
           // 18–23: без изображений (кроме 19)
+          isImg902: i === 18,     // 19 → 902.png
           // isBroLeon: i === 23, // ❌ УБРАЛИ — 24 — нет на скриншоте
           isBroccoli: i === 29,   // 30
-
-          // 👇 НОВЫЕ ФЛАГИ:
-          isImg903: i === 9,      // 10 → 903.png
-          isImg902: i === 18,     // 19 → 902.png
           isImg901: i === 27,     // 28 → 901.png
         });
       }
@@ -257,8 +255,29 @@
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
 
-        // НОВЫЕ ИЗОБРАЖЕНИЯ
-        if (c.isImg903 && img903Image && img903Image.width > 0) {
+        // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
+        if (c.isImg3 && img3Image && img3Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img3Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isImg6 && img6Image && img6Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img6Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isImg9 && img9Image && img9Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img9Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        }
+
+        // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
+        else if (c.isImg903 && img903Image && img903Image.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
@@ -363,15 +382,6 @@
           imageMode(CENTER);
           image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isLinBtc || c.isMoonDog || c.isZkgoudan) {
-          // ❌ Убираем изображения для 3, 6, 9 — рисуем цифры
-          if (c.hovered) fill(255, 255, 0);
-          else fill(255, 220, 0);
-          ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
-          fill(0);
-          textSize(16 * scale);
-          textAlign(CENTER, CENTER);
-          text(c.num, c.x, c.y);
         } else {
           // Все остальные — цифры
           if (c.hovered) fill(255, 255, 0);
@@ -445,7 +455,8 @@
           c.isHtrZac || c.isHuaHua || c.isMirro ||
           c.isHuang || c.isCain || c.isCZ ||
           c.isHeyi || c.isBroccoli ||
-          c.isImg901 || c.isImg902 || c.isImg903 // 👈 Новые изображения
+          c.isImg3 || c.isImg6 || c.isImg9 ||
+          c.isImg901 || c.isImg902 || c.isImg903
         ) {
           if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
             showCustomX = true;
@@ -549,8 +560,26 @@
             clickTimer = millis();
             showCustomX = false;
             return;
+          } else if (c.isImg3) {
+            // ❓ Что делать при клике на 3?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg6) {
+            // ❓ Что делать при клике на 6?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg9) {
+            // ❓ Что делать при клике на 9?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
           } else if (c.isImg901) {
-            // ❓ Что делать при клике на 28? Оставим без действия или добавь ссылку
+            // ❓ Что делать при клике на 28?
             // window.open("...", "_blank");
             clickTimer = millis();
             showCustomX = false;
@@ -665,6 +694,18 @@
               return false;
             } else if (c.isBroccoli) {
               window.open("https://x.com/Broccoli__czdog", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg3) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg6) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg9) {
               clickTimer = millis();
               showCustomX = false;
               return false;
