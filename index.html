@@ -29,7 +29,7 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js "></script>
   <script>
     let d = new Date();
     let hour, minute, second;
@@ -65,6 +65,16 @@
     let huangImage;    // 14
     let broLeonImage;  // 24 ← не используется
 
+    // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
+    let img3Image; // 3
+    let img6Image; // 6
+    let img9Image; // 9
+
+    // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
+    let img901Image; // 28
+    let img902Image; // 19
+    let img903Image; // 10
+
     // Цена BNB
     let bnbPrice = "—";
     let lastUpdate = 0;
@@ -75,25 +85,35 @@
     let clickTimer = 0;
 
     function preload() {
-      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
-      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
-      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
-      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
-      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
-      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
-      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
-      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
-      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
-      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
-      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
-      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");
-      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");
-      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");
-      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png");
-      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");
-      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");
-      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png");
+      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png ");
+      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png ");
+      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png ");
+      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png ");
+      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png ");
+      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png ");
+      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png ");
+      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png ");
+      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png ");
+      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png ");
+      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png ");
+      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png ");
+      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png ");
+      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png ");
+      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png ");
+      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png ");
+      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png ");
+      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png ");
+      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png ");
+
+      // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
+      img3Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png ");
+      img6Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png ");
+      img9Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png ");
+
+      // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
+      img901Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png ");
+      img902Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png ");
+      img903Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png ");
     }
 
     function setup() {
@@ -132,17 +152,8 @@
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
 
-        // Специальные позиции для 3, 6, 9 — как на скриншоте
-        if (i === 2) { // номер 3 — справа
-          x = centre_x + radius;
-          y = centre_y;
-        } else if (i === 5) { // номер 6 — внизу
-          x = centre_x;
-          y = centre_y + radius;
-        } else if (i === 8) { // номер 9 — слева
-          x = centre_x - radius;
-          y = centre_y;
-        }
+        // ❌ УБРАЛИ СПЕЦИАЛЬНЫЕ ПОЗИЦИИ — 3, 6, 9 теперь по кругу
+        // if (i === 2) { ... } — убрано
 
         circles.push({
           x: x,
@@ -151,14 +162,14 @@
           hovered: false,
           isBinance: i === 0,     // 1
           isFourMeme: i === 1,    // 2
-          // isLinBtc: i === 2,   // ❌ УБРАЛИ — 3 — просто цифра
+          isImg3: i === 2,        // 3 → 3.png
           isBTCdayu: i === 3,     // 4
           isArya: i === 4,        // 5
-          // isMoonDog: i === 5,  // ❌ УБРАЛИ — 6 — просто цифра
+          isImg6: i === 5,        // 6 → 6.png
           isWmafia: i === 6,      // 7
           isOrange: i === 7,      // 8
-          // isZkgoudan: i === 8, // ❌ УБРАЛИ — 9 — просто цифра
-          isAAScience: i === 9,   // 10
+          isImg9: i === 8,        // 9 → 9.png
+          isImg903: i === 9,      // 10 → 903.png
           isHtrZac: i === 10,     // 11
           isHuaHua: i === 11,     // 12
           isMirro: i === 12,      // 13
@@ -166,10 +177,11 @@
           isCain: i === 14,       // 15
           isCZ: i === 15,         // 16
           isHeyi: i === 16,       // 17
-          // 18–23: без изображений (на скриншоте есть аватарки — но их нет в списке, поэтому оставим как цифры)
+          // 18–23: без изображений (кроме 19)
+          isImg902: i === 18,     // 19 → 902.png
           // isBroLeon: i === 23, // ❌ УБРАЛИ — 24 — нет на скриншоте
           isBroccoli: i === 29,   // 30
-          // 31–36: есть изображения на скриншоте → оставляем
+          isImg901: i === 27,     // 28 → 901.png
         });
       }
     }
@@ -243,7 +255,50 @@
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
 
-        if (c.isBinance && binanceImage && binanceImage.width > 0) {
+        // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
+        if (c.isImg3 && img3Image && img3Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img3Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isImg6 && img6Image && img6Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img6Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isImg9 && img9Image && img9Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img9Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        }
+
+        // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
+        else if (c.isImg903 && img903Image && img903Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img903Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isImg902 && img902Image && img902Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img902Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isImg901 && img901Image && img901Image.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(img901Image, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        }
+
+        // ОСТАЛЬНЫЕ ИЗОБРАЖЕНИЯ
+        else if (c.isBinance && binanceImage && binanceImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
@@ -278,12 +333,6 @@
           translate(c.x, c.y);
           imageMode(CENTER);
           image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isAAScience && aaScienceImage && aaScienceImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(aaScienceImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
         } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0) {
           push();
@@ -333,15 +382,6 @@
           imageMode(CENTER);
           image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isLinBtc || c.isMoonDog || c.isZkgoudan) {
-          // ❌ Убираем изображения для 3, 6, 9 — рисуем цифры
-          if (c.hovered) fill(255, 255, 0);
-          else fill(255, 220, 0);
-          ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
-          fill(0);
-          textSize(16 * scale);
-          textAlign(CENTER, CENTER);
-          text(c.num, c.x, c.y);
         } else {
           // Все остальные — цифры
           if (c.hovered) fill(255, 255, 0);
@@ -412,9 +452,11 @@
         if (
           c.isBinance || c.isFourMeme || c.isBTCdayu ||
           c.isArya || c.isWmafia || c.isOrange ||
-          c.isAAScience || c.isHtrZac || c.isHuaHua ||
-          c.isMirro || c.isHuang || c.isCain ||
-          c.isCZ || c.isHeyi || c.isBroccoli
+          c.isHtrZac || c.isHuaHua || c.isMirro ||
+          c.isHuang || c.isCain || c.isCZ ||
+          c.isHeyi || c.isBroccoli ||
+          c.isImg3 || c.isImg6 || c.isImg9 ||
+          c.isImg901 || c.isImg902 || c.isImg903
         ) {
           if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
             showCustomX = true;
@@ -449,77 +491,108 @@
         let c = circles[i];
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
           if (c.isBinance) {
-            window.open("https://x.com/binance", "_blank");
+            window.open(" https://x.com/binance ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isFourMeme) {
-            window.open("https://x.com/four_meme_", "_blank");
+            window.open("https://x.com/four_meme_ ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isBTCdayu) {
-            window.open("https://x.com/BTCdayu", "_blank");
+            window.open("https://x.com/BTCdayu ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isArya) {
-            window.open("https://x.com/Arya_web3", "_blank");
+            window.open("https://x.com/Arya_web3 ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isWmafia) {
-            window.open("https://x.com/Wmafia6", "_blank");
+            window.open("https://x.com/Wmafia6 ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isOrange) {
-            window.open("https://x.com/cryp_orange", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isAAScience) {
-            window.open("https://x.com/0xAA_Science", "_blank");
+            window.open("https://x.com/cryp_orange ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isHtrZac) {
-            window.open("https://x.com/HtrZac", "_blank");
+            window.open("https://x.com/HtrZac ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isHuaHua) {
-            window.open("https://x.com/huahuayjy", "_blank");
+            window.open("https://x.com/huahuayjy ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isMirro) {
-            window.open("https://x.com/Mirro7777", "_blank");
+            window.open("https://x.com/Mirro7777 ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isHuang) {
-            window.open("https://x.com/Huang2024", "_blank");
+            window.open("https://x.com/Huang2024 ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isCain) {
-            window.open("https://x.com/cain_bnb", "_blank");
+            window.open("https://x.com/cain_bnb ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isCZ) {
-            window.open("https://x.com/cz_binance", "_blank");
+            window.open("https://x.com/cz_binance ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isHeyi) {
-            window.open("https://x.com/heyibinance", "_blank");
+            window.open("https://x.com/heyibinance ", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
           } else if (c.isBroccoli) {
-            window.open("https://x.com/Broccoli__czdog", "_blank");
+            window.open("https://x.com/Broccoli__czdog ", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg3) {
+            // ❓ Что делать при клике на 3?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg6) {
+            // ❓ Что делать при клике на 6?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg9) {
+            // ❓ Что делать при клике на 9?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg901) {
+            // ❓ Что делать при клике на 28?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg902) {
+            // ❓ Что делать при клике на 19?
+            // window.open("...", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isImg903) {
+            // ❓ Что делать при клике на 10?
+            // window.open("...", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
@@ -555,77 +628,96 @@
           let c = circles[i];
           if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
             if (c.isBinance) {
-              window.open("https://x.com/binance", "_blank");
+              window.open("https://x.com/binance ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isFourMeme) {
-              window.open("https://x.com/four_meme_", "_blank");
+              window.open("https://x.com/four_meme_ ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isBTCdayu) {
-              window.open("https://x.com/BTCdayu", "_blank");
+              window.open("https://x.com/BTCdayu ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isArya) {
-              window.open("https://x.com/Arya_web3", "_blank");
+              window.open("https://x.com/Arya_web3 ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isWmafia) {
-              window.open("https://x.com/Wmafia6", "_blank");
+              window.open("https://x.com/Wmafia6 ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isOrange) {
-              window.open("https://x.com/cryp_orange", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isAAScience) {
-              window.open("https://x.com/0xAA_Science", "_blank");
+              window.open("https://x.com/cryp_orange ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isHtrZac) {
-              window.open("https://x.com/HtrZac", "_blank");
+              window.open("https://x.com/HtrZac ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isHuaHua) {
-              window.open("https://x.com/huahuayjy", "_blank");
+              window.open("https://x.com/huahuayjy ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isMirro) {
-              window.open("https://x.com/Mirro7777", "_blank");
+              window.open("https://x.com/Mirro7777 ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isHuang) {
-              window.open("https://x.com/Huang2024", "_blank");
+              window.open("https://x.com/Huang2024 ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isCain) {
-              window.open("https://x.com/cain_bnb", "_blank");
+              window.open("https://x.com/cain_bnb ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isCZ) {
-              window.open("https://x.com/cz_binance", "_blank");
+              window.open("https://x.com/cz_binance ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isHeyi) {
-              window.open("https://x.com/heyibinance", "_blank");
+              window.open("https://x.com/heyibinance ", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
             } else if (c.isBroccoli) {
-              window.open("https://x.com/Broccoli__czdog", "_blank");
+              window.open("https://x.com/Broccoli__czdog ", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg3) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg6) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg9) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg901) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg902) {
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isImg903) {
               clickTimer = millis();
               showCustomX = false;
               return false;
