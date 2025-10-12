@@ -89,35 +89,50 @@
     let clickTimer = 0;
 
     function preload() {
-      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
-      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
-      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
-      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
-      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
-      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
-      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
-      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
-      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
-      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
-      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
-      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");
-      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");
-      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");
-      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png");
-      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");
-      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");
-      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png");
+      // Загружаем изображения с обработкой ошибок
+      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png", null, imgError);
+      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png", null, imgError);
+      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png", null, imgError);
+      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png", null, imgError);
+      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png", null, imgError);
+      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png", null, imgError);
+      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png", null, imgError);
+      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png", null, imgError);
+      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png", null, imgError);
+      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png", null, imgError);
+      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png", null, imgError);
+      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png", null, imgError);
+      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png", null, imgError);
+      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png", null, imgError);
+      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png", null, imgError);
+      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png", null, imgError);
+      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png", null, imgError);
+      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png", null, imgError);
+      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png", null, imgError);
 
       // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
-      img3Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
-      img6Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-      img9Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");
+      img3Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png", null, imgError);
+      img6Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png", null, imgError);
+      img9Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png", null, imgError);
 
       // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
-      img901Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png");
-      img902Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png");
-      img903Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png");
+      img901Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png", null, imgError);
+      img902Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png", null, imgError);
+      img903Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png", null, imgError);
+
+      // Добавляем флаг failed
+      img3Image.failed = false;
+      img6Image.failed = false;
+      img9Image.failed = false;
+      img901Image.failed = false;
+      img902Image.failed = false;
+      img903Image.failed = false;
+    }
+
+    // Функция обработки ошибок загрузки изображений
+    function imgError(img) {
+      console.error('Не удалось загрузить изображение:', img);
+      img.failed = true;
     }
 
     function setup() {
@@ -264,19 +279,19 @@
         let c = circles[i];
 
         // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
-        if (c.isImg3 && img3Image && img3Image.width > 0) {
+        if (c.isImg3 && img3Image && img3Image.width > 0 && !img3Image.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(img3Image, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isImg6 && img6Image && img6Image.width > 0) {
+        } else if (c.isImg6 && img6Image && img6Image.width > 0 && !img6Image.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(img6Image, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isImg9 && img9Image && img9Image.width > 0) {
+        } else if (c.isImg9 && img9Image && img9Image.width > 0 && !img9Image.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
@@ -285,19 +300,19 @@
         }
 
         // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
-        else if (c.isImg903 && img903Image && img903Image.width > 0) {
+        else if (c.isImg903 && img903Image && img903Image.width > 0 && !img903Image.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(img903Image, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isImg902 && img902Image && img902Image.width > 0) {
+        } else if (c.isImg902 && img902Image && img902Image.width > 0 && !img902Image.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(img902Image, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isImg901 && img901Image && img901Image.width > 0) {
+        } else if (c.isImg901 && img901Image && img901Image.width > 0 && !img901Image.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
@@ -306,85 +321,85 @@
         }
 
         // ОСТАЛЬНЫЕ ИЗОБРАЖЕНИЯ
-        else if (c.isBinance && binanceImage && binanceImage.width > 0) {
+        else if (c.isBinance && binanceImage && binanceImage.width > 0 && !binanceImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(binanceImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isFourMeme && fourMemeImage && fourMemeImage.width > 0) {
+        } else if (c.isFourMeme && fourMemeImage && fourMemeImage.width > 0 && !fourMemeImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0) {
+        } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0 && !btcDayuImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(btcDayuImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isArya && aryaImage && aryaImage.width > 0) {
+        } else if (c.isArya && aryaImage && aryaImage.width > 0 && !aryaImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(aryaImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0) {
+        } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0 && !wmafiaImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(wmafiaImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isOrange && orangeImage && orangeImage.width > 0) {
+        } else if (c.isOrange && orangeImage && orangeImage.width > 0 && !orangeImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0) {
+        } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0 && !htrZacImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isHuaHua && huaHuaImage && huaHuaImage.width > 0) {
+        } else if (c.isHuaHua && huaHuaImage && huaHuaImage.width > 0 && !huaHuaImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(huaHuaImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isMirro && mirroImage && mirroImage.width > 0) {
+        } else if (c.isMirro && mirroImage && mirroImage.width > 0 && !mirroImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(mirroImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isHuang && huangImage && huangImage.width > 0) {
+        } else if (c.isHuang && huangImage && huangImage.width > 0 && !huangImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(huangImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isCain && cainImage && cainImage.width > 0) {
+        } else if (c.isCain && cainImage && cainImage.width > 0 && !cainImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isCZ && czImage && czImage.width > 0) {
+        } else if (c.isCZ && czImage && czImage.width > 0 && !czImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(czImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
+        } else if (c.isHeyi && heyiImage && heyiImage.width > 0 && !heyiImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
+        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0 && !broccoliImage.failed) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
