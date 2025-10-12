@@ -22,13 +22,7 @@
       margin: 0 auto;
       max-width: 100vw;
       max-height: 100vh;
-    }
-
-    /* Кастомный курсор ТОЛЬКО на десктопе */
-    @media (hover: hover) and (pointer: fine) {
-      .bnb-cursor {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
-      }
+      cursor: none; /* Скрываем системный курсор */
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -62,14 +56,18 @@
     let zkgoudanImage; // 9
     let aaScienceImage; // 10
     let htrZacImage;   // 11
-    let huaHuaImage;   // 12 ← НОВОЕ
-    let mirroImage;    // 13 ← НОВОЕ
-    let huangImage;    // 14 ← НОВОЕ
-    let broLeonImage;  // 24 ← НОВОЕ
+    let huaHuaImage;   // 12
+    let mirroImage;    // 13
+    let huangImage;    // 14
+    let broLeonImage;  // 24
 
     // Цена BNB
     let bnbPrice = "—";
     let lastUpdate = 0;
+
+    // Для кастомного X
+    let showCustomX = false;
+    let xCursorX, xCursorY;
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
@@ -87,10 +85,10 @@
       zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");
       aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");
       htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");
-      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png"); // ← 12
-      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");  // ← 13
-      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");  // ← 14
-      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png"); // ← 24
+      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png");
+      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");
+      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");
+      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png");
     }
 
     function setup() {
@@ -149,10 +147,10 @@
           isZkgoudan: i === 8,  // 9
           isAAScience: i === 9, // 10
           isHtrZac: i === 10,   // 11
-          isHuaHua: i === 11,   // 12 ← НОВОЕ
-          isMirro: i === 12,    // 13 ← НОВОЕ
-          isHuang: i === 13,    // 14 ← НОВОЕ
-          isBroLeon: i === 23   // 24 ← НОВОЕ
+          isHuaHua: i === 11,   // 12
+          isMirro: i === 12,    // 13
+          isHuang: i === 13,    // 14
+          isBroLeon: i === 23   // 24
         });
       }
     }
@@ -316,25 +314,25 @@
           imageMode(CENTER);
           image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isHuaHua && huaHuaImage && huaHuaImage.width > 0) { // ← 12
+        } else if (c.isHuaHua && huaHuaImage && huaHuaImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(huaHuaImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isMirro && mirroImage && mirroImage.width > 0) { // ← 13
+        } else if (c.isMirro && mirroImage && mirroImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(mirroImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isHuang && huangImage && huangImage.width > 0) { // ← 14
+        } else if (c.isHuang && huangImage && huangImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(huangImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isBroLeon && broLeonImage && broLeonImage.width > 0) { // ← 24
+        } else if (c.isBroLeon && broLeonImage && broLeonImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
@@ -358,17 +356,46 @@
         text("COPY", centre_x, centre_y + 160 * scale);
         if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
       }
+
+      // Кастомный "X" при наведении на круги с изображениями
+      if (showCustomX) {
+        push();
+        noStroke();
+        fill(255, 220, 0); // жёлтый фон
+        ellipse(xCursorX, xCursorY, 30 * scale, 30 * scale);
+        fill(255); // белый текст
+        textAlign(CENTER, CENTER);
+        textStyle(BOLD);
+        textSize(24 * scale);
+        text("X", xCursorX, xCursorY);
+        pop();
+      }
     }
 
     function addZero(i) { return i < 10 ? "0" + i : i; }
 
     function mouseMoved() {
+      showCustomX = false;
+
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        c.hovered = dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2;
+        if (
+          c.isBinance || c.isFourMeme || c.isLinBtc || c.isBTCdayu ||
+          c.isArya || c.isMoonDog || c.isCZ || c.isBroccoli ||
+          c.isCain || c.isHeyi || c.isWmafia || c.isOrange ||
+          c.isZkgoudan || c.isAAScience || c.isHtrZac ||
+          c.isHuaHua || c.isMirro || c.isHuang || c.isBroLeon
+        ) {
+          if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
+            showCustomX = true;
+            xCursorX = mouseX;
+            xCursorY = mouseY;
+            break;
+          }
+        }
       }
 
-      // Курсор над адресом
+      // Не показываем X над адресом контракта
       let textW1 = textWidth("0x..........12.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -377,13 +404,8 @@
       let x2 = centre_x + maxWidth / 2;
       let y2 = centre_y - 100 * scale + 10 * scale;
 
-      if (
-        mouseX >= x1 && mouseX <= x2 &&
-        mouseY >= y1 && mouseY <= y2
-      ) {
-        document.body.classList.add('bnb-cursor');
-      } else {
-        document.body.classList.remove('bnb-cursor');
+      if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
+        showCustomX = false;
       }
     }
 
@@ -454,16 +476,16 @@
           } else if (c.isHtrZac) {
             window.open("https://x.com/HtrZac", "_blank");
             return;
-          } else if (c.isHuaHua) { // ← 12
+          } else if (c.isHuaHua) {
             window.open("https://x.com/huahuayjy", "_blank");
             return;
-          } else if (c.isMirro) { // ← 13
+          } else if (c.isMirro) {
             window.open("https://x.com/Mirro7777", "_blank");
             return;
-          } else if (c.isHuang) { // ← 14
+          } else if (c.isHuang) {
             window.open("https://x.com/Huang2024", "_blank");
             return;
-          } else if (c.isBroLeon) { // ← 24
+          } else if (c.isBroLeon) {
             window.open("https://x.com/BroLeonAus", "_blank");
             return;
           }
@@ -542,16 +564,16 @@
             } else if (c.isHtrZac) {
               window.open("https://x.com/HtrZac", "_blank");
               return false;
-            } else if (c.isHuaHua) { // ← 12
+            } else if (c.isHuaHua) {
               window.open("https://x.com/huahuayjy", "_blank");
               return false;
-            } else if (c.isMirro) { // ← 13
+            } else if (c.isMirro) {
               window.open("https://x.com/Mirro7777", "_blank");
               return false;
-            } else if (c.isHuang) { // ← 14
+            } else if (c.isHuang) {
               window.open("https://x.com/Huang2024", "_blank");
               return false;
-            } else if (c.isBroLeon) { // ← 24
+            } else if (c.isBroLeon) {
               window.open("https://x.com/BroLeonAus", "_blank");
               return false;
             }
