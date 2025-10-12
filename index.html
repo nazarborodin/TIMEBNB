@@ -57,7 +57,7 @@
       7: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png",
       8: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png",
       9: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png",   // ✅ КРУГ 9
-      10: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png",
+      10: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png", // ❌ Не кликабельный
       11: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png",
       12: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png",
       13: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png",
@@ -66,8 +66,8 @@
       16: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png",
       17: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png",
       18: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/18.png", // ✅ КРУГ 18
-      19: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png",
-      28: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png",
+      19: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png", // ❌ Не кликабельный
+      28: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png", // ❌ Не кликабельный
       30: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png"
     };
 
@@ -126,12 +126,20 @@
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
 
+        let num = i + 1;
+        let hasImage = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,28,30].includes(num);
+        
+        // Круги 3,6,9,18 — кликабельны и показывают X
+        // Круги 10,19,28 — НЕ кликабельны и НЕ показывают X
+        let clickableImage = [3,6,9,18].includes(num);
+
         circles.push({
           x: x,
           y: y,
-          num: i + 1,
+          num: num,
           hovered: false,
-          hasImage: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,28,30].includes(i+1)
+          hasImage: hasImage,
+          clickableImage: clickableImage
         });
       }
     }
@@ -276,10 +284,10 @@
         document.body.classList.remove('contract-area');
       }
 
-      // Проверка наведения на круги с изображениями
+      // Проверка наведения на КЛИКАБЕЛЬНЫЕ круги с изображениями (только 3,6,9,18)
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        if (c.hasImage && dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
+        if (c.clickableImage && dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
           showCustomX = true;
           xCursorX = mouseX;
           xCursorY = mouseY;
@@ -310,30 +318,12 @@
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
-          if (c.hasImage) {
-            // Открываем соответствующую ссылку
+          if (c.clickableImage) {
             let urls = {
-              1: "https://x.com/binance",
-              2: "https://x.com/four_meme_",
               3: "https://x.com/lin_btc",         // ✅ КРУГ 3
-              4: "https://x.com/BTCdayu",
-              5: "https://x.com/Arya_web3",
               6: "https://x.com/3ethtomoon",       // ✅ КРУГ 6
-              7: "https://x.com/Wmafia6",
-              8: "https://x.com/cryp_orange",
               9: "https://x.com/zkgoudan",         // ✅ КРУГ 9
-              10: "https://x.com/HtrZac",
-              11: "https://x.com/HtrZac",
-              12: "https://x.com/huahuayjy",
-              13: "https://x.com/Mirro7777",
-              14: "https://x.com/Huang2024",
-              15: "https://x.com/cain_bnb",
-              16: "https://x.com/cz_binance",
-              17: "https://x.com/heyibinance",
-              18: "https://x.com/BiliSquare",       // ✅ КРУГ 18
-              19: "https://x.com/heyibinance",
-              28: "https://x.com/Broccoli__czdog",
-              30: "https://x.com/Broccoli__czdog"
+              18: "https://x.com/BiliSquare"       // ✅ КРУГ 18
             };
             
             let url = urls[c.num];
@@ -374,29 +364,12 @@
         for (let i = 0; i < circles.length; i++) {
           let c = circles[i];
           if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
-            if (c.hasImage) {
+            if (c.clickableImage) {
               let urls = {
-                1: "https://x.com/binance",
-                2: "https://x.com/four_meme_",
                 3: "https://x.com/lin_btc",         // ✅ КРУГ 3
-                4: "https://x.com/BTCdayu",
-                5: "https://x.com/Arya_web3",
                 6: "https://x.com/3ethtomoon",       // ✅ КРУГ 6
-                7: "https://x.com/Wmafia6",
-                8: "https://x.com/cryp_orange",
                 9: "https://x.com/zkgoudan",         // ✅ КРУГ 9
-                10: "https://x.com/HtrZac",
-                11: "https://x.com/HtrZac",
-                12: "https://x.com/huahuayjy",
-                13: "https://x.com/Mirro7777",
-                14: "https://x.com/Huang2024",
-                15: "https://x.com/cain_bnb",
-                16: "https://x.com/cz_binance",
-                17: "https://x.com/heyibinance",
-                18: "https://x.com/BiliSquare",       // ✅ КРУГ 18
-                19: "https://x.com/heyibinance",
-                28: "https://x.com/Broccoli__czdog",
-                30: "https://x.com/Broccoli__czdog"
+                18: "https://x.com/BiliSquare"       // ✅ КРУГ 18
               };
               
               let url = urls[c.num];
