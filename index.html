@@ -53,11 +53,11 @@
     let heyiImage;     // 17
     let wmafiaImage;   // 7
     let orangeImage;   // 8
-    let linBtcImage;   // 3
+    let linBtcImage;   // 3 ← не используется
     let btcDayuImage;  // 4
     let aryaImage;     // 5
-    let moonDogImage;  // 6
-    let zkgoudanImage; // 9
+    let moonDogImage;  // 6 ← не используется
+    let zkgoudanImage; // 9 ← не используется
     let aaScienceImage; // 10
     let htrZacImage;   // 11
     let huaHuaImage;   // 12
@@ -72,7 +72,7 @@
     // Для кастомного X
     let showCustomX = false;
     let xCursorX, xCursorY;
-    let clickTimer = 0; // ← НОВОЕ: таймер для скрытия X после клика
+    let clickTimer = 0;
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
@@ -125,37 +125,52 @@
     function generateCircles() {
       circles = [];
       let totalAngle = TWO_PI;
-      let radius = 350 * scale;
+      let radius = 320 * scale;
 
-      for (let i = 0; i < 30; i++) {
-        let angle = -PI / 2 + (i / 30) * totalAngle;
+      for (let i = 0; i < 36; i++) {
+        let angle = -PI / 2 + (i / 36) * totalAngle;
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
+
+        // Специальные позиции для 3, 6, 9 — как на скриншоте
+        if (i === 2) { // номер 3 — справа
+          x = centre_x + radius;
+          y = centre_y;
+        } else if (i === 5) { // номер 6 — внизу
+          x = centre_x;
+          y = centre_y + radius;
+        } else if (i === 8) { // номер 9 — слева
+          x = centre_x - radius;
+          y = centre_y;
+        }
 
         circles.push({
           x: x,
           y: y,
           num: i + 1,
           hovered: false,
-          isCZ: i === 15,      // 16
-          isBinance: i === 0,   // 1
-          isBroccoli: i === 29, // 30
-          isFourMeme: i === 1,  // 2
-          isLinBtc: i === 2,    // 3
-          isBTCdayu: i === 3,   // 4
-          isArya: i === 4,      // 5
-          isMoonDog: i === 5,   // 6
-          isCain: i === 14,     // 15
-          isHeyi: i === 16,     // 17
-          isWmafia: i === 6,    // 7
-          isOrange: i === 7,    // 8
-          isZkgoudan: i === 8,  // 9
-          isAAScience: i === 9, // 10
-          isHtrZac: i === 10,   // 11
-          isHuaHua: i === 11,   // 12
-          isMirro: i === 12,    // 13
-          isHuang: i === 13,    // 14
-          isBroLeon: i === 23   // 24
+          isBinance: i === 0,     // 1
+          isFourMeme: i === 1,    // 2
+          // isLinBtc: i === 2,   // ❌ УБРАЛИ — 3 — просто цифра
+          isBTCdayu: i === 3,     // 4
+          isArya: i === 4,        // 5
+          // isMoonDog: i === 5,  // ❌ УБРАЛИ — 6 — просто цифра
+          isWmafia: i === 6,      // 7
+          isOrange: i === 7,      // 8
+          // isZkgoudan: i === 8, // ❌ УБРАЛИ — 9 — просто цифра
+          isAAScience: i === 9,   // 10
+          isHtrZac: i === 10,     // 11
+          isHuaHua: i === 11,     // 12
+          isMirro: i === 12,      // 13
+          isHuang: i === 13,      // 14
+          isCain: i === 14,       // 15
+          isCZ: i === 15,         // 16
+          isHeyi: i === 16,       // 17
+          // 18–23: без изображений
+          isBroLeon: i === 23,    // 24
+          // 25–29: без изображений
+          isBroccoli: i === 29    // 30
+          // 31–36: без изображений → рисуются как цифры
         });
       }
     }
@@ -241,12 +256,6 @@
           imageMode(CENTER);
           image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isLinBtc && linBtcImage && linBtcImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(linBtcImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
         } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0) {
           push();
           translate(c.x, c.y);
@@ -259,36 +268,6 @@
           imageMode(CENTER);
           image(aryaImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isMoonDog && moonDogImage && moonDogImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(moonDogImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isCZ && czImage && czImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(czImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isCain && cainImage && cainImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
         } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0) {
           push();
           translate(c.x, c.y);
@@ -300,12 +279,6 @@
           translate(c.x, c.y);
           imageMode(CENTER);
           image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isZkgoudan && zkgoudanImage && zkgoudanImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(zkgoudanImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
         } else if (c.isAAScience && aaScienceImage && aaScienceImage.width > 0) {
           push();
@@ -337,13 +310,47 @@
           imageMode(CENTER);
           image(huangImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isCain && cainImage && cainImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isCZ && czImage && czImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(czImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
         } else if (c.isBroLeon && broLeonImage && broLeonImage.width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
           image(broLeonImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isLinBtc || c.isMoonDog || c.isZkgoudan) {
+          // ❌ Убираем изображения для 3, 6, 9 — рисуем цифры
+          if (c.hovered) fill(255, 255, 0);
+          else fill(255, 220, 0);
+          ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
+          fill(0);
+          textSize(16 * scale);
+          textAlign(CENTER, CENTER);
+          text(c.num, c.x, c.y);
         } else {
+          // Все остальные — цифры
           if (c.hovered) fill(255, 255, 0);
           else fill(255, 220, 0);
           ellipse(c.x, c.y, circleSize * scale, circleSize * scale);
@@ -366,9 +373,9 @@
       if (showCustomX) {
         push();
         noStroke();
-        fill(255, 220, 0); // жёлтый фон
+        fill(255, 220, 0);
         ellipse(xCursorX, xCursorY, 30 * scale, 30 * scale);
-        fill(255); // белый текст
+        fill(255);
         textAlign(CENTER, CENTER);
         textStyle(BOLD);
         textSize(24 * scale);
@@ -410,11 +417,12 @@
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (
-          c.isBinance || c.isFourMeme || c.isLinBtc || c.isBTCdayu ||
-          c.isArya || c.isMoonDog || c.isCZ || c.isBroccoli ||
-          c.isCain || c.isHeyi || c.isWmafia || c.isOrange ||
-          c.isZkgoudan || c.isAAScience || c.isHtrZac ||
-          c.isHuaHua || c.isMirro || c.isHuang || c.isBroLeon
+          c.isBinance || c.isFourMeme || c.isBTCdayu ||
+          c.isArya || c.isWmafia || c.isOrange ||
+          c.isAAScience || c.isHtrZac || c.isHuaHua ||
+          c.isMirro || c.isHuang || c.isCain ||
+          c.isCZ || c.isHeyi || c.isBroLeon ||
+          c.isBroccoli
         ) {
           if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
             showCustomX = true;
@@ -458,11 +466,6 @@
             clickTimer = millis();
             showCustomX = false;
             return;
-          } else if (c.isLinBtc) {
-            window.open("https://x.com/lin_btc", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
           } else if (c.isBTCdayu) {
             window.open("https://x.com/BTCdayu", "_blank");
             clickTimer = millis();
@@ -473,31 +476,6 @@
             clickTimer = millis();
             showCustomX = false;
             return;
-          } else if (c.isMoonDog) {
-            window.open("https://x.com/3ethtomoon", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isCZ) {
-            window.open("https://x.com/cz_binance", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isBroccoli) {
-            window.open("https://x.com/Broccoli__czdog", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isCain) {
-            window.open("https://x.com/cain_bnb", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isHeyi) {
-            window.open("https://x.com/heyibinance", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
           } else if (c.isWmafia) {
             window.open("https://x.com/Wmafia6", "_blank");
             clickTimer = millis();
@@ -505,11 +483,6 @@
             return;
           } else if (c.isOrange) {
             window.open("https://x.com/cryp_orange", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isZkgoudan) {
-            window.open("https://x.com/zkgoudan", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
@@ -538,8 +511,28 @@
             clickTimer = millis();
             showCustomX = false;
             return;
+          } else if (c.isCain) {
+            window.open("https://x.com/cain_bnb", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isCZ) {
+            window.open("https://x.com/cz_binance", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isHeyi) {
+            window.open("https://x.com/heyibinance", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
           } else if (c.isBroLeon) {
             window.open("https://x.com/BroLeonAus", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
+            return;
+          } else if (c.isBroccoli) {
+            window.open("https://x.com/Broccoli__czdog", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
@@ -584,11 +577,6 @@
               clickTimer = millis();
               showCustomX = false;
               return false;
-            } else if (c.isLinBtc) {
-              window.open("https://x.com/lin_btc", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
             } else if (c.isBTCdayu) {
               window.open("https://x.com/BTCdayu", "_blank");
               clickTimer = millis();
@@ -599,31 +587,6 @@
               clickTimer = millis();
               showCustomX = false;
               return false;
-            } else if (c.isMoonDog) {
-              window.open("https://x.com/3ethtomoon", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isCZ) {
-              window.open("https://x.com/cz_binance", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isBroccoli) {
-              window.open("https://x.com/Broccoli__czdog", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isCain) {
-              window.open("https://x.com/cain_bnb", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isHeyi) {
-              window.open("https://x.com/heyibinance", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
             } else if (c.isWmafia) {
               window.open("https://x.com/Wmafia6", "_blank");
               clickTimer = millis();
@@ -631,11 +594,6 @@
               return false;
             } else if (c.isOrange) {
               window.open("https://x.com/cryp_orange", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isZkgoudan) {
-              window.open("https://x.com/zkgoudan", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
@@ -664,8 +622,28 @@
               clickTimer = millis();
               showCustomX = false;
               return false;
+            } else if (c.isCain) {
+              window.open("https://x.com/cain_bnb", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isCZ) {
+              window.open("https://x.com/cz_binance", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isHeyi) {
+              window.open("https://x.com/heyibinance", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
             } else if (c.isBroLeon) {
               window.open("https://x.com/BroLeonAus", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
+              return false;
+            } else if (c.isBroccoli) {
+              window.open("https://x.com/Broccoli__czdog", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
