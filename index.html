@@ -47,21 +47,25 @@
     // Параметры для кругов с цифрами
     let circleSize = 40;
     let circles = [];
-    let czImage;       // для круга 16
-    let binanceImage;  // для круга 1
-    let broccoliImage; // для круга 30
-    let fourMemeImage; // для круга 2
-    let cainImage;     // для круга 15
-    let heyiImage;     // для круга 17
-    let wmafiaImage;   // для круга 7
-    let orangeImage;   // для круга 8
-    let linBtcImage;   // для круга 3
-    let btcDayuImage;  // для круга 4
-    let aryaImage;     // для круга 5
-    let moonDogImage;  // для круга 6
-    let zkgoudanImage; // для круга 9
-    let aaScienceImage; // для круга 10
-    let htrZacImage;   // для круга 11
+    let czImage;       // 16
+    let binanceImage;  // 1
+    let broccoliImage; // 30
+    let fourMemeImage; // 2
+    let cainImage;     // 15
+    let heyiImage;     // 17
+    let wmafiaImage;   // 7
+    let orangeImage;   // 8
+    let linBtcImage;   // 3
+    let btcDayuImage;  // 4
+    let aryaImage;     // 5
+    let moonDogImage;  // 6
+    let zkgoudanImage; // 9
+    let aaScienceImage; // 10
+    let htrZacImage;   // 11
+    let huaHuaImage;   // 12 ← НОВОЕ
+    let mirroImage;    // 13 ← НОВОЕ
+    let huangImage;    // 14 ← НОВОЕ
+    let broLeonImage;  // 24 ← НОВОЕ
 
     // Цена BNB
     let bnbPrice = "—";
@@ -80,9 +84,13 @@
       btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
       aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
       moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");     // ← КРУГ 9
-      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");   // ← КРУГ 10
-      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");       // ← КРУГ 11
+      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png");
+      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");
+      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");
+      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png"); // ← 12
+      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");  // ← 13
+      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");  // ← 14
+      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png"); // ← 24
     }
 
     function setup() {
@@ -93,9 +101,7 @@
       centre_y = height / 2;
       generateCircles();
 
-      // Загружаем цену BNB при запуске
       updateBNBPrice();
-      // Обновляем каждую минуту
       setInterval(updateBNBPrice, 60000);
     }
 
@@ -104,7 +110,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.binancecoin && data.binancecoin.usd) {
-            bnbPrice = data.binancecoin.usd.toFixed(0); // без десятичных
+            bnbPrice = data.binancecoin.usd.toFixed(0);
           }
         })
         .catch(err => {
@@ -128,21 +134,25 @@
           y: y,
           num: i + 1,
           hovered: false,
-          isCZ: i === 15,      // круг №16
-          isBinance: i === 0,   // круг №1
-          isBroccoli: i === 29, // круг №30
-          isFourMeme: i === 1,  // круг №2
-          isLinBtc: i === 2,    // круг №3
-          isBTCdayu: i === 3,   // круг №4
-          isArya: i === 4,      // круг №5
-          isMoonDog: i === 5,   // круг №6
-          isCain: i === 14,     // круг №15
-          isHeyi: i === 16,     // круг №17
-          isWmafia: i === 6,    // круг №7
-          isOrange: i === 7,    // круг №8
-          isZkgoudan: i === 8,  // круг №9
-          isAAScience: i === 9, // круг №10
-          isHtrZac: i === 10    // круг №11
+          isCZ: i === 15,      // 16
+          isBinance: i === 0,   // 1
+          isBroccoli: i === 29, // 30
+          isFourMeme: i === 1,  // 2
+          isLinBtc: i === 2,    // 3
+          isBTCdayu: i === 3,   // 4
+          isArya: i === 4,      // 5
+          isMoonDog: i === 5,   // 6
+          isCain: i === 14,     // 15
+          isHeyi: i === 16,     // 17
+          isWmafia: i === 6,    // 7
+          isOrange: i === 7,    // 8
+          isZkgoudan: i === 8,  // 9
+          isAAScience: i === 9, // 10
+          isHtrZac: i === 10,   // 11
+          isHuaHua: i === 11,   // 12 ← НОВОЕ
+          isMirro: i === 12,    // 13 ← НОВОЕ
+          isHuang: i === 13,    // 14 ← НОВОЕ
+          isBroLeon: i === 23   // 24 ← НОВОЕ
         });
       }
     }
@@ -183,7 +193,7 @@
       fill(40);
       ellipse(centre_x, centre_y, minute_inner, minute_inner);
 
-      // СЕКУНДЫ — БЕЛЫЙ (дискретное движение)
+      // СЕКУНДЫ — БЕЛЫЙ
       if (utcSecond > 0) {
         let secondAngle = (utcSecond / 60 * TWO_PI) - (PI / 2);
         fill(255);
@@ -192,7 +202,7 @@
       fill(40);
       ellipse(centre_x, centre_y, second_inner, second_inner);
 
-      // АДРЕС КОНТРАКТА — В ДВЕ СТРОКИ, НАД "TIME BNB", но не перекрывает "TIME"
+      // АДРЕС КОНТРАКТА
       textSize(14 * scale);
       textAlign(CENTER, CENTER);
       fill(255);
@@ -207,7 +217,7 @@
       text("TIME", centre_x, centre_y - 40 * scale);
       text("BNB", centre_x, centre_y + 40 * scale);
 
-      // ЦЕНА BNB — ПОД "BNB"
+      // ЦЕНА BNB
       textSize(40 * scale);
       fill(255);
       text(bnbPrice + " $", centre_x, centre_y + 110 * scale);
@@ -306,6 +316,30 @@
           imageMode(CENTER);
           image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
+        } else if (c.isHuaHua && huaHuaImage && huaHuaImage.width > 0) { // ← 12
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(huaHuaImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isMirro && mirroImage && mirroImage.width > 0) { // ← 13
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(mirroImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isHuang && huangImage && huangImage.width > 0) { // ← 14
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(huangImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
+        } else if (c.isBroLeon && broLeonImage && broLeonImage.width > 0) { // ← 24
+          push();
+          translate(c.x, c.y);
+          imageMode(CENTER);
+          image(broLeonImage, 0, 0, circleSize * scale, circleSize * scale);
+          pop();
         } else {
           if (c.hovered) fill(255, 255, 0);
           else fill(255, 220, 0);
@@ -317,7 +351,7 @@
         }
       }
 
-      // НАДПИСЬ "COPY" — под ценой
+      // НАДПИСЬ "COPY"
       if (showCopyMessage) {
         fill(255, 220, 0);
         textSize(24 * scale);
@@ -334,7 +368,7 @@
         c.hovered = dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2;
       }
 
-      // Курсор над адресом (две строки)
+      // Курсор над адресом
       let textW1 = textWidth("0x..........12.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -354,7 +388,7 @@
     }
 
     function mousePressed() {
-      // Проверка клика по адресу (две строки)
+      // Проверка клика по адресу
       let textW1 = textWidth("0x..........12.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -420,6 +454,18 @@
           } else if (c.isHtrZac) {
             window.open("https://x.com/HtrZac", "_blank");
             return;
+          } else if (c.isHuaHua) { // ← 12
+            window.open("https://x.com/huahuayjy", "_blank");
+            return;
+          } else if (c.isMirro) { // ← 13
+            window.open("https://x.com/Mirro7777", "_blank");
+            return;
+          } else if (c.isHuang) { // ← 14
+            window.open("https://x.com/Huang2024", "_blank");
+            return;
+          } else if (c.isBroLeon) { // ← 24
+            window.open("https://x.com/BroLeonAus", "_blank");
+            return;
           }
         }
       }
@@ -430,7 +476,7 @@
         let touchX = touches[0].x;
         let touchY = touches[0].y;
 
-        // Касание адреса (две строки)
+        // Касание адреса
         let textW1 = textWidth("0x..........12.10.2025") * scale;
         let textW2 = textWidth("UTC-15:00.......4444") * scale;
         let maxWidth = Math.max(textW1, textW2);
@@ -495,6 +541,18 @@
               return false;
             } else if (c.isHtrZac) {
               window.open("https://x.com/HtrZac", "_blank");
+              return false;
+            } else if (c.isHuaHua) { // ← 12
+              window.open("https://x.com/huahuayjy", "_blank");
+              return false;
+            } else if (c.isMirro) { // ← 13
+              window.open("https://x.com/Mirro7777", "_blank");
+              return false;
+            } else if (c.isHuang) { // ← 14
+              window.open("https://x.com/Huang2024", "_blank");
+              return false;
+            } else if (c.isBroLeon) { // ← 24
+              window.open("https://x.com/BroLeonAus", "_blank");
               return false;
             }
           }
