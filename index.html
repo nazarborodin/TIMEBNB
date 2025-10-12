@@ -22,7 +22,7 @@
       margin: 0 auto;
       max-width: 100vw;
       max-height: 100vh;
-      cursor: none; /* Скрываем системный курсор */
+      /* cursor: none; ← УБРАЛИ СКРЫТИЕ КУРСОРА */
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -393,19 +393,6 @@
             break;
           }
         }
-      }
-
-      // Не показываем X над адресом контракта
-      let textW1 = textWidth("0x..........12.10.2025") * scale;
-      let textW2 = textWidth("UTC-15:00.......4444") * scale;
-      let maxWidth = Math.max(textW1, textW2);
-      let x1 = centre_x - maxWidth / 2;
-      let y1 = centre_y - 120 * scale - 10 * scale;
-      let x2 = centre_x + maxWidth / 2;
-      let y2 = centre_y - 100 * scale + 10 * scale;
-
-      if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
-        showCustomX = false;
       }
     }
 
