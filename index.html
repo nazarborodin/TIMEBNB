@@ -71,7 +71,8 @@
 
     // Для кастомного X
     let showCustomX = false;
-    let xCursorX, xCursorY;
+    let xCursorX = 0;
+    let xCursorY = 0;
     let clickTimer = 0;
 
     // Для отслеживания позиции мыши при возврате
@@ -358,6 +359,29 @@
         }
       }
 
+      // Отрисовка белых точек по краю чёрного круга
+      let pointRadius = 350 * scale; // тот же радиус, что и у кругов
+
+      // Большие точки — 3, 6, 9, 12 часов
+      let bigPoints = [0, 90, 180, 270]; // углы в градусах → 12, 3, 6, 9 часов
+      fill(255);
+      noStroke();
+      for (let angleDeg of bigPoints) {
+        let angleRad = radians(angleDeg - 90); // -90 чтобы начать с 12 часов
+        let x = centre_x + cos(angleRad) * pointRadius;
+        let y = centre_y + sin(angleRad) * pointRadius;
+        ellipse(x, y, 6 * scale, 6 * scale); // большой размер
+      }
+
+      // Маленькие точки — 1, 2, 4, 5, 7, 8, 10, 11 часов
+      let smallPoints = [30, 60, 120, 150, 210, 240, 300, 330];
+      for (let angleDeg of smallPoints) {
+        let angleRad = radians(angleDeg - 90);
+        let x = centre_x + cos(angleRad) * pointRadius;
+        let y = centre_y + sin(angleRad) * pointRadius;
+        ellipse(x, y, 3 * scale, 3 * scale); // маленький размер
+      }
+
       // НАДПИСЬ "COPY"
       if (showCopyMessage) {
         fill(255, 220, 0);
@@ -460,96 +484,134 @@
             window.open("https://x.com/binance", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isFourMeme) {
             window.open("https://x.com/four_meme_", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isLinBtc) {
             window.open("https://x.com/lin_btc", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isBTCdayu) {
             window.open("https://x.com/BTCdayu", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isArya) {
             window.open("https://x.com/Arya_web3", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isMoonDog) {
             window.open("https://x.com/3ethtomoon", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isCZ) {
             window.open("https://x.com/cz_binance", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isBroccoli) {
             window.open("https://x.com/Broccoli__czdog", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isCain) {
             window.open("https://x.com/cain_bnb", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isHeyi) {
             window.open("https://x.com/heyibinance", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isWmafia) {
             window.open("https://x.com/Wmafia6", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isOrange) {
             window.open("https://x.com/cryp_orange", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isZkgoudan) {
             window.open("https://x.com/zkgoudan", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isAAScience) {
             window.open("https://x.com/0xAA_Science", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isHtrZac) {
             window.open("https://x.com/HtrZac", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isHuaHua) {
             window.open("https://x.com/huahuayjy", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isMirro) {
             window.open("https://x.com/Mirro7777", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isHuang) {
             window.open("https://x.com/Huang2024", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           } else if (c.isBroLeon) {
             window.open("https://x.com/BroLeonAus", "_blank");
             clickTimer = millis();
             showCustomX = false;
+            xCursorX = 0;
+            xCursorY = 0;
             return;
           }
         }
@@ -586,96 +648,134 @@
               window.open("https://x.com/binance", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isFourMeme) {
               window.open("https://x.com/four_meme_", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isLinBtc) {
               window.open("https://x.com/lin_btc", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isBTCdayu) {
               window.open("https://x.com/BTCdayu", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isArya) {
               window.open("https://x.com/Arya_web3", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isMoonDog) {
               window.open("https://x.com/3ethtomoon", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isCZ) {
               window.open("https://x.com/cz_binance", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isBroccoli) {
               window.open("https://x.com/Broccoli__czdog", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isCain) {
               window.open("https://x.com/cain_bnb", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isHeyi) {
               window.open("https://x.com/heyibinance", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isWmafia) {
               window.open("https://x.com/Wmafia6", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isOrange) {
               window.open("https://x.com/cryp_orange", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isZkgoudan) {
               window.open("https://x.com/zkgoudan", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isAAScience) {
               window.open("https://x.com/0xAA_Science", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isHtrZac) {
               window.open("https://x.com/HtrZac", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isHuaHua) {
               window.open("https://x.com/huahuayjy", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isMirro) {
               window.open("https://x.com/Mirro7777", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isHuang) {
               window.open("https://x.com/Huang2024", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             } else if (c.isBroLeon) {
               window.open("https://x.com/BroLeonAus", "_blank");
               clickTimer = millis();
               showCustomX = false;
+              xCursorX = 0;
+              xCursorY = 0;
               return false;
             }
           }
