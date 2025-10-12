@@ -42,6 +42,10 @@
     let scale = 1;
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
+    // ЗАПРЕТНАЯ ЗОНА (где дуга времени)
+    let forbiddenStartAngle = -PI / 2; // 12 часов
+    let forbiddenEndAngle = 0;         // 3 часа
+
     // Параметры для кругов с цифрами
     let circleSize = 40;
     let circles = [];
@@ -149,11 +153,15 @@
 
       for (let i = 0; i < 36; i++) {
         let angle = -PI / 2 + (i / 36) * totalAngle;
+
+        // Проверяем, попадает ли угол в запретную зону (от 12 до 3 часов)
+        if (angle >= forbiddenStartAngle && angle <= forbiddenEndAngle) {
+          // Сдвигаем угол немного вправо (по часовой стрелке)
+          angle += 0.05; // можно подобрать значение
+        }
+
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
-
-        // ❌ УБРАЛИ СПЕЦИАЛЬНЫЕ ПОЗИЦИИ — 3, 6, 9 теперь по кругу
-        // if (i === 2) { ... } — убрано
 
         circles.push({
           x: x,
@@ -573,8 +581,7 @@
             showCustomX = false;
             return;
           } else if (c.isImg9) {
-            // ❓ Что делать при клике на 9?
-            // window.open("...", "_blank");
+            window.open("https://x.com/zkgoudan", "_blank"); // ✅ Ссылка на 9
             clickTimer = millis();
             showCustomX = false;
             return;
@@ -706,6 +713,7 @@
               showCustomX = false;
               return false;
             } else if (c.isImg9) {
+              window.open("https://x.com/zkgoudan", "_blank"); // ✅ Ссылка на 9
               clickTimer = millis();
               showCustomX = false;
               return false;
