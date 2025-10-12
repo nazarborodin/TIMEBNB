@@ -22,7 +22,11 @@
       margin: 0 auto;
       max-width: 100vw;
       max-height: 100vh;
-      /* cursor: none; ← УБРАЛИ СКРЫТИЕ КУРСОРА */
+    }
+
+    /* Курсор BNB при наведении на адрес контракта */
+    .contract-area {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -68,6 +72,7 @@
     // Для кастомного X
     let showCustomX = false;
     let xCursorX, xCursorY;
+    let clickTimer = 0; // ← НОВОЕ: таймер для скрытия X после клика
 
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
@@ -370,6 +375,12 @@
         text("X", xCursorX, xCursorY);
         pop();
       }
+
+      // Скрыть X через 1 секунду после клика
+      if (clickTimer > 0 && millis() - clickTimer > 1000) {
+        showCustomX = false;
+        clickTimer = 0;
+      }
     }
 
     function addZero(i) { return i < 10 ? "0" + i : i; }
@@ -377,6 +388,25 @@
     function mouseMoved() {
       showCustomX = false;
 
+      // Проверка наведения на контракт
+      let textW1 = textWidth("0x..........12.10.2025") * scale;
+      let textW2 = textWidth("UTC-15:00.......4444") * scale;
+      let maxWidth = Math.max(textW1, textW2);
+      let x1 = centre_x - maxWidth / 2;
+      let y1 = centre_y - 120 * scale - 10 * scale;
+      let x2 = centre_x + maxWidth / 2;
+      let y2 = centre_y - 100 * scale + 10 * scale;
+
+      if (
+        mouseX >= x1 && mouseX <= x2 &&
+        mouseY >= y1 && mouseY <= y2
+      ) {
+        document.body.classList.add('contract-area');
+      } else {
+        document.body.classList.remove('contract-area');
+      }
+
+      // Проверка наведения на круги с изображениями
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (
@@ -420,60 +450,98 @@
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
           if (c.isBinance) {
             window.open("https://x.com/binance", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isFourMeme) {
             window.open("https://x.com/four_meme_", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isLinBtc) {
             window.open("https://x.com/lin_btc", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isBTCdayu) {
             window.open("https://x.com/BTCdayu", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isArya) {
             window.open("https://x.com/Arya_web3", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isMoonDog) {
             window.open("https://x.com/3ethtomoon", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isCZ) {
             window.open("https://x.com/cz_binance", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isBroccoli) {
             window.open("https://x.com/Broccoli__czdog", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isCain) {
             window.open("https://x.com/cain_bnb", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isHeyi) {
             window.open("https://x.com/heyibinance", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isWmafia) {
             window.open("https://x.com/Wmafia6", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isOrange) {
             window.open("https://x.com/cryp_orange", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isZkgoudan) {
             window.open("https://x.com/zkgoudan", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isAAScience) {
             window.open("https://x.com/0xAA_Science", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isHtrZac) {
             window.open("https://x.com/HtrZac", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isHuaHua) {
             window.open("https://x.com/huahuayjy", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isMirro) {
             window.open("https://x.com/Mirro7777", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isHuang) {
             window.open("https://x.com/Huang2024", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           } else if (c.isBroLeon) {
             window.open("https://x.com/BroLeonAus", "_blank");
+            clickTimer = millis();
+            showCustomX = false;
             return;
           }
         }
@@ -508,60 +576,98 @@
           if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
             if (c.isBinance) {
               window.open("https://x.com/binance", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isFourMeme) {
               window.open("https://x.com/four_meme_", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isLinBtc) {
               window.open("https://x.com/lin_btc", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isBTCdayu) {
               window.open("https://x.com/BTCdayu", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isArya) {
               window.open("https://x.com/Arya_web3", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isMoonDog) {
               window.open("https://x.com/3ethtomoon", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isCZ) {
               window.open("https://x.com/cz_binance", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isBroccoli) {
               window.open("https://x.com/Broccoli__czdog", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isCain) {
               window.open("https://x.com/cain_bnb", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isHeyi) {
               window.open("https://x.com/heyibinance", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isWmafia) {
               window.open("https://x.com/Wmafia6", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isOrange) {
               window.open("https://x.com/cryp_orange", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isZkgoudan) {
               window.open("https://x.com/zkgoudan", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isAAScience) {
               window.open("https://x.com/0xAA_Science", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isHtrZac) {
               window.open("https://x.com/HtrZac", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isHuaHua) {
               window.open("https://x.com/huahuayjy", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isMirro) {
               window.open("https://x.com/Mirro7777", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isHuang) {
               window.open("https://x.com/Huang2024", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             } else if (c.isBroLeon) {
               window.open("https://x.com/BroLeonAus", "_blank");
+              clickTimer = millis();
+              showCustomX = false;
               return false;
             }
           }
