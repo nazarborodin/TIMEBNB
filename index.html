@@ -61,8 +61,6 @@
     let aaScienceImage; // 10
     let htrZacImage;   // 11
     let huaHuaImage;   // 12
-    let mirroImage;    // 13
-    let huangImage;    // 14
     let broLeonImage;  // 24
 
     // Цена BNB
@@ -82,7 +80,7 @@
     function preload() {
       czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
       binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
-      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/36.png"); // 36
+      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/36.png");
       fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
       cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
       heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
@@ -96,8 +94,6 @@
       aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");
       htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");
       huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png");
-      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");
-      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");
       broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png");
     }
 
@@ -132,15 +128,15 @@
       let totalAngle = TWO_PI;
       let radius = 350 * scale;
 
-      for (let i = 0; i < 36; i++) { // ← 36 кругов
-        let angle = -PI / 2 + (i / 36) * totalAngle; // 360 / 36 = 10 градусов между кругами
+      for (let i = 0; i < 36; i++) {
+        let angle = -PI / 2 + (i / 36) * totalAngle;
         let x = centre_x + cos(angle) * radius;
         let y = centre_y + sin(angle) * radius;
 
         circles.push({
           x: x,
           y: y,
-          num: i + 1, // ← теперь от 1 до 36
+          num: i + 1,
           hovered: false,
           isCZ: i === 15,      // 16
           isBinance: i === 0,   // 1
@@ -158,8 +154,6 @@
           isAAScience: i === 9, // 10
           isHtrZac: i === 10,   // 11
           isHuaHua: i === 11,   // 12
-          isMirro: i === 12,    // 13
-          isHuang: i === 13,    // 14
           isBroLeon: i === 23   // 24
         });
       }
@@ -330,18 +324,6 @@
           imageMode(CENTER);
           image(huaHuaImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isMirro && mirroImage && mirroImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(mirroImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isHuang && huangImage && huangImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(huangImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
         } else if (c.isBroLeon && broLeonImage && broLeonImage.width > 0) {
           push();
           translate(c.x, c.y);
@@ -417,7 +399,7 @@
           c.isArya || c.isMoonDog || c.isCZ || c.isBroccoli ||
           c.isCain || c.isHeyi || c.isWmafia || c.isOrange ||
           c.isZkgoudan || c.isAAScience || c.isHtrZac ||
-          c.isHuaHua || c.isMirro || c.isHuang || c.isBroLeon
+          c.isHuaHua || c.isBroLeon
         ) {
           if (dist(x, y, c.x, c.y) < (circleSize * scale) / 2) {
             showCustomX = true;
@@ -569,20 +551,6 @@
             xCursorX = 0;
             xCursorY = 0;
             return;
-          } else if (c.isMirro) {
-            window.open("https://x.com/Mirro7777", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            xCursorX = 0;
-            xCursorY = 0;
-            return;
-          } else if (c.isHuang) {
-            window.open("https://x.com/Huang2024", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            xCursorX = 0;
-            xCursorY = 0;
-            return;
           } else if (c.isBroLeon) {
             window.open("https://x.com/BroLeonAus", "_blank");
             clickTimer = millis();
@@ -728,20 +696,6 @@
               return false;
             } else if (c.isHuaHua) {
               window.open("https://x.com/huahuayjy", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              xCursorX = 0;
-              xCursorY = 0;
-              return false;
-            } else if (c.isMirro) {
-              window.open("https://x.com/Mirro7777", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              xCursorX = 0;
-              xCursorY = 0;
-              return false;
-            } else if (c.isHuang) {
-              window.open("https://x.com/Huang2024", "_blank");
               clickTimer = millis();
               showCustomX = false;
               xCursorX = 0;
