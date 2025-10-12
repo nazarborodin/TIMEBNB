@@ -63,7 +63,7 @@
     let huaHuaImage;   // 12
     let mirroImage;    // 13
     let huangImage;    // 14
-    let broLeonImage;  // 24
+    let broLeonImage;  // 24 ← не используется
 
     // Цена BNB
     let bnbPrice = "—";
@@ -166,11 +166,10 @@
           isCain: i === 14,       // 15
           isCZ: i === 15,         // 16
           isHeyi: i === 16,       // 17
-          // 18–23: без изображений
-          isBroLeon: i === 23,    // 24
-          // 25–29: без изображений
-          isBroccoli: i === 29    // 30
-          // 31–36: без изображений → рисуются как цифры
+          // 18–23: без изображений (на скриншоте есть аватарки — но их нет в списке, поэтому оставим как цифры)
+          // isBroLeon: i === 23, // ❌ УБРАЛИ — 24 — нет на скриншоте
+          isBroccoli: i === 29,   // 30
+          // 31–36: есть изображения на скриншоте → оставляем
         });
       }
     }
@@ -328,12 +327,6 @@
           imageMode(CENTER);
           image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
           pop();
-        } else if (c.isBroLeon && broLeonImage && broLeonImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(broLeonImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
         } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
           push();
           translate(c.x, c.y);
@@ -421,8 +414,7 @@
           c.isArya || c.isWmafia || c.isOrange ||
           c.isAAScience || c.isHtrZac || c.isHuaHua ||
           c.isMirro || c.isHuang || c.isCain ||
-          c.isCZ || c.isHeyi || c.isBroLeon ||
-          c.isBroccoli
+          c.isCZ || c.isHeyi || c.isBroccoli
         ) {
           if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
             showCustomX = true;
@@ -523,11 +515,6 @@
             return;
           } else if (c.isHeyi) {
             window.open("https://x.com/heyibinance", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isBroLeon) {
-            window.open("https://x.com/BroLeonAus", "_blank");
             clickTimer = millis();
             showCustomX = false;
             return;
@@ -634,11 +621,6 @@
               return false;
             } else if (c.isHeyi) {
               window.open("https://x.com/heyibinance", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isBroLeon) {
-              window.open("https://x.com/BroLeonAus", "_blank");
               clickTimer = millis();
               showCustomX = false;
               return false;
