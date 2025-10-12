@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TIMEBNB</title>
 
   <!-- FAVICON -->
@@ -24,7 +24,6 @@
       max-height: 100vh;
     }
 
-    /* Курсор BNB при наведении на адрес контракта */
     .contract-area {
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
     }
@@ -42,41 +41,35 @@
     let scale = 1;
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
-    // Параметры для кругов с цифрами
+    // Параметры для кругов
     let circleSize = 40;
     let circles = [];
-    let czImage;       // 16
-    let binanceImage;  // 1
-    let broccoliImage; // 30
-    let fourMemeImage; // 2
-    let cainImage;     // 15
-    let heyiImage;     // 17
-    let wmafiaImage;   // 7
-    let orangeImage;   // 8
-    let linBtcImage;   // 3 ← не используется
-    let btcDayuImage;  // 4
-    let aryaImage;     // 5
-    let moonDogImage;  // 6 ← не используется
-    let zkgoudanImage; // 9 ← теперь используется!
-    let aaScienceImage; // 10
-    let htrZacImage;   // 11
-    let huaHuaImage;   // 12
-    let mirroImage;    // 13
-    let huangImage;    // 14
-    let broLeonImage;  // 24 ← не используется
 
-    // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
-    let img3Image; // 3
-    let img6Image; // 6
-    let img9Image; // 9 — это ваше изображение с беловолосым персонажем
-
-    // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
-    let img901Image; // 28
-    let img902Image; // 19
-    let img903Image; // 10
-
-    // Изображение для 18
-    let img18Image; // 18 — мужчина с бородой
+    // Изображения
+    let images = {};
+    let imageUrls = {
+      1: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png",
+      2: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png",
+      3: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png",   // ✅ КРУГ 3
+      4: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png",
+      5: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png",
+      6: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png",   // ✅ КРУГ 6
+      7: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png",
+      8: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png",
+      9: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png",   // ✅ КРУГ 9
+      10: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png",
+      11: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png",
+      12: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png",
+      13: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png",
+      14: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png",
+      15: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png",
+      16: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png",
+      17: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png",
+      18: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/18.png", // ✅ КРУГ 18
+      19: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png",
+      28: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png",
+      30: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png"
+    };
 
     // Цена BNB
     let bnbPrice = "—";
@@ -88,38 +81,13 @@
     let clickTimer = 0;
 
     function preload() {
-      czImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png");
-      binanceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/1.png");
-      broccoliImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png");
-      fourMemeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/2.png");
-      cainImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/15.png");
-      heyiImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png");
-      wmafiaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png");
-      orangeImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png");
-      linBtcImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
-      btcDayuImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/4.png");
-      aryaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/5.png");
-      moonDogImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-      zkgoudanImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png"); // ✅ КРУГ 9
-      aaScienceImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/10.png");
-      htrZacImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png");
-      huaHuaImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png");
-      mirroImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png");
-      huangImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/14.png");
-      broLeonImage = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png");
-
-      // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
-      img3Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/3.png");
-      img6Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/6.png");
-      img9Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png"); // ✅ КРУГ 9
-
-      // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
-      img901Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png");
-      img902Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png");
-      img903Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png");
-
-      // 🆕 ИЗОБРАЖЕНИЕ ДЛЯ КРУГА 18
-      img18Image = loadImage("https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/18.png"); // ✅ КРУГ 18 — мужчина с бородой
+      console.log("Загрузка изображений...");
+      for (let key in imageUrls) {
+        images[key] = loadImage(imageUrls[key], 
+          () => console.log(`✅ Изображение ${key} загружено`),
+          () => console.log(`❌ Ошибка загрузки изображения ${key}`)
+        );
+      }
     }
 
     function setup() {
@@ -163,27 +131,7 @@
           y: y,
           num: i + 1,
           hovered: false,
-          isBinance: i === 0,     // 1
-          isFourMeme: i === 1,    // 2
-          isImg3: i === 2,        // 3 → 3.png
-          isBTCdayu: i === 3,     // 4
-          isArya: i === 4,        // 5
-          isImg6: i === 5,        // 6 → 6.png
-          isWmafia: i === 6,      // 7
-          isOrange: i === 7,      // 8
-          isImg9: i === 8,        // 9 → 9.png ✅
-          isImg903: i === 9,      // 10 → 903.png
-          isHtrZac: i === 10,     // 11
-          isHuaHua: i === 11,     // 12
-          isMirro: i === 12,      // 13
-          isHuang: i === 13,      // 14
-          isCain: i === 14,       // 15
-          isCZ: i === 15,         // 16
-          isHeyi: i === 16,       // 17
-          isImg18: i === 17,      // 18 → 18.png ✅
-          isImg902: i === 18,     // 19 → 902.png
-          isImg901: i === 27,     // 28 → 901.png
-          isBroccoli: i === 29,   // 30
+          hasImage: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,28,30].includes(i+1)
         });
       }
     }
@@ -256,142 +204,13 @@
       // Отрисовка кругов
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-
-        // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 3, 6, 9
-        if (c.isImg3 && img3Image && img3Image.width > 0) {
+        let num = c.num;
+        
+        if (c.hasImage && images[num] && images[num].width > 0) {
           push();
           translate(c.x, c.y);
           imageMode(CENTER);
-          image(img3Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isImg6 && img6Image && img6Image.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(img6Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isImg9 && img9Image && img9Image.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(img9Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        }
-
-        // НОВЫЕ ИЗОБРАЖЕНИЯ ДЛЯ 10, 19, 28
-        else if (c.isImg903 && img903Image && img903Image.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(img903Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isImg902 && img902Image && img902Image.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(img902Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isImg901 && img901Image && img901Image.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(img901Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        }
-
-        // 🆕 ИЗОБРАЖЕНИЕ ДЛЯ 18
-        else if (c.isImg18 && img18Image && img18Image.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(img18Image, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        }
-
-        // ОСТАЛЬНЫЕ ИЗОБРАЖЕНИЯ
-        else if (c.isBinance && binanceImage && binanceImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(binanceImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isFourMeme && fourMemeImage && fourMemeImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(fourMemeImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isBTCdayu && btcDayuImage && btcDayuImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(btcDayuImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isArya && aryaImage && aryaImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(aryaImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isWmafia && wmafiaImage && wmafiaImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(wmafiaImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isOrange && orangeImage && orangeImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(orangeImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isHtrZac && htrZacImage && htrZacImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(htrZacImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isHuaHua && huaHuaImage && huaHuaImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(huaHuaImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isMirro && mirroImage && mirroImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(mirroImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isHuang && huangImage && huangImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(huangImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isCain && cainImage && cainImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(cainImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isCZ && czImage && czImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(czImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isHeyi && heyiImage && heyiImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(heyiImage, 0, 0, circleSize * scale, circleSize * scale);
-          pop();
-        } else if (c.isBroccoli && broccoliImage && broccoliImage.width > 0) {
-          push();
-          translate(c.x, c.y);
-          imageMode(CENTER);
-          image(broccoliImage, 0, 0, circleSize * scale, circleSize * scale);
+          image(images[num], 0, 0, circleSize * scale, circleSize * scale);
           pop();
         } else {
           // Все остальные — цифры
@@ -401,7 +220,7 @@
           fill(0);
           textSize(16 * scale);
           textAlign(CENTER, CENTER);
-          text(c.num, c.x, c.y);
+          text(num, c.x, c.y);
         }
       }
 
@@ -460,22 +279,11 @@
       // Проверка наведения на круги с изображениями
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
-        if (
-          c.isBinance || c.isFourMeme || c.isBTCdayu ||
-          c.isArya || c.isWmafia || c.isOrange ||
-          c.isHtrZac || c.isHuaHua || c.isMirro ||
-          c.isHuang || c.isCain || c.isCZ ||
-          c.isHeyi || c.isBroccoli ||
-          c.isImg3 || c.isImg6 || c.isImg9 ||
-          c.isImg901 || c.isImg902 || c.isImg903 ||
-          c.isImg18 // ✅ Добавляем проверку для 18
-        ) {
-          if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
-            showCustomX = true;
-            xCursorX = mouseX;
-            xCursorY = mouseY;
-            break;
-          }
+        if (c.hasImage && dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
+          showCustomX = true;
+          xCursorX = mouseX;
+          xCursorY = mouseY;
+          break;
         }
       }
     }
@@ -502,113 +310,36 @@
       for (let i = 0; i < circles.length; i++) {
         let c = circles[i];
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
-          if (c.isBinance) {
-            window.open("https://x.com/binance", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isFourMeme) {
-            window.open("https://x.com/four_meme_", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isBTCdayu) {
-            window.open("https://x.com/BTCdayu", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isArya) {
-            window.open("https://x.com/Arya_web3", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isWmafia) {
-            window.open("https://x.com/Wmafia6", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isOrange) {
-            window.open("https://x.com/cryp_orange", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isHtrZac) {
-            window.open("https://x.com/HtrZac", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isHuaHua) {
-            window.open("https://x.com/huahuayjy", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isMirro) {
-            window.open("https://x.com/Mirro7777", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isHuang) {
-            window.open("https://x.com/Huang2024", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isCain) {
-            window.open("https://x.com/cain_bnb", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isCZ) {
-            window.open("https://x.com/cz_binance", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isHeyi) {
-            window.open("https://x.com/heyibinance", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isBroccoli) {
-            window.open("https://x.com/Broccoli__czdog", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg3) {
-            // ❓ Что делать при клике на 3?
-            // window.open("...", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg6) {
-            // ❓ Что делать при клике на 6?
-            // window.open("...", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg9) { // ✅ КРУГ 9 — беловолосый персонаж
-            window.open("https://x.com/zkgoudan", "_blank"); // ✅ Ваша ссылка!
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg901) {
-            // ❓ Что делать при клике на 28?
-            // window.open("...", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg902) {
-            // ❓ Что делать при клике на 19?
-            // window.open("...", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg903) {
-            // ❓ Что делать при клике на 10?
-            // window.open("...", "_blank");
-            clickTimer = millis();
-            showCustomX = false;
-            return;
-          } else if (c.isImg18) { // ✅ КРУГ 18 — мужчина с бородой
-            window.open("https://x.com/BiliSquare", "_blank"); // ✅ Ваша ссылка!
+          if (c.hasImage) {
+            // Открываем соответствующую ссылку
+            let urls = {
+              1: "https://x.com/binance",
+              2: "https://x.com/four_meme_",
+              3: "https://x.com/lin_btc",         // ✅ КРУГ 3
+              4: "https://x.com/BTCdayu",
+              5: "https://x.com/Arya_web3",
+              6: "https://x.com/3ethtomoon",       // ✅ КРУГ 6
+              7: "https://x.com/Wmafia6",
+              8: "https://x.com/cryp_orange",
+              9: "https://x.com/zkgoudan",         // ✅ КРУГ 9
+              10: "https://x.com/HtrZac",
+              11: "https://x.com/HtrZac",
+              12: "https://x.com/huahuayjy",
+              13: "https://x.com/Mirro7777",
+              14: "https://x.com/Huang2024",
+              15: "https://x.com/cain_bnb",
+              16: "https://x.com/cz_binance",
+              17: "https://x.com/heyibinance",
+              18: "https://x.com/BiliSquare",       // ✅ КРУГ 18
+              19: "https://x.com/heyibinance",
+              28: "https://x.com/Broccoli__czdog",
+              30: "https://x.com/Broccoli__czdog"
+            };
+            
+            let url = urls[c.num];
+            if (url) {
+              window.open(url, "_blank");
+            }
             clickTimer = millis();
             showCustomX = false;
             return;
@@ -643,103 +374,35 @@
         for (let i = 0; i < circles.length; i++) {
           let c = circles[i];
           if (dist(touchX, touchY, c.x, c.y) < (circleSize * scale) / 2) {
-            if (c.isBinance) {
-              window.open("https://x.com/binance", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isFourMeme) {
-              window.open("https://x.com/four_meme_", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isBTCdayu) {
-              window.open("https://x.com/BTCdayu", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isArya) {
-              window.open("https://x.com/Arya_web3", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isWmafia) {
-              window.open("https://x.com/Wmafia6", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isOrange) {
-              window.open("https://x.com/cryp_orange", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isHtrZac) {
-              window.open("https://x.com/HtrZac", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isHuaHua) {
-              window.open("https://x.com/huahuayjy", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isMirro) {
-              window.open("https://x.com/Mirro7777", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isHuang) {
-              window.open("https://x.com/Huang2024", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isCain) {
-              window.open("https://x.com/cain_bnb", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isCZ) {
-              window.open("https://x.com/cz_binance", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isHeyi) {
-              window.open("https://x.com/heyibinance", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isBroccoli) {
-              window.open("https://x.com/Broccoli__czdog", "_blank");
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg3) {
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg6) {
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg9) { // ✅ КРУГ 9
-              window.open("https://x.com/zkgoudan", "_blank"); // ✅ Ваша ссылка!
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg901) {
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg902) {
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg903) {
-              clickTimer = millis();
-              showCustomX = false;
-              return false;
-            } else if (c.isImg18) { // ✅ КРУГ 18
-              window.open("https://x.com/BiliSquare", "_blank"); // ✅ Ваша ссылка!
+            if (c.hasImage) {
+              let urls = {
+                1: "https://x.com/binance",
+                2: "https://x.com/four_meme_",
+                3: "https://x.com/lin_btc",         // ✅ КРУГ 3
+                4: "https://x.com/BTCdayu",
+                5: "https://x.com/Arya_web3",
+                6: "https://x.com/3ethtomoon",       // ✅ КРУГ 6
+                7: "https://x.com/Wmafia6",
+                8: "https://x.com/cryp_orange",
+                9: "https://x.com/zkgoudan",         // ✅ КРУГ 9
+                10: "https://x.com/HtrZac",
+                11: "https://x.com/HtrZac",
+                12: "https://x.com/huahuayjy",
+                13: "https://x.com/Mirro7777",
+                14: "https://x.com/Huang2024",
+                15: "https://x.com/cain_bnb",
+                16: "https://x.com/cz_binance",
+                17: "https://x.com/heyibinance",
+                18: "https://x.com/BiliSquare",       // ✅ КРУГ 18
+                19: "https://x.com/heyibinance",
+                28: "https://x.com/Broccoli__czdog",
+                30: "https://x.com/Broccoli__czdog"
+              };
+              
+              let url = urls[c.num];
+              if (url) {
+                window.open(url, "_blank");
+              }
               clickTimer = millis();
               showCustomX = false;
               return false;
@@ -747,13 +410,45 @@
           }
         }
       }
+      return false;
     }
 
     function copyContract() {
-      navigator.clipboard.writeText(contractAddress).then(() => {
-        showCopyMessage = true;
-        copyMessageTimer = millis();
-      }).catch(err => console.error('Не удалось скопировать:', err));
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(contractAddress).then(() => {
+          showCopyMessage = true;
+          copyMessageTimer = millis();
+        }).catch(err => {
+          console.error('Не удалось скопировать:', err);
+          // Fallback
+          let textArea = document.createElement("textarea");
+          textArea.value = contractAddress;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand('copy');
+            showCopyMessage = true;
+            copyMessageTimer = millis();
+          } catch (err) {
+            console.error('Fallback copy failed:', err);
+          }
+          document.body.removeChild(textArea);
+        });
+      } else {
+        // Fallback для очень старых браузеров
+        let textArea = document.createElement("textarea");
+        textArea.value = contractAddress;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showCopyMessage = true;
+          copyMessageTimer = millis();
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+        }
+        document.body.removeChild(textArea);
+      }
     }
 
     function resizeCanvasForMobile() {
@@ -768,12 +463,15 @@
 
     function windowResized() {
       resizeCanvasForMobile();
-      centre_x = width / 2;
-      centre_y = height / 2;
     }
 
-    window.addEventListener('load', () => resizeCanvasForMobile());
-    window.addEventListener('resize', () => setTimeout(resizeCanvasForMobile, 100));
+    window.addEventListener('load', () => {
+      resizeCanvasForMobile();
+      setTimeout(resizeCanvasForMobile, 500);
+    });
+    window.addEventListener('resize', () => {
+      setTimeout(resizeCanvasForMobile, 100);
+    });
   </script>
 </head>
 <body>
