@@ -359,18 +359,18 @@
         }
       }
 
-      // Отрисовка белых точек по краю чёрного круга
-      let pointRadius = 350 * scale; // тот же радиус, что и у кругов
+      // Отрисовка белых точек по краю чёрного круга — увеличенные в 2 раза
+      let pointRadius = 360 * scale; // чуть больше, чем у кругов (350)
 
       // Большие точки — 3, 6, 9, 12 часов
-      let bigPoints = [0, 90, 180, 270]; // углы в градусах → 12, 3, 6, 9 часов
+      let bigPoints = [0, 90, 180, 270]; // 12, 3, 6, 9 часов
       fill(255);
       noStroke();
       for (let angleDeg of bigPoints) {
         let angleRad = radians(angleDeg - 90); // -90 чтобы начать с 12 часов
         let x = centre_x + cos(angleRad) * pointRadius;
         let y = centre_y + sin(angleRad) * pointRadius;
-        ellipse(x, y, 6 * scale, 6 * scale); // большой размер
+        ellipse(x, y, 12 * scale, 12 * scale); // увеличено в 2 раза
       }
 
       // Маленькие точки — 1, 2, 4, 5, 7, 8, 10, 11 часов
@@ -379,7 +379,7 @@
         let angleRad = radians(angleDeg - 90);
         let x = centre_x + cos(angleRad) * pointRadius;
         let y = centre_y + sin(angleRad) * pointRadius;
-        ellipse(x, y, 3 * scale, 3 * scale); // маленький размер
+        ellipse(x, y, 6 * scale, 6 * scale); // увеличено в 2 раза
       }
 
       // НАДПИСЬ "COPY"
