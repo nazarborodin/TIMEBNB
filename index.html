@@ -36,7 +36,7 @@
 
     let showCopyMessage = false;
     let copyMessageTimer = 0;
-    const contractAddress = "0x..........12.10.2025UTC-15:00.......4444";
+    const contractAddress = "0x..........18.10.2025UTC-15:00.......4444";
 
     let scale = 1;
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
@@ -57,7 +57,7 @@
       7: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/7.png",
       8: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/8.png",
       9: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/9.png",   // ✅ КРУГ 9
-      10: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png", // ❌ Не кликабельный, нет X
+      10: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/903.png", // ❌ Не кликабельный
       11: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/11.png",
       12: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/12.png",
       13: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/13.png",
@@ -66,9 +66,24 @@
       16: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/16.png",
       17: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/17.png",
       18: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/18.png", // ✅ КРУГ 18
-      19: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png", // ❌ Не кликабельный, нет X
-      28: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png", // ❌ Не кликабельный, нет X
-      30: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png"
+      19: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/902.png", // ❌ Не кликабельный
+      20: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/20.png", // ✅ КРУГ 20
+      21: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/21.png", // ✅ КРУГ 21
+      22: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/22.png", // ✅ КРУГ 22
+      23: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/23.png", // ✅ КРУГ 23
+      24: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/24.png", // ✅ КРУГ 24
+      25: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/25.png", // ✅ КРУГ 25
+      26: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/26.png", // ✅ КРУГ 26
+      27: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/27.png", // ✅ КРУГ 27
+      28: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/901.png", // ❌ Не кликабельный
+      29: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/29.png", // ✅ КРУГ 29
+      30: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/30.png",
+      31: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/31.png", // ✅ КРУГ 31
+      32: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/32.png", // ✅ КРУГ 32
+      33: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/33.png", // ✅ КРУГ 33
+      34: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/34.png", // ✅ КРУГ 34
+      35: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/35.png", // ✅ КРУГ 35
+      36: "https://raw.githubusercontent.com/nazarborodin/TIMEBNB/main/36.png"  // ✅ КРУГ 36
     };
 
     // Цена BNB
@@ -127,12 +142,12 @@
         let y = centre_y + sin(angle) * radius;
 
         let num = i + 1;
-        let hasImage = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,28,30].includes(num);
+        let hasImage = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36].includes(num);
         
         // Круги 10,19,28 — НЕ кликабельны и НЕ показывают X
-        let clickableImage = [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,30].includes(num);
+        let clickableImage = [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,29,30,31,32,33,34,35,36].includes(num);
         // Все круги с изображениями, кроме 10,19,28 — показывают X при наведении
-        let showXOnHover = [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,30].includes(num);
+        let showXOnHover = [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,29,30,31,32,33,34,35,36].includes(num);
 
         circles.push({
           x: x,
@@ -195,7 +210,7 @@
       textSize(14 * scale);
       textAlign(CENTER, CENTER);
       fill(255);
-      text("0x..........12.10.2025", centre_x, centre_y - 120 * scale);
+      text("0x..........18.10.2025", centre_x, centre_y - 120 * scale);
       text("UTC-15:00.......4444", centre_x, centre_y - 100 * scale);
 
       // ТЕКСТ "TIME BNB"
@@ -269,7 +284,7 @@
       showCustomX = false;
 
       // Проверка наведения на контракт
-      let textW1 = textWidth("0x..........12.10.2025") * scale;
+      let textW1 = textWidth("0x..........18.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
       let x1 = centre_x - maxWidth / 2;
@@ -300,7 +315,7 @@
 
     function mousePressed() {
       // Проверка клика по адресу
-      let textW1 = textWidth("0x..........12.10.2025") * scale;
+      let textW1 = textWidth("0x..........18.10.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
       let x1 = centre_x - maxWidth / 2;
@@ -339,7 +354,22 @@
               16: "https://x.com/cz_binance",
               17: "https://x.com/heyibinance",
               18: "https://x.com/BiliSquare",       // ✅ КРУГ 18
-              30: "https://x.com/Broccoli__czdog"
+              20: "https://x.com/EnHeng456",       // ✅ КРУГ 20
+              21: "https://x.com/GCsheng",         // ✅ КРУГ 21
+              22: "https://x.com/Ed_x0101",        // ✅ КРУГ 22
+              23: "https://x.com/DekuKing1",       // ✅ КРУГ 23
+              24: "https://x.com/cryptocishanjia", // ✅ КРУГ 24
+              25: "https://x.com/connectfarm1",    // ✅ КРУГ 25
+              26: "https://x.com/brc20niubi",      // ✅ КРУГ 26
+              27: "https://x.com/hexiecs",         // ✅ КРУГ 27
+              29: "https://x.com/NFTfafafa",       // ✅ КРУГ 29
+              30: "https://x.com/Broccoli__czdog",
+              31: "https://x.com/doushi0503",      // ✅ КРУГ 31
+              32: "https://x.com/Airdrop_Guard",   // ✅ КРУГ 32
+              33: "https://x.com/cryptolyxe",      // ✅ КРУГ 33
+              34: "https://x.com/Aster_DEX",       // ✅ КРУГ 34
+              35: "https://x.com/gmgnai",          // ✅ КРУГ 35
+              36: "https://x.com/PancakeSwap"      // ✅ КРУГ 36
             };
             
             let url = urls[c.num];
@@ -360,7 +390,7 @@
         let touchY = touches[0].y;
 
         // Касание адреса
-        let textW1 = textWidth("0x..........12.10.2025") * scale;
+        let textW1 = textWidth("0x..........18.10.2025") * scale;
         let textW2 = textWidth("UTC-15:00.......4444") * scale;
         let maxWidth = Math.max(textW1, textW2);
         let x1 = centre_x - maxWidth / 2;
@@ -399,7 +429,22 @@
                 16: "https://x.com/cz_binance",
                 17: "https://x.com/heyibinance",
                 18: "https://x.com/BiliSquare",       // ✅ КРУГ 18
-                30: "https://x.com/Broccoli__czdog"
+                20: "https://x.com/EnHeng456",       // ✅ КРУГ 20
+                21: "https://x.com/GCsheng",         // ✅ КРУГ 21
+                22: "https://x.com/Ed_x0101",        // ✅ КРУГ 22
+                23: "https://x.com/DekuKing1",       // ✅ КРУГ 23
+                24: "https://x.com/cryptocishanjia", // ✅ КРУГ 24
+                25: "https://x.com/connectfarm1",    // ✅ КРУГ 25
+                26: "https://x.com/brc20niubi",      // ✅ КРУГ 26
+                27: "https://x.com/hexiecs",         // ✅ КРУГ 27
+                29: "https://x.com/NFTfafafa",       // ✅ КРУГ 29
+                30: "https://x.com/Broccoli__czdog",
+                31: "https://x.com/doushi0503",      // ✅ КРУГ 31
+                32: "https://x.com/Airdrop_Guard",   // ✅ КРУГ 32
+                33: "https://x.com/cryptolyxe",      // ✅ КРУГ 33
+                34: "https://x.com/Aster_DEX",       // ✅ КРУГ 34
+                35: "https://x.com/gmgnai",          // ✅ КРУГ 35
+                36: "https://x.com/PancakeSwap"      // ✅ КРУГ 36
               };
               
               let url = urls[c.num];
