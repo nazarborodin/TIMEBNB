@@ -36,7 +36,7 @@
 
     let showCopyMessage = false;
     let copyMessageTimer = 0;
-    const contractAddress = "0x..........18.10.2025UTC-15:00.......4444";
+    const contractAddress = "0x..........15.11.2025UTC-15:00.......4444";
 
     let scale = 1;
     let contractArea = { x1: 0, y1: 0, x2: 0, y2: 0 };
@@ -210,7 +210,7 @@
       textSize(14 * scale);
       textAlign(CENTER, CENTER);
       fill(255);
-      text("0x..........18.10.2025", centre_x, centre_y - 120 * scale);
+      text("0x..........15.11.2025", centre_x, centre_y - 120 * scale);
       text("UTC-15:00.......4444", centre_x, centre_y - 100 * scale);
 
       // ТЕКСТ "TIME BNB"
@@ -284,7 +284,7 @@
       showCustomX = false;
 
       // Проверка наведения на контракт
-      let textW1 = textWidth("0x..........18.10.2025") * scale;
+      let textW1 = textWidth("0x..........15.11.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
       let x1 = centre_x - maxWidth / 2;
@@ -315,7 +315,7 @@
 
     function mousePressed() {
       // Проверка клика по адресу
-      let textW1 = textWidth("0x..........18.10.2025") * scale;
+      let textW1 = textWidth("0x..........15.11.2025") * scale;
       let textW2 = textWidth("UTC-15:00.......4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
       let x1 = centre_x - maxWidth / 2;
@@ -390,7 +390,7 @@
         let touchY = touches[0].y;
 
         // Касание адреса
-        let textW1 = textWidth("0x..........18.10.2025") * scale;
+        let textW1 = textWidth("0x..........15.11.2025") * scale;
         let textW2 = textWidth("UTC-15:00.......4444") * scale;
         let maxWidth = Math.max(textW1, textW2);
         let x1 = centre_x - maxWidth / 2;
