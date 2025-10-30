@@ -444,8 +444,8 @@
     function resizeCanvasForMobile() {
       let w = window.innerWidth;
       let h = window.innerHeight;
-      if (w / h > 4 / 3) w = h * 4 / 3;
-      else h = w * 3 / 4;
+      if (w / h > 16 / 9) w = h * 16 / 9;
+      else h = w * 9 / 16;
       createCanvas(w, h);
       centre_x = width / 2;
       centre_y = height / 2;
