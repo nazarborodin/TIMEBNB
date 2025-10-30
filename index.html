@@ -98,8 +98,9 @@
       }
     }
 
-    // Вспомогательная функция: проверка перекрытия
-    function isTooClose(newX, newY, existing, minDist) {
+    // ✅ Улучшенная проверка перекрытия с учётом размера текста
+    function isTooClose(newX, newY, existing, textSizeValue) {
+      const minDist = textSizeValue * 1.2; // 20% зазора
       for (let p of existing) {
         let d = dist(newX, newY, p.x, p.y);
         if (d < minDist) return true;
@@ -116,44 +117,47 @@
       const attempts = 20;
 
       // === КРУПНЫЕ (25–35) ===
-      const largeCount = Math.min(100, Math.floor(height / 8));
+      const largeCount = Math.min(80, Math.floor(height / 10));
       const largeMin = 25, largeMax = 35;
       largeParticles = [];
       while (largeParticles.length < largeCount) {
         let x = random(width);
         let y = random(-height, 0);
-        if (!isTooClose(x, y, largeParticles, largeMax)) {
-          let speed = map(random(largeMin, largeMax), largeMin, largeMax, 1, 4) / 6;
-          largeParticles.push({ x, y, size: random(largeMin, largeMax), speed });
+        let size = random(largeMin, largeMax);
+        if (!isTooClose(x, y, largeParticles, size)) {
+          let speed = map(size, largeMin, largeMax, 1, 4) / 6;
+          largeParticles.push({ x, y, size, speed });
         }
       }
 
       // === СРЕДНИЕ (16–24) ===
-      const medCount = Math.min(200, Math.floor(height / 4));
+      const medCount = Math.min(150, Math.floor(height / 6));
       const medMin = 16, medMax = 24;
       mediumParticles = [];
       let tries = 0;
       while (mediumParticles.length < medCount && tries < attempts * medCount) {
         let x = random(width);
         let y = random(-height, 0);
-        if (!isTooClose(x, y, mediumParticles, medMax)) {
-          let speed = map(random(medMin, medMax), medMin, medMax, 1, 4) / 6;
-          mediumParticles.push({ x, y, size: random(medMin, medMax), speed });
+        let size = random(medMin, medMax);
+        if (!isTooClose(x, y, mediumParticles, size)) {
+          let speed = map(size, medMin, medMax, 1, 4) / 6;
+          mediumParticles.push({ x, y, size, speed });
         }
         tries++;
       }
 
       // === МЕЛКИЕ (9–15) ===
-      const smallCount = Math.min(400, height);
+      const smallCount = Math.min(300, Math.floor(height / 3));
       const smallMin = 9, smallMax = 15;
       smallParticles = [];
       tries = 0;
       while (smallParticles.length < smallCount && tries < attempts * smallCount) {
         let x = random(width);
         let y = random(-height, 0);
-        if (!isTooClose(x, y, smallParticles, smallMax)) {
-          let speed = map(random(smallMin, smallMax), smallMin, smallMax, 1, 4) / 6;
-          smallParticles.push({ x, y, size: random(smallMin, smallMax), speed });
+        let size = random(smallMin, smallMax);
+        if (!isTooClose(x, y, smallParticles, size)) {
+          let speed = map(size, smallMin, smallMax, 1, 4) / 6;
+          smallParticles.push({ x, y, size, speed });
         }
         tries++;
       }
@@ -166,7 +170,7 @@
     function draw() {
       background(0);
 
-      // --- ОТРИСОВКА СЛОЁВ ЧАСТИЦ ПО ВСЕМУ ЭКРАНУ ---
+      // --- ОТРИСОВКА СЛОЁВ ---
       for (let p of largeParticles) {
         textSize(p.size);
         fill(255, 220, 0, 200);
