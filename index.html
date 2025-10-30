@@ -225,14 +225,14 @@
 
       noStroke();
 
-      fill(0);
-      arc(centre_x, centre_y, hour_size, hour_size, -PI / 2, (utcHour / 12 * TWO_PI) - (PI / 2), PIE);
       fill(40);
+      arc(centre_x, centre_y, hour_size, hour_size, -PI / 2, (utcHour / 12 * TWO_PI) - (PI / 2), PIE);
+      fill(0);
       ellipse(centre_x, centre_y, hour_inner, hour_inner);
 
       fill(255, 220, 0);
       arc(centre_x, centre_y, minute_size, minute_size, -PI / 2, (utcMinute / 60 * TWO_PI) - (PI / 2), PIE);
-      fill(40);
+      fill(0);
       ellipse(centre_x, centre_y, minute_inner, minute_inner);
 
       if (utcSecond > 0) {
@@ -240,7 +240,7 @@
         fill(255);
         arc(centre_x, centre_y, second_size, second_size, -PI / 2, secondAngle, PIE);
       }
-      fill(40);
+      fill(0);
       ellipse(centre_x, centre_y, second_inner, second_inner);
 
       textSize(14 * scale);
