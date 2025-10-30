@@ -18,9 +18,10 @@
     }
     canvas {
       display: block;
-      margin: 0 auto;
-      max-width: 100vw;
-      max-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
     }
 
     .contract-area {
@@ -112,7 +113,7 @@
       centre_x = width / 2;
       centre_y = height / 2;
 
-      const attempts = 20; // макс попыток разместить частицу
+      const attempts = 20;
 
       // === КРУПНЫЕ (25–35) ===
       const largeCount = Math.min(100, Math.floor(height / 8));
@@ -163,10 +164,9 @@
     }
 
     function draw() {
-      background(0); // без шлейфа
+      background(0);
 
-      // --- ОТРИСОВКА СЛОЁВ ---
-      // Крупные
+      // --- ОТРИСОВКА СЛОЁВ ЧАСТИЦ ПО ВСЕМУ ЭКРАНУ ---
       for (let p of largeParticles) {
         textSize(p.size);
         fill(255, 220, 0, 200);
@@ -175,11 +175,9 @@
         if (p.y > height + p.size) {
           p.y = -p.size;
           p.x = random(width);
-          // Перемещаем, но не проверяем наложение в реальном времени (для производительности)
         }
       }
 
-      // Средние
       for (let p of mediumParticles) {
         textSize(p.size);
         fill(255, 220, 0, 150);
@@ -191,7 +189,6 @@
         }
       }
 
-      // Мелкие
       for (let p of smallParticles) {
         textSize(p.size);
         fill(255, 220, 0, 100);
@@ -394,7 +391,7 @@
             7: "https://x.com/Wmafia6",
             8: "https://x.com/cryp_orange",
             9: "https://x.com/zkgoudan",
-            11: "https://x.com/4444_fun", // ✅
+            11: "https://x.com/4444_fun",
             12: "https://x.com/huahuayjy",
             13: "https://x.com/Mirro7777",
             14: "https://x.com/Huang2024",
@@ -442,20 +439,18 @@
     }
 
     function resizeCanvasForMobile() {
-      let w = window.innerWidth;
-      let h = window.innerHeight;
-      if (w / h > 16 / 9) w = h * 16 / 9;
-      else h = w * 9 / 16;
-      createCanvas(w, h);
+      createCanvas(window.innerWidth, window.innerHeight);
       centre_x = width / 2;
       centre_y = height / 2;
     }
 
     function windowResized() {
-      setTimeout(resizeCanvasForMobile, 100);
+      resizeCanvasForMobile();
     }
 
-    window.addEventListener('load', () => setTimeout(resizeCanvasForMobile, 500));
+    window.addEventListener('load', () => {
+      setTimeout(resizeCanvasForMobile, 500);
+    });
   </script>
 </head>
 <body>
