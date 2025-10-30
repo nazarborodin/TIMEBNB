@@ -122,7 +122,7 @@
         let x = random(width);
         let y = random(-height, 0);
         if (!isTooClose(x, y, largeParticles, largeMax)) {
-          let speed = map(random(largeMin, largeMax), largeMin, largeMax, 1, 4) / 4;
+          let speed = map(random(largeMin, largeMax), largeMin, largeMax, 1, 4) / 6;
           largeParticles.push({ x, y, size: random(largeMin, largeMax), speed });
         }
       }
@@ -136,7 +136,7 @@
         let x = random(width);
         let y = random(-height, 0);
         if (!isTooClose(x, y, mediumParticles, medMax)) {
-          let speed = map(random(medMin, medMax), medMin, medMax, 1, 4) / 4;
+          let speed = map(random(medMin, medMax), medMin, medMax, 1, 4) / 6;
           mediumParticles.push({ x, y, size: random(medMin, medMax), speed });
         }
         tries++;
@@ -151,7 +151,7 @@
         let x = random(width);
         let y = random(-height, 0);
         if (!isTooClose(x, y, smallParticles, smallMax)) {
-          let speed = map(random(smallMin, smallMax), smallMin, smallMax, 1, 4) / 4;
+          let speed = map(random(smallMin, smallMax), smallMin, smallMax, 1, 4) / 6;
           smallParticles.push({ x, y, size: random(smallMin, smallMax), speed });
         }
         tries++;
