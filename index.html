@@ -35,7 +35,7 @@
 
     let showCopyMessage = false;
     let copyMessageTimer = 0;
-    const contractAddress = "0x..........15.11.2025UTC-15:00.......4444";
+    const contractAddress = "0x..........15.11.2025................4444";
 
     let scale = 1;
     let circleSize = 40;
@@ -247,7 +247,7 @@
       textAlign(CENTER, CENTER);
       fill(255);
       text("0x..........15.11.2025", centre_x, centre_y - 120 * scale);
-      text("UTC-15:00.......4444", centre_x, centre_y - 100 * scale);
+      text("................4444", centre_x, centre_y - 100 * scale);
 
       textSize(80 * scale);
       textStyle(BOLD);
@@ -345,7 +345,7 @@
     function mouseMoved() {
       showCustomX = false;
       let textW1 = textWidth("0x..........15.11.2025") * scale;
-      let textW2 = textWidth("UTC-15:00.......4444") * scale;
+      let textW2 = textWidth("................4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
       let x1 = centre_x - maxWidth / 2;
       let y1 = centre_y - 130 * scale;
@@ -370,7 +370,7 @@
 
     function mousePressed() {
       let textW1 = textWidth("0x..........15.11.2025") * scale;
-      let textW2 = textWidth("UTC-15:00.......4444") * scale;
+      let textW2 = textWidth("................4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
       let x1 = centre_x - maxWidth / 2;
       let y1 = centre_y - 130 * scale;
