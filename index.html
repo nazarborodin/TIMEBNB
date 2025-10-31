@@ -92,6 +92,15 @@
     let mediumParticles = [];
     let smallParticles = [];
 
+    // Проверка перекрытия текстовых блоков
+    function textsOverlap(x1, y1, size1, x2, y2, size2) {
+      const w1 = size1 * 2.8;
+      const h1 = size1 * 1.2;
+      const w2 = size2 * 2.8;
+      const h2 = size2 * 1.2;
+      return !(x1 + w1 < x2 || x2 + w2 < x1 || y1 + h1 < y2 || y2 + h2 < y1);
+    }
+
     function preload() {
       for (let key in imageUrls) {
         images[key] = loadImage(imageUrls[key]);
@@ -170,10 +179,21 @@
     function draw() {
       background(0);
 
-      // --- ОТРИСОВКА СЛОЁВ ---
-      for (let p of largeParticles) {
+      // === ОТРИСОВКА КРУПНЫХ ЧАСТИЦ ("BNB") ===
+      for (let i = 0; i < largeParticles.length; i++) {
+        let p = largeParticles[i];
+        let isOverlapping = false;
+        for (let j = 0; j < largeParticles.length; j++) {
+          if (i !== j) {
+            let other = largeParticles[j];
+            if (textsOverlap(p.x, p.y, p.size, other.x, other.y, other.size)) {
+              isOverlapping = true;
+              break;
+            }
+          }
+        }
+        fill(isOverlapping ? 0 : color(255, 220, 0, 200));
         textSize(p.size);
-        fill(255, 220, 0, 200);
         text("BNB", p.x, p.y);
         p.y += p.speed;
         if (p.y > height + p.size) {
@@ -182,9 +202,21 @@
         }
       }
 
-      for (let p of mediumParticles) {
+      // === ОТРИСОВКА СРЕДНИХ ЧАСТИЦ ("TIME") ===
+      for (let i = 0; i < mediumParticles.length; i++) {
+        let p = mediumParticles[i];
+        let isOverlapping = false;
+        for (let j = 0; j < mediumParticles.length; j++) {
+          if (i !== j) {
+            let other = mediumParticles[j];
+            if (textsOverlap(p.x, p.y, p.size, other.x, other.y, other.size)) {
+              isOverlapping = true;
+              break;
+            }
+          }
+        }
+        fill(isOverlapping ? 0 : color(255, 220, 0, 150));
         textSize(p.size);
-        fill(255, 220, 0, 150);
         text("TIME", p.x, p.y);
         p.y += p.speed;
         if (p.y > height + p.size) {
@@ -193,9 +225,21 @@
         }
       }
 
-      for (let p of smallParticles) {
+      // === ОТРИСОВКА МЕЛКИХ ЧАСТИЦ ("BNB") ===
+      for (let i = 0; i < smallParticles.length; i++) {
+        let p = smallParticles[i];
+        let isOverlapping = false;
+        for (let j = 0; j < smallParticles.length; j++) {
+          if (i !== j) {
+            let other = smallParticles[j];
+            if (textsOverlap(p.x, p.y, p.size, other.x, other.y, other.size)) {
+              isOverlapping = true;
+              break;
+            }
+          }
+        }
+        fill(isOverlapping ? 0 : color(255, 220, 0, 100));
         textSize(p.size);
-        fill(255, 220, 0, 100);
         text("BNB", p.x, p.y);
         p.y += p.speed;
         if (p.y > height + p.size) {
