@@ -363,7 +363,8 @@
         let y = centre_y + sin(angle) * radius;
 
         let num = i + 1;
-        let clickableImage = ![10, 19, 28].includes(num);
+        // ✅ Теперь 19 — кликабелен (удалено из исключений)
+        let clickableImage = ![10, 28].includes(num);
         circles.push({
           x: x,
           y: y,
@@ -447,6 +448,7 @@
             16: "https://x.com/cz_binance",
             17: "https://x.com/heyibinance",
             18: "https://x.com/BiliSquare",
+            19: "https://x.com/BNBChain", // ✅ Добавлено!
             20: "https://x.com/EnHeng456",
             21: "https://x.com/GCsheng",
             22: "https://x.com/Ed_x0101",
