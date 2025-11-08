@@ -57,11 +57,11 @@
       font-weight: bold;
       font-family: Arial, sans-serif;
       white-space: nowrap;
-      animation: scroll-left 30s linear infinite; /* замедлено в 1.5× */
+      animation: scroll-left 30s linear infinite;
     }
 
     .marquee-bottom .marquee-text {
-      animation-duration: 33s; /* замедлено в 1.5× */
+      animation-duration: 33s;
     }
 
     @keyframes scroll-left {
@@ -69,7 +69,7 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* === ВЕРХНИЙ ЛЕВЫЙ УГОЛ: @SUPPORT === */
+    /* === ВЕРХНИЙ ЛЕВЫЙ УГОЛ: @SUPPORT → EMAIL === */
     .support-box {
       position: absolute;
       top: 10px;
@@ -82,25 +82,7 @@
       font-size: 14px;
       cursor: pointer;
       z-index: 11;
-    }
-
-    .support-tooltip {
-      position: absolute;
-      top: 30px;
-      left: 10px;
-      padding: 5px 10px;
-      background: #000;
-      border: 2px solid #FFDC00;
-      color: #FFDC00;
-      font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 12;
-    }
-
-    .support-box:hover + .support-tooltip {
-      opacity: 1;
+      transition: all 0.2s ease;
     }
 
     .copy-message-top {
@@ -115,10 +97,10 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
-      z-index: 13;
+      z-index: 12;
     }
 
-    /* === НИЖНИЙ ЛЕВЫЙ УГОЛ: NFT SUPPLY === */
+    /* === НИЖНИЙ ЛЕВЫЙ УГОЛ: NFT SUPPLY → URL === */
     .nft-supply-box {
       position: absolute;
       bottom: 10px;
@@ -131,25 +113,7 @@
       font-size: 14px;
       cursor: pointer;
       z-index: 11;
-    }
-
-    .nft-supply-tooltip {
-      position: absolute;
-      bottom: 30px;
-      left: 10px;
-      padding: 5px 10px;
-      background: #000;
-      border: 2px solid #FFDC00;
-      color: #FFDC00;
-      font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 12;
-    }
-
-    .nft-supply-box:hover + .nft-supply-tooltip {
-      opacity: 1;
+      transition: all 0.2s ease;
     }
 
     .copy-message-bottom {
@@ -164,7 +128,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
-      z-index: 13;
+      z-index: 12;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -177,7 +141,9 @@
     let copyMessageTimer = 0;
     const contractAddress = "0x..........15.11.2025................4444";
 
-    // ✅ НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ПОДСКАЗОК И КОПИРОВАНИЯ
+    // ✅ НОВЫЕ ПЕРЕМЕННЫЕ
+    let isHoveringSupport = false;
+    let isHoveringNFT = false;
     let showCopyMessageTopLeft = false;
     let showCopyMessageBottomLeft = false;
     let copyMessageTimerTop = 0;
@@ -566,6 +532,19 @@
           break;
         }
       }
+
+      // === ПРОВЕРКА НАВЕДЕНИЯ НА УГЛЫ ===
+      if (mouseX >= 10 && mouseX <= 100 && mouseY >= 10 && mouseY <= 30) {
+        isHoveringSupport = true;
+      } else {
+        isHoveringSupport = false;
+      }
+
+      if (mouseX >= 10 && mouseX <= 120 && mouseY >= height - 30 && mouseY <= height - 10) {
+        isHoveringNFT = true;
+      } else {
+        isHoveringNFT = false;
+      }
     }
 
     function mousePressed() {
@@ -632,7 +611,6 @@
 
       // === КЛИКИ ПО УГЛАМ ===
       if (mouseX >= 10 && mouseX <= 100 && mouseY >= 10 && mouseY <= 30) {
-        // @SUPPORT
         navigator.clipboard.writeText("nazarborodina49@gmail.com").then(() => {
           showCopyMessageTopLeft = true;
           copyMessageTimerTop = millis();
@@ -641,7 +619,6 @@
       }
 
       if (mouseX >= 10 && mouseX <= 120 && mouseY >= height - 30 && mouseY <= height - 10) {
-        // NFT SUPPLY 88 NFT
         navigator.clipboard.writeText("https://element.market/collections/ocean-doodles").then(() => {
           showCopyMessageBottomLeft = true;
           copyMessageTimerBottom = millis();
@@ -693,14 +670,32 @@
     </div>
   </div>
 
-  <!-- Верхний левый угол: @SUPPORT -->
-  <div class="support-box">@SUPPORT</div>
-  <div class="support-tooltip">nazarborodina49@gmail.com</div>
+  <!-- Верхний левый угол: @SUPPORT → EMAIL при наведении -->
+  <div class="support-box" id="supportBox">
+    <script>
+      // Обновление текста при наведении
+      function updateSupportBox() {
+        const box = document.getElementById('supportBox');
+        box.innerText = isHoveringSupport ? 'nazarborodina49@gmail.com' : '@SUPPORT';
+      }
+      // Обновление текста при изменении состояния
+      window.addEventListener('mousemove', updateSupportBox);
+      window.addEventListener('click', updateSupportBox);
+    </script>
+  </div>
   <div class="copy-message-top" id="copyMsgTop"></div>
 
-  <!-- Нижний левый угол: NFT SUPPLY -->
-  <div class="nft-supply-box">NFT SUPPLY 88 NFT</div>
-  <div class="nft-supply-tooltip">https://element.market/collections/ocean-doodles</div>
+  <!-- Нижний левый угол: NFT SUPPLY → URL при наведении -->
+  <div class="nft-supply-box" id="nftSupplyBox">
+    <script>
+      function updateNFTBox() {
+        const box = document.getElementById('nftSupplyBox');
+        box.innerText = isHoveringNFT ? 'https://element.market/collections/ocean-doodles' : 'NFT SUPPLY 88 NFT';
+      }
+      window.addEventListener('mousemove', updateNFTBox);
+      window.addEventListener('click', updateNFTBox);
+    </script>
+  </div>
   <div class="copy-message-bottom" id="copyMsgBottom"></div>
 </body>
 </html>
