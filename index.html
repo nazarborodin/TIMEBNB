@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TIMEBNB</title>
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
+  <link rel="icon" type="image/svg+xml" href="image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
 
   <style>
     body {
@@ -25,7 +25,7 @@
     }
 
     .contract-area {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
+      cursor: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23FFDC00'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='white'/%3E%3Cpath d='M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") 16 16, auto;
     }
 
     /* === БЕГУЩИЕ СТРОКИ === */
@@ -42,7 +42,7 @@
 
     .marquee-bg {
       background: #000;
-      height: 40px; /* ≈ 2 × font-size */
+      height: 40px;
       display: flex;
       align-items: center;
       overflow: hidden;
@@ -52,21 +52,119 @@
     .marquee-text {
       display: inline-block;
       padding-left: 100%;
-      color: #FFFFFF; /* белый текст */
+      color: #FFFFFF;
       font-size: 18px;
       font-weight: bold;
       font-family: Arial, sans-serif;
       white-space: nowrap;
-      animation: scroll-left 40s linear infinite;
+      animation: scroll-left 30s linear infinite; /* замедлено в 1.5× */
     }
 
     .marquee-bottom .marquee-text {
-      animation-duration: 40s;
+      animation-duration: 33s; /* замедлено в 1.5× */
     }
 
     @keyframes scroll-left {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-100%); }
+    }
+
+    /* === ВЕРХНИЙ ЛЕВЫЙ УГОЛ: @SUPPORT === */
+    .support-box {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 5px 10px;
+      background: #000;
+      border: 2px solid #FFDC00;
+      color: #FFDC00;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 11;
+    }
+
+    .support-tooltip {
+      position: absolute;
+      top: 30px;
+      left: 10px;
+      padding: 5px 10px;
+      background: #000;
+      border: 2px solid #FFDC00;
+      color: #FFDC00;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .support-box:hover + .support-tooltip {
+      opacity: 1;
+    }
+
+    .copy-message-top {
+      position: absolute;
+      top: 30px;
+      left: 10px;
+      padding: 5px 10px;
+      background: #000;
+      border: 2px solid #FFDC00;
+      color: #FFDC00;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 13;
+    }
+
+    /* === НИЖНИЙ ЛЕВЫЙ УГОЛ: NFT SUPPLY === */
+    .nft-supply-box {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 5px 10px;
+      background: #000;
+      border: 2px solid #FFDC00;
+      color: #FFDC00;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 11;
+    }
+
+    .nft-supply-tooltip {
+      position: absolute;
+      bottom: 30px;
+      left: 10px;
+      padding: 5px 10px;
+      background: #000;
+      border: 2px solid #FFDC00;
+      color: #FFDC00;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 12;
+    }
+
+    .nft-supply-box:hover + .nft-supply-tooltip {
+      opacity: 1;
+    }
+
+    .copy-message-bottom {
+      position: absolute;
+      bottom: 30px;
+      left: 10px;
+      padding: 5px 10px;
+      background: #000;
+      border: 2px solid #FFDC00;
+      color: #FFDC00;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 13;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -78,6 +176,12 @@
     let showCopyMessage = false;
     let copyMessageTimer = 0;
     const contractAddress = "0x..........15.11.2025................4444";
+
+    // ✅ НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ПОДСКАЗОК И КОПИРОВАНИЯ
+    let showCopyMessageTopLeft = false;
+    let showCopyMessageBottomLeft = false;
+    let copyMessageTimerTop = 0;
+    let copyMessageTimerBottom = 0;
 
     let scale = 1;
     let circleSize = 40;
@@ -133,7 +237,6 @@
     let mediumParticles = [];
     let smallParticles = [];
 
-    // Проверка перекрытия текстовых блоков
     function textsOverlap(x1, y1, size1, x2, y2, size2) {
       const w1 = size1 * 2.8;
       const h1 = size1 * 1.2;
@@ -216,6 +319,7 @@
     function draw() {
       background(0);
 
+      // === ОТРИСОВКА ЧАСТИЦ ===
       for (let i = 0; i < largeParticles.length; i++) {
         let p = largeParticles[i];
         let isOverlapping = false;
@@ -282,6 +386,7 @@
         }
       }
 
+      // --- ОСНОВНОЙ ИНТЕРФЕЙС ---
       d = new Date();
       let utcHour = d.getUTCHours();
       let utcMinute = d.getUTCMinutes();
@@ -381,6 +486,23 @@
         showCustomX = false;
         clickTimer = 0;
       }
+
+      // === ОТРИСОВКА КОПИРОВАНИЯ В УГЛАХ ===
+      if (showCopyMessageTopLeft) {
+        fill(255, 220, 0);
+        textSize(14 * scale);
+        textAlign(LEFT, TOP);
+        text("COPY", 10, 30);
+        if (millis() - copyMessageTimerTop > 2000) showCopyMessageTopLeft = false;
+      }
+
+      if (showCopyMessageBottomLeft) {
+        fill(255, 220, 0);
+        textSize(14 * scale);
+        textAlign(LEFT, BOTTOM);
+        text("COPY", 10, height - 30);
+        if (millis() - copyMessageTimerBottom > 2000) showCopyMessageBottomLeft = false;
+      }
     }
 
     function addZero(i) { return i < 10 ? "0" + i : i; }
@@ -464,7 +586,7 @@
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2 && c.clickableImage) {
           const urls = {
             1: "https://x.com/binance",
-            2: "https://x.com/four_meme_",
+            2: "https://four.meme",
             3: "https://x.com/lin_btc",
             4: "https://x.com/BTCdayu",
             5: "https://x.com/Arya_web3",
@@ -507,6 +629,25 @@
           return;
         }
       }
+
+      // === КЛИКИ ПО УГЛАМ ===
+      if (mouseX >= 10 && mouseX <= 100 && mouseY >= 10 && mouseY <= 30) {
+        // @SUPPORT
+        navigator.clipboard.writeText("nazarborodina49@gmail.com").then(() => {
+          showCopyMessageTopLeft = true;
+          copyMessageTimerTop = millis();
+        }).catch(() => {});
+        return;
+      }
+
+      if (mouseX >= 10 && mouseX <= 120 && mouseY >= height - 30 && mouseY <= height - 10) {
+        // NFT SUPPLY 88 NFT
+        navigator.clipboard.writeText("https://element.market/collections/ocean-doodles").then(() => {
+          showCopyMessageBottomLeft = true;
+          copyMessageTimerBottom = millis();
+        }).catch(() => {});
+        return;
+      }
     }
 
     function touchStarted() {
@@ -541,15 +682,25 @@
   <!-- Верхняя бегущая строка -->
   <div class="marquee-wrapper marquee-top">
     <div class="marquee-bg">
-      <div class="marquee-text">18.12.2025 🎉 AIRDROP FOR THE TOP 8 HOLDERS OF $TIMEBNB, A PRIZE POOL OF 8,888,888 $TIMEBNB TOKENS</div>
+      <div class="marquee-text">18.12.2025🪂AIRDROP</div>
     </div>
   </div>
 
   <!-- Нижняя бегущая строка -->
   <div class="marquee-wrapper marquee-bottom">
     <div class="marquee-bg">
-      <div class="marquee-text">28.12.2025 🎉 AIRDROP FOR NFT(SUPPLY 88 NFT) HOLDERS OF A PRIZE POOL OF 8,888,888 $TIMEBNB TOKENS</div>
+      <div class="marquee-text">28.12.2025🪂NFT</div>
     </div>
   </div>
+
+  <!-- Верхний левый угол: @SUPPORT -->
+  <div class="support-box">@SUPPORT</div>
+  <div class="support-tooltip">nazarborodina49@gmail.com</div>
+  <div class="copy-message-top" id="copyMsgTop"></div>
+
+  <!-- Нижний левый угол: NFT SUPPLY -->
+  <div class="nft-supply-box">NFT SUPPLY 88 NFT</div>
+  <div class="nft-supply-tooltip">https://element.market/collections/ocean-doodles</div>
+  <div class="copy-message-bottom" id="copyMsgBottom"></div>
 </body>
 </html>
