@@ -87,7 +87,7 @@
 
     .copy-message-top {
       position: absolute;
-      top: 30px;
+      top: 35px; /* Смещено ниже, чтобы не перекрывать кнопку */
       left: 10px;
       padding: 5px 10px;
       background: #000;
@@ -97,7 +97,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
-      z-index: 999;
+      z-index: 9999; /* Максимальный z-index */
     }
 
     /* === НИЖНИЙ ЛЕВЫЙ УГОЛ: NFT SUPPLY → URL === */
@@ -118,7 +118,7 @@
 
     .copy-message-bottom {
       position: absolute;
-      bottom: 30px;
+      bottom: 40px; /* Смещено выше, чтобы не перекрывать кнопку */
       left: 10px;
       padding: 5px 10px;
       background: #000;
@@ -128,7 +128,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
-      z-index: 999;
+      z-index: 9999; /* Максимальный z-index */
     }
 
     /* === ЦЕНТРАЛЬНЫЙ КОНТРАКТ === */
@@ -147,7 +147,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
-      z-index: 999;
+      z-index: 9999;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -452,7 +452,7 @@
         fill(255, 220, 0);
         textSize(14 * scale);
         textAlign(LEFT, TOP);
-        text("COPY", 10, 30);
+        text("COPY", 10, 35); // Смещено ниже
         if (millis() - copyMessageTimerTop > 2000) showCopyMessageTopLeft = false;
       }
 
@@ -460,7 +460,7 @@
         fill(255, 220, 0);
         textSize(14 * scale);
         textAlign(LEFT, BOTTOM);
-        text("COPY", 10, height - 30);
+        text("COPY", 10, height - 40); // Смещено выше, чтобы не перекрывать кнопку
         if (millis() - copyMessageTimerBottom > 2000) showCopyMessageBottomLeft = false;
       }
 
@@ -539,7 +539,7 @@
       let x2 = centre_x + maxWidth / 2;
       let y2 = centre_y - 90 * scale;
 
-      // ✅ ИСПРАВЛЕНО: Добавлено изменение курсора через JS, если CSS не работает
+      // ✅ ИСПРАВЛЕНО: Принудительное изменение курсора через JS
       if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
         document.body.style.cursor = "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23FFDC00%22/%3E%3Cpath d=%22M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z%22 fill=%22white%22/%3E%3Cpath d=%22M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222%22/%3E%3C/svg%3E') 16 16, pointer";
       } else {
@@ -587,7 +587,7 @@
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2 && c.clickableImage) {
           const urls = {
             1: "https://x.com/binance",
-            2: "https://x.com/four_meme_",
+            2: "https://four.meme",
             3: "https://x.com/lin_btc",
             4: "https://x.com/BTCdayu",
             5: "https://x.com/Arya_web3",
@@ -681,14 +681,14 @@
   <!-- Верхняя бегущая строка -->
   <div class="marquee-wrapper marquee-top">
     <div class="marquee-bg">
-      <div class="marquee-text">18.12.2025🪂AIRDROP</div>
+      <div class="marquee-text">🎉 12/12/2025 🎉 AIRDROP FOR THE TOP 10 HOLDERS OF $TIMEBNB TOKENS, A PRIZE POOL OF 8,888,888 $TIMEBNB 🎉</div>
     </div>
   </div>
 
   <!-- Нижняя бегущая строка -->
   <div class="marquee-wrapper marquee-bottom">
     <div class="marquee-bg">
-      <div class="marquee-text">28.12.2025🪂NFT</div>
+      <div class="marquee-text">🎉 12/12/2025 🎉 AIRDROP FOR NFT HOLDERS OF A PRIZE POOL OF 8,888,888 TOKENS OF $TIMEBNB 🎉</div>
     </div>
   </div>
 
