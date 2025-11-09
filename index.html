@@ -69,41 +69,10 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* === ВЕРХНИЙ ЛЕВЫЙ УГОЛ: @SUPPORT → EMAIL === */
-    .support-box {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 5px 10px;
-      background: #000;
-      border: 2px solid #FFDC00;
-      color: #FFDC00;
-      font-weight: bold;
-      font-size: 14px;
-      cursor: pointer;
-      z-index: 11;
-      transition: all 0.2s ease;
-    }
-
-    .copy-message-top {
-      position: absolute;
-      top: 35px; /* Смещено ниже, чтобы не перекрывать кнопку */
-      left: 10px;
-      padding: 5px 10px;
-      background: #000;
-      border: 2px solid #FFDC00;
-      color: #FFDC00;
-      font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 9999; /* Максимальный z-index */
-    }
-
-    /* === НИЖНИЙ ЛЕВЫЙ УГОЛ: NFT SUPPLY → URL === */
+    /* === КНОПКИ В УГЛАХ === */
+    .support-box,
     .nft-supply-box {
       position: absolute;
-      bottom: 10px;
       left: 10px;
       padding: 5px 10px;
       background: #000;
@@ -113,41 +82,15 @@
       font-size: 14px;
       cursor: pointer;
       z-index: 11;
-      transition: all 0.2s ease;
+      user-select: none;
     }
 
-    .copy-message-bottom {
-      position: absolute;
-      bottom: 40px; /* Смещено выше, чтобы не перекрывать кнопку */
-      left: 10px;
-      padding: 5px 10px;
-      background: #000;
-      border: 2px solid #FFDC00;
-      color: #FFDC00;
-      font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 9999; /* Максимальный z-index */
+    .support-box {
+      top: 10px;
     }
 
-    /* === ЦЕНТРАЛЬНЫЙ КОНТРАКТ === */
-    .contract-copy-message {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 10px 20px;
-      background: #000;
-      border: 2px solid #FFDC00;
-      color: #FFDC00;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 9999;
+    .nft-supply-box {
+      bottom: 10px;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -160,9 +103,7 @@
     let copyMessageTimer = 0;
     const contractAddress = "0x..........15.11.2025................4444";
 
-    // ✅ НОВЫЕ ПЕРЕМЕННЫЕ
-    let isHoveringSupport = false;
-    let isHoveringNFT = false;
+    // Новые переменные для COPY
     let showCopyMessageTopLeft = false;
     let showCopyMessageBottomLeft = false;
     let copyMessageTimerTop = 0;
@@ -217,7 +158,7 @@
     let xCursorX, xCursorY;
     let clickTimer = 0;
 
-    // === ТРИ СЛОЯ ЧАСТИЦ ===
+    // === ЧАСТИЦЫ ===
     let largeParticles = [];
     let mediumParticles = [];
     let smallParticles = [];
@@ -252,7 +193,6 @@
       centre_y = height / 2;
 
       const attempts = 20;
-
       const largeCount = Math.min(80, Math.floor(height / 10));
       const largeMin = 25, largeMax = 35;
       largeParticles = [];
@@ -304,7 +244,7 @@
     function draw() {
       background(0);
 
-      // === ОТРИСОВКА ЧАСТИЦ ===
+      // === ЧАСТИЦЫ ===
       for (let i = 0; i < largeParticles.length; i++) {
         let p = largeParticles[i];
         let isOverlapping = false;
@@ -371,7 +311,7 @@
         }
       }
 
-      // --- ОСНОВНОЙ ИНТЕРФЕЙС ---
+      // --- ИНТЕРФЕЙС ---
       d = new Date();
       let utcHour = d.getUTCHours();
       let utcMinute = d.getUTCMinutes();
@@ -392,7 +332,6 @@
       let second_inner = second_size - 50 * scale;
 
       noStroke();
-
       fill(60);
       arc(centre_x, centre_y, hour_size, hour_size, -PI / 2, (utcHour / 12 * TWO_PI) - (PI / 2), PIE);
       fill(0);
@@ -447,32 +386,6 @@
         }
       }
 
-      // === ОТРИСОВКА КОПИРОВАНИЯ В УГЛАХ ===
-      if (showCopyMessageTopLeft) {
-        fill(255, 220, 0);
-        textSize(14 * scale);
-        textAlign(LEFT, TOP);
-        text("COPY", 10, 35); // Смещено ниже
-        if (millis() - copyMessageTimerTop > 2000) showCopyMessageTopLeft = false;
-      }
-
-      if (showCopyMessageBottomLeft) {
-        fill(255, 220, 0);
-        textSize(14 * scale);
-        textAlign(LEFT, BOTTOM);
-        text("COPY", 10, height - 40); // Смещено выше, чтобы не перекрывать кнопку
-        if (millis() - copyMessageTimerBottom > 2000) showCopyMessageBottomLeft = false;
-      }
-
-      // === ОТРИСОВКА ЦЕНТРАЛЬНОГО COPY ===
-      if (showCopyMessage) {
-        fill(255, 220, 0);
-        textSize(24 * scale);
-        textAlign(CENTER, CENTER);
-        text("COPY", centre_x, centre_y + 160 * scale);
-        if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
-      }
-
       if (showCustomX) {
         push();
         noStroke();
@@ -489,6 +402,31 @@
       if (clickTimer > 0 && millis() - clickTimer > 1000) {
         showCustomX = false;
         clickTimer = 0;
+      }
+
+      // === РИСУЕМ "COPY" ПОВЕРХ ВСЕГО ===
+      if (showCopyMessage) {
+        fill(255, 220, 0);
+        textSize(24 * scale);
+        textAlign(CENTER, CENTER);
+        text("COPY", centre_x, centre_y + 160 * scale);
+        if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
+      }
+
+      if (showCopyMessageTopLeft) {
+        fill(255, 220, 0);
+        textSize(16 * scale);
+        textAlign(LEFT, TOP);
+        text("COPY", 10, 35);
+        if (millis() - copyMessageTimerTop > 2000) showCopyMessageTopLeft = false;
+      }
+
+      if (showCopyMessageBottomLeft) {
+        fill(255, 220, 0);
+        textSize(16 * scale);
+        textAlign(LEFT, BOTTOM);
+        text("COPY", 10, height - 45);
+        if (millis() - copyMessageTimerBottom > 2000) showCopyMessageBottomLeft = false;
       }
     }
 
@@ -530,7 +468,7 @@
     }
 
     function mouseMoved() {
-      showCustomX = false;
+      // Контракт
       let textW1 = textWidth("0x..........15.11.2025") * scale;
       let textW2 = textWidth("................4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -539,13 +477,24 @@
       let x2 = centre_x + maxWidth / 2;
       let y2 = centre_y - 90 * scale;
 
-      // ✅ ИСПРАВЛЕНО: Принудительное изменение курсора через JS
       if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
-        document.body.style.cursor = "url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23FFDC00%22/%3E%3Cpath d=%22M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z%22 fill=%22white%22/%3E%3Cpath d=%22M16 8l-8 4.8V22.4L16 27.2l8-4.8V12.8z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222%22/%3E%3C/svg%3E') 16 16, pointer";
+        document.body.classList.add('contract-area');
       } else {
-        document.body.style.cursor = "default";
+        document.body.classList.remove('contract-area');
       }
 
+      // Обновление текста кнопок
+      const supportBtn = document.getElementById('supportBox');
+      const nftBtn = document.getElementById('nftSupplyBox');
+
+      const isOverSupport = mouseX >= 10 && mouseX <= 120 && mouseY >= 10 && mouseY <= 30;
+      const isOverNFT = mouseX >= 10 && mouseX <= 180 && mouseY >= height - 30 && mouseY <= height - 10;
+
+      if (supportBtn) supportBtn.innerText = isOverSupport ? 'nazarborodina49@gmail.com' : '@SUPPORT';
+      if (nftBtn) nftBtn.innerText = isOverNFT ? 'https://element.market/collections/ocean-doodles' : 'NFT SUPPLY 88 NFT';
+
+      // Курсор X
+      showCustomX = false;
       for (let c of circles) {
         if (c.showXOnHover && dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2) {
           showCustomX = true;
@@ -554,22 +503,10 @@
           break;
         }
       }
-
-      // === ПРОВЕРКА НАВЕДЕНИЯ НА УГЛЫ ===
-      if (mouseX >= 10 && mouseX <= 100 && mouseY >= 10 && mouseY <= 30) {
-        isHoveringSupport = true;
-      } else {
-        isHoveringSupport = false;
-      }
-
-      if (mouseX >= 10 && mouseX <= 120 && mouseY >= height - 30 && mouseY <= height - 10) {
-        isHoveringNFT = true;
-      } else {
-        isHoveringNFT = false;
-      }
     }
 
     function mousePressed() {
+      // Контракт
       let textW1 = textWidth("0x..........15.11.2025") * scale;
       let textW2 = textWidth("................4444") * scale;
       let maxWidth = Math.max(textW1, textW2);
@@ -583,11 +520,12 @@
         return;
       }
 
+      // Кружки
       for (let c of circles) {
         if (dist(mouseX, mouseY, c.x, c.y) < (circleSize * scale) / 2 && c.clickableImage) {
           const urls = {
             1: "https://x.com/binance",
-            2: "https://four.meme",
+            2: "https://x.com/four_meme_",
             3: "https://x.com/lin_btc",
             4: "https://x.com/BTCdayu",
             5: "https://x.com/Arya_web3",
@@ -631,20 +569,23 @@
         }
       }
 
-      // === КЛИКИ ПО УГЛАМ ===
-      if (mouseX >= 10 && mouseX <= 100 && mouseY >= 10 && mouseY <= 30) {
+      // Угловые кнопки
+      const isOverSupport = mouseX >= 10 && mouseX <= 120 && mouseY >= 10 && mouseY <= 30;
+      const isOverNFT = mouseX >= 10 && mouseX <= 180 && mouseY >= height - 30 && mouseY <= height - 10;
+
+      if (isOverSupport) {
         navigator.clipboard.writeText("nazarborodina49@gmail.com").then(() => {
           showCopyMessageTopLeft = true;
           copyMessageTimerTop = millis();
-        }).catch(() => {});
+        });
         return;
       }
 
-      if (mouseX >= 10 && mouseX <= 120 && mouseY >= height - 30 && mouseY <= height - 10) {
+      if (isOverNFT) {
         navigator.clipboard.writeText("https://element.market/collections/ocean-doodles").then(() => {
           showCopyMessageBottomLeft = true;
           copyMessageTimerBottom = millis();
-        }).catch(() => {});
+        });
         return;
       }
     }
@@ -678,47 +619,20 @@
   </script>
 </head>
 <body>
-  <!-- Верхняя бегущая строка -->
+  <!-- Бегущие строки -->
   <div class="marquee-wrapper marquee-top">
     <div class="marquee-bg">
-      <div class="marquee-text">🎉 12/12/2025 🎉 AIRDROP FOR THE TOP 10 HOLDERS OF $TIMEBNB TOKENS, A PRIZE POOL OF 8,888,888 $TIMEBNB 🎉</div>
+      <div class="marquee-text">18.12.2025🪂AIRDROP</div>
     </div>
   </div>
-
-  <!-- Нижняя бегущая строка -->
   <div class="marquee-wrapper marquee-bottom">
     <div class="marquee-bg">
-      <div class="marquee-text">🎉 12/12/2025 🎉 AIRDROP FOR NFT HOLDERS OF A PRIZE POOL OF 8,888,888 TOKENS OF $TIMEBNB 🎉</div>
+      <div class="marquee-text">28.12.2025🪂NFT</div>
     </div>
   </div>
 
-  <!-- Верхний левый угол: @SUPPORT → EMAIL при наведении -->
-  <div class="support-box" id="supportBox">
-    <script>
-      function updateSupportBox() {
-        const box = document.getElementById('supportBox');
-        box.innerText = isHoveringSupport ? 'nazarborodina49@gmail.com' : '@SUPPORT';
-      }
-      window.addEventListener('mousemove', updateSupportBox);
-      window.addEventListener('click', updateSupportBox);
-    </script>
-  </div>
-  <div class="copy-message-top" id="copyMsgTop"></div>
-
-  <!-- Нижний левый угол: NFT SUPPLY → URL при наведении -->
-  <div class="nft-supply-box" id="nftSupplyBox">
-    <script>
-      function updateNFTBox() {
-        const box = document.getElementById('nftSupplyBox');
-        box.innerText = isHoveringNFT ? 'https://element.market/collections/ocean-doodles' : 'NFT SUPPLY 88 NFT';
-      }
-      window.addEventListener('mousemove', updateNFTBox);
-      window.addEventListener('click', updateNFTBox);
-    </script>
-  </div>
-  <div class="copy-message-bottom" id="copyMsgBottom"></div>
-
-  <!-- Центральный COPY сообщение -->
-  <div class="contract-copy-message" id="contractCopyMsg"></div>
+  <!-- Кнопки (текст управляется из JS) -->
+  <div class="support-box" id="supportBox">@SUPPORT</div>
+  <div class="nft-supply-box" id="nftSupplyBox">NFT SUPPLY 88 NFT</div>
 </body>
 </html>
