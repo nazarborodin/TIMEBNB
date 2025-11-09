@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TIMEBNB</title>
 
-  <link rel="icon" type="image/svg+xml" href="image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FFDC00%22/></svg>">
 
   <style>
     body {
@@ -83,6 +83,8 @@
       cursor: pointer;
       z-index: 11;
       user-select: none;
+      border-radius: 8px;
+      transition: color 0.2s;
     }
 
     .support-box {
@@ -91,6 +93,25 @@
 
     .nft-supply-box {
       bottom: 10px;
+    }
+
+    /* === СООБЩЕНИЯ "COPY" === */
+    .copy-message {
+      position: absolute;
+      padding: 4px 8px;
+      background: rgba(255, 220, 0, 0.95);
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 4px;
+      z-index: 12;
+      pointer-events: none;
+      animation: fadeOut 2s forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
@@ -102,12 +123,6 @@
     let showCopyMessage = false;
     let copyMessageTimer = 0;
     const contractAddress = "0x..........15.11.2025................4444";
-
-    // Новые переменные для COPY
-    let showCopyMessageTopLeft = false;
-    let showCopyMessageBottomLeft = false;
-    let copyMessageTimerTop = 0;
-    let copyMessageTimerBottom = 0;
 
     let scale = 1;
     let circleSize = 40;
@@ -404,29 +419,13 @@
         clickTimer = 0;
       }
 
-      // === РИСУЕМ "COPY" ПОВЕРХ ВСЕГО ===
+      // === РИСУЕМ ЦЕНТРАЛЬНОЕ "COPY" ПРИ КОПИРОВАНИИ КОНТРАКТА ===
       if (showCopyMessage) {
         fill(255, 220, 0);
         textSize(24 * scale);
         textAlign(CENTER, CENTER);
         text("COPY", centre_x, centre_y + 160 * scale);
         if (millis() - copyMessageTimer > 2000) showCopyMessage = false;
-      }
-
-      if (showCopyMessageTopLeft) {
-        fill(255, 220, 0);
-        textSize(16 * scale);
-        textAlign(LEFT, TOP);
-        text("COPY", 10, 35);
-        if (millis() - copyMessageTimerTop > 2000) showCopyMessageTopLeft = false;
-      }
-
-      if (showCopyMessageBottomLeft) {
-        fill(255, 220, 0);
-        textSize(16 * scale);
-        textAlign(LEFT, BOTTOM);
-        text("COPY", 10, height - 45);
-        if (millis() - copyMessageTimerBottom > 2000) showCopyMessageBottomLeft = false;
       }
     }
 
@@ -483,15 +482,21 @@
         document.body.classList.remove('contract-area');
       }
 
-      // Обновление текста кнопок
+      // Обновление текста и цвета кнопок при наведении
       const supportBtn = document.getElementById('supportBox');
       const nftBtn = document.getElementById('nftSupplyBox');
 
       const isOverSupport = mouseX >= 10 && mouseX <= 120 && mouseY >= 10 && mouseY <= 30;
       const isOverNFT = mouseX >= 10 && mouseX <= 180 && mouseY >= height - 30 && mouseY <= height - 10;
 
-      if (supportBtn) supportBtn.innerText = isOverSupport ? 'nazarborodina49@gmail.com' : '@SUPPORT';
-      if (nftBtn) nftBtn.innerText = isOverNFT ? 'https://element.market/collections/ocean-doodles' : 'NFT SUPPLY 88 NFT';
+      if (supportBtn) {
+        supportBtn.innerText = isOverSupport ? 'nazarborodina49@gmail.com' : '@SUPPORT';
+        supportBtn.style.color = isOverSupport ? '#FFFFFF' : '#FFDC00';
+      }
+      if (nftBtn) {
+        nftBtn.innerText = isOverNFT ? 'https://element.market/collections/ocean-doodles' : 'NFT SUPPLY 88 NFT';
+        nftBtn.style.color = isOverNFT ? '#FFFFFF' : '#FFDC00';
+      }
 
       // Курсор X
       showCustomX = false;
@@ -575,17 +580,15 @@
 
       if (isOverSupport) {
         navigator.clipboard.writeText("nazarborodina49@gmail.com").then(() => {
-          showCopyMessageTopLeft = true;
-          copyMessageTimerTop = millis();
-        });
+          createCopyMessage(10, 35);
+        }).catch(err => console.error('Copy failed:', err));
         return;
       }
 
       if (isOverNFT) {
         navigator.clipboard.writeText("https://element.market/collections/ocean-doodles").then(() => {
-          showCopyMessageBottomLeft = true;
-          copyMessageTimerBottom = millis();
-        });
+          createCopyMessage(10, height - 45);
+        }).catch(err => console.error('Copy failed:', err));
         return;
       }
     }
@@ -601,6 +604,18 @@
           copyMessageTimer = millis();
         }).catch(() => {});
       }
+    }
+
+    function createCopyMessage(x, y) {
+      const msg = document.createElement('div');
+      msg.textContent = 'COPY';
+      msg.classList.add('copy-message');
+      msg.style.left = `${x}px`;
+      msg.style.top = `${y}px`;
+      document.body.appendChild(msg);
+      setTimeout(() => {
+        if (msg.parentNode) document.body.removeChild(msg);
+      }, 2000);
     }
 
     function resizeCanvasForMobile() {
@@ -631,7 +646,7 @@
     </div>
   </div>
 
-  <!-- Кнопки (текст управляется из JS) -->
+  <!-- Кнопки -->
   <div class="support-box" id="supportBox">@SUPPORT</div>
   <div class="nft-supply-box" id="nftSupplyBox">NFT SUPPLY 88 NFT</div>
 </body>
